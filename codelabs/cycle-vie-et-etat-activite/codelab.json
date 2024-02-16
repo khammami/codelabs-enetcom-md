@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "md",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-3295395-7",
+  "updated": "2023-10-02T11:49:46Z",
+  "id": "cycle-vie-et-etat-activite",
+  "duration": 0,
+  "title": "TP 02.2: Cycle de vie et état de l'activité",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "13dai1d4WZl-j6K-JJ9pUiixhuv-39kfIjCC_Pt6y4RI",
+  "theme": "android",
+  "status": [
+    "hidden"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcomtppem",
+    "enetcomtppm",
+    "kiosk",
+    "web"
+  ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
+  "url": "cycle-vie-et-etat-activite"
+}

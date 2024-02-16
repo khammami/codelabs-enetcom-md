@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "md",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-3295395-7",
+  "updated": "2023-10-26T06:54:54Z",
+  "id": "recyclerview",
+  "duration": 0,
+  "title": "TP 03.2: RecyclerView",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "1jvCCjvyr084O9KiCJDcYpsML_gLzaC4jSYQNuIfbk6Q",
+  "theme": "android",
+  "status": [
+    "hidden"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcomtppem",
+    "enetcomtppm",
+    "kiosk",
+    "web"
+  ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
+  "url": "recyclerview"
+}

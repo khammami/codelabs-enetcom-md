@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "md",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-3295395-7",
+  "updated": "2023-10-02T10:59:07Z",
+  "id": "intents-implicites",
+  "duration": 0,
+  "title": "TP 02.3: Les \"Intents\" implicites",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "15DwHNo1DV7UFS25oRN_l4SGfj-GZ3TrZ8bmB2oLCtNw",
+  "theme": "android",
+  "status": [
+    "hidden"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcomtppem",
+    "enetcomtppm",
+    "kiosk",
+    "web"
+  ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
+  "url": "intents-implicites"
+}

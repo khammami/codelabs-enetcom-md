@@ -1,0 +1,28 @@
+{
+  "environment": "web",
+  "format": "md",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-3295395-7",
+  "updated": "2023-10-26T11:05:19Z",
+  "id": "room-livedata-viewmodel",
+  "duration": 0,
+  "title": "TP 04.2A: Room, LiveData et ViewModel",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "1J-2_tW_UrBvR60rEwL3H1wCCYOyAGIMLShXbaWm7A0M",
+  "theme": "android",
+  "status": [
+    "hidden"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcomtppem",
+    "enetcomtppm",
+    "kiosk",
+    "web"
+  ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "url": "room-livedata-viewmodel"
+}
