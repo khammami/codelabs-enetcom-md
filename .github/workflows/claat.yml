@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "codelabs.json"
+      - "./github/workflows/*"
 
 concurrency:
   group: ${{ github.ref }}
@@ -49,8 +50,10 @@ jobs:
         run: |
           if [ -d codelabs ]; then
               rm -rf codelabs
+              rm -rf codelabs-md
           else
               mkdir codelabs
+              mkdir codelabs-md
           fi
 
       - name: Generate Oauth2 token
@@ -61,6 +64,18 @@ jobs:
           access_token_scopes: "https://www.googleapis.com/auth/drive.readonly"
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
-      - name: Test export
-        working-directory: codelabs
-        run: claat export -auth "${{ steps.auth.outputs.access_token }}" 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
+      - name: Export all codelabs
+        run: |
+          sources=$(cat codelabs.json | grep "source" | sed 's/.*": //')
+          while read line; do
+              claat export -o codelabs/ -auth "${{ steps.auth.outputs.access_token }}" "$line"
+              claat export -o codelabs-md/ -f "md" -auth "${{ steps.auth.outputs.access_token }}" "$line"
+          done <<< "$sources"
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "github-actions"
+          git add --all
+          git commit -m "Export codelabs $(date '+%Y-%m-%d %H:%M')"
+          git push -u origin $GITHUB_REF
