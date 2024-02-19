@@ -30,6 +30,12 @@ jobs:
                 echo $CLAAT_CRED > -p ~/.config/claat/goog-cred.json
             fi
 
+        - name: check codelabs directory
+          run: |
+            if [ ! -d codelabs ]; then
+                mkdir codelabs
+            fi
+
         - name: test export
           working-directory: /codelabs
           run: claat export 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
