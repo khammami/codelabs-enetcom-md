@@ -1,9 +1,0 @@
-it config --local user.email "action@github.com"
-    git config --local user.name "github-actions"
-    git add --all
-    git commit -m "Add changes" -a
-    git push -u origin $GITHUB_REF 
-
-          - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date '+%Y-%m-%d %H:%M')"
