@@ -12,6 +12,9 @@ concurrency:
 
 jobs:
   export_codelabs:
+    permissions:
+        contents: 'read'
+        id-token: 'write'
     runs-on: ubuntu-latest
     env:
       CLAAT_VERSION: "v2.2.6"
@@ -48,8 +51,13 @@ jobs:
               mkdir codelabs
           fi
 
+      - name: Generate Oauth2 token
+        id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+            token_format: 'access_token'
+            credentials_json: '${{ secrets.SERVICE_ACCOUNT_CREDS }}'
+
       - name: Test export
-        env:
-          CLAAT_AUTH_CODE: ${{ secrets.CLAAT_AUTH_CODE }}
         working-directory: codelabs
-        run: claat export -auth "${{ env.CLAAT_AUTH_CODE }}" 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
+        run: claat export -auth "${{ steps.auth.outputs.access_token }}" 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
