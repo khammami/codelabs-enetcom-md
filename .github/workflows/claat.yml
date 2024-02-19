@@ -3,8 +3,8 @@ name: Export gdocs
 on:
   workflow_dispatch:
   push:
-    # paths:
-    #   - 'codelabs-md/*'
+    paths:
+      - "codelabs.json"
 
 concurrency:
   group: ${{ github.ref }}
@@ -13,8 +13,8 @@ concurrency:
 jobs:
   export_codelabs:
     permissions:
-        contents: 'read'
-        id-token: 'write'
+      contents: "read"
+      id-token: "write"
     runs-on: ubuntu-latest
     env:
       CLAAT_VERSION: "v2.2.6"
@@ -54,12 +54,12 @@ jobs:
           fi
 
       - name: Generate Oauth2 token
-        id: 'auth'
-        uses: 'google-github-actions/auth@v2'
+        id: "auth"
+        uses: "google-github-actions/auth@v2"
         with:
-            token_format: 'access_token'
-            access_token_scopes: 'https://www.googleapis.com/auth/drive.readonly'
-            credentials_json: '${{ secrets.SERVICE_ACCOUNT_CREDS }}'
+          token_format: "access_token"
+          access_token_scopes: "https://www.googleapis.com/auth/drive.readonly"
+          credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
       - name: Test export
         working-directory: codelabs
