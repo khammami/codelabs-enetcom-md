@@ -21,7 +21,7 @@ jobs:
         - name: get claat (latest)
           run: |
             go version
-            export PATH=$PATH:$(go env GOPATH)/bin
+            echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
             mkdir -p $(go env GOPATH)/bin
             curl -L -o $(go env GOPATH)/bin/claat https://github.com/googlecodelabs/tools/releases/download/${{env.CLAAT_VERSION}}/claat-linux-amd64
             chmod +x $(go env GOPATH)/bin/claat
