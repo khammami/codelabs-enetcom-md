@@ -1,0 +1,31 @@
+name: Export gdocs
+
+on:
+  workflow_dispatch:
+  push:
+    # paths:
+    #   - 'codelabs-md/*'
+
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+    build_test_node:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v4
+
+        - name: get claat (latest)
+          run: |
+            go version
+            go install github.com/googlecodelabs/tools/claat@latest
+        
+        - name: claat config
+          env:
+            CLAAT_CRED: ${{ secrets.CLAAT_CREDENTIALS }}
+          run: echo $CLAAT_CRED >> .config/claat/goog-cred.json
+
+        - name: test export
+          working-directory: /codelabs
+          run: claat export 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
