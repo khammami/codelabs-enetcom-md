@@ -1,0 +1,457 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 02.2: Cycle de vie et état de l&#39;activité</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-3295395-7"
+                  id="cycle-vie-et-etat-activite"
+                  title="TP 02.2: Cycle de vie et état de l&#39;activité"
+                  environment="web"
+                  feedback-link="https://github.com/khammami/codelabs-enetcom/issues">
+    
+      <google-codelab-step label="Bienvenue" duration="0">
+        <p>Ces travaux pratiques sont basés sur le cours de base pour les développeurs Android fourni par Google, qui prépare les participants au test de certification <a href="https://developers.google.com/training/certification/associate-android-developer/" target="_blank">Associate Android Developer</a>. Pour tirer le meilleur parti de ce TP, il est recommandé de travailler successivement dans les codelabs.</p>
+<h2 is-upgraded>Introduction</h2>
+<p>Dans cette pratique, vous en apprendrez plus sur le cycle de vie d&#39;une activité (<em>activity lifecycle</em>). Le cycle de vie correspond à l&#39;ensemble des états qu&#39;une activité peut être pendant toute sa durée de vie, de sa création à sa destruction et à la récupération de ses ressources par le système. Lorsqu&#39;un utilisateur navigue entre les activités de votre application (ainsi que dans et hors de celle-ci), les activités passent d&#39;un état à un autre au cours de leur cycle de vie.</p>
+<p class="image-container"><img style="width: 624.00px" src="img/59d40f71d715436.png"></p>
+<p>Chaque étape du cycle de vie d&#39;une activité à une méthode de rappel (callback) correspondante: <code>onCreate()</code>, <code>onStart()</code>, <code>onPause()</code>, etc. Lorsqu&#39;une activité change d&#39;état, la méthode de rappel associée est appelée. Vous avez déjà vu l&#39;une de ces méthodes: <code>onCreate()</code>. En définissant l&#39;une des méthodes de rappel du cycle de vie dans vos classes d&#39;activité (<code>Activity</code>), vous pouvez modifier le comportement par défaut de l&#39;activité en réponse à des actions de l&#39;utilisateur ou du système.</p>
+<p>L&#39;état d&#39;activité peut également changer en réponse aux changements de configuration du périphérique, par exemple lorsque l&#39;utilisateur fait pivoter le périphérique de portrait en paysage. Lorsque ces modifications de configuration se produisent, l&#39;activité est détruite et recréée dans son état par défaut et l&#39;utilisateur peut perdre les informations qu&#39;il a entrées dans l&#39;activité. Pour éviter toute confusion chez vos utilisateurs, il est important de développer votre application afin d&#39;éviter toute perte de données inattendue. Plus loin dans cette pratique, vous expérimentez des modifications de configuration et apprendrez à préserver l&#39;état d&#39;une activité en réponse aux modifications de configuration de l&#39;appareil et à d&#39;autres événements de cycle de vie d&#39;activité.</p>
+<p>Dans cette pratique, vous ajoutez des instructions de journalisation à l&#39;application TwoActivities et observez les modifications du cycle de vie des activités lorsque vous utilisez l&#39;application. Vous commencez ensuite à travailler avec ces modifications et à explorer la manière de gérer les entrées utilisateur dans ces conditions.</p>
+<h2 is-upgraded>What you should already know</h2>
+<p>Vous devriez être familier avec:</p>
+<ul>
+<li>Créer et exécuter un projet d&#39;application dans Android Studio.</li>
+<li>Ajoutez des instructions de journal à votre application et affichez ces journaux dans le volet Logcat.</li>
+<li>Comprenez et travaillez avec une activité (<code>Activity</code>) et une intention (<code>Intent</code>), et soyez à l&#39;aise pour interagir avec elles.</li>
+</ul>
+<h2 class="checklist" is-upgraded>What you&#39;ll learn</h2>
+<ul class="checklist">
+<li>Comment fonctionne le cycle de vie de l&#39;activité.</li>
+<li>Quand une activité commence, se met en pause, s&#39;arrête et est détruite.</li>
+<li>A propos des méthodes de rappel de cycle de vie associées aux modifications d&#39;activité.</li>
+<li>Effet des actions (telles que les modifications de configuration) pouvant entraîner des événements du cycle de vie de l&#39;activité.</li>
+<li>Comment conserver l&#39;état d&#39;activité à travers les événements du cycle de vie.</li>
+</ul>
+<h2 is-upgraded>What you&#39;ll do</h2>
+<ul>
+<li>Ajoutez du code à l&#39;application TwoActivities de la pratique précédente pour implémenter les différents rappels du cycle de vie d&#39;activité pour inclure des instructions de journalisation.</li>
+<li>Observez les changements d&#39;état lorsque votre application s&#39;exécute et que vous interagissez avec chaque activité de votre application.</li>
+<li>Modifiez votre application pour conserver l&#39;état d&#39;instance d&#39;une activité recréée de manière inattendue en réponse au comportement de l&#39;utilisateur ou à une modification de la configuration sur le périphérique.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Aperçu de l&#39;application" duration="0">
+        <p>Dans cette pratique, vous ajoutez à l&#39;application <a href="https://github.com/khammami/android-fundamentals-apps-v2/tree/master/TwoActivities" target="_blank">TwoActivities</a>. L&#39;application ressemble et se comporte approximativement de la même manière que dans le dernier code. Il contient deux implémentations d&#39;activité et donne à l&#39;utilisateur la possibilité d&#39;envoyer des messages entre elles. Les modifications que vous apportez à l&#39;application de cette manière n&#39;affectent pas le comportement visible de l&#39;utilisateur.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 1: Ajouter des rappels (callbacks) de cycle de vie à TwoActivities" duration="0">
+        <p>Dans cette tâche, vous allez implémenter toutes les méthodes de rappel du cycle de vie d&#39;Activité pour imprimer des messages dans logcat lorsque ces méthodes sont appelées. Ces messages de journal vous permettent de savoir quand le cycle de vie de l&#39;activité change d&#39;état et comment ces changements affectent votre application lors de son exécution.</p>
+<aside class="warning"><p>Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:</p>
+<ul>
+<li>à partir de la fenêtre &#34;Welcome to Android Studio&#34;:<br><strong>Customize &gt; All settings</strong></li>
+<li>à partir de la fenêtre du projet ouvert:<br><strong>File &gt; Settings</strong></li>
+</ul>
+<p class="image-container"><img style="width: 610.00px" src="img/3918482f0c611fa1.png"></p>
+<p>Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d&#39;outils séparée, cochez les deux paramètres suivants :</p>
+<ul>
+<li><strong>Enable new UI</strong></li>
+<li><strong>Show main menu in separate toolbar</strong></li>
+</ul>
+<p>Une fois ces paramètres cochés, vous devez redémarrer Android Studio pour que les changements soient appliqués.</p>
+</aside>
+<h2 is-upgraded>1.1 (Facultatif) Copiez le projet TwoActivities</h2>
+<p>Pour les tâches de cette pratique, vous modifierez le projet <a href="https://github.com/khammami/android-fundamentals-apps-v2/tree/master/TwoActivities" target="_blank">TwoActivities</a> existant que vous avez construit dans la dernière pratique. Si vous préférez conserver le projet TwoActivities précédent, suivez les étapes de l&#39;<a href="https://google-developer-training.github.io/android-developer-fundamentals-course-concepts-v2/appendix/appendix-utilities/appendix-utilities.html" target="_blank">Appendix: Utilities</a> pour en créer une copie.</p>
+<h2 is-upgraded>1.2 Implémenter des rappels (callbacks) dans MainActivity</h2>
+<ol type="1" start="1">
+<li>Ouvrez le projet TwoActivities dans Android Studio et ouvrez <strong>MainActivity</strong> dans le volet <strong>Project &gt; Android</strong>.</li>
+<li>Dans la méthode <code>onCreate()</code>, ajoutez les instructions de journal suivantes:</li>
+</ol>
+<pre><code>Log.d(LOG_TAG, &#34;-------&#34;);
+Log.d(LOG_TAG, &#34;onCreate&#34;);</code></pre>
+<ol type="1" start="3">
+<li>Ajoutez un remplacement pour le rappel <code>onStart()</code>, avec une instruction dans le journal pour cet événement:</li>
+</ol>
+<pre><code>@Override
+public void onStart(){
+    super.onStart();
+    Log.d(LOG_TAG, &#34;onStart&#34;);
+}</code></pre>
+<p>Pour un raccourci, sélectionnez <strong>Code &gt; Override Methods</strong> dans Android Studio. Une boîte de dialogue apparaît avec toutes les méthodes possibles que vous pouvez remplacer dans votre classe. Le choix d&#39;une ou de plusieurs méthodes de rappel dans la liste insère un modèle complet pour ces méthodes, y compris l&#39;appel requis de la superclasse.</p>
+<ol type="1" start="4">
+<li>Utilisez la méthode <code>onStart()</code> comme modèle pour implémenter les rappels du cycle de vie <code>onPause()</code>, <code>onRestart()</code>, <code>onResume()</code>, <code>onStop()</code> et <code>onDestroy()</code>.</li>
+</ol>
+<p>Toutes les méthodes de rappel ont les mêmes signatures (à l&#39;exception du nom). Si vous <strong>copiez</strong> et <strong>collez </strong><code>onStart()</code> pour créer ces autres méthodes de rappel, n&#39;oubliez pas de mettre à jour le contenu pour appeler la bonne méthode dans la superclasse et pour enregistrer la bonne méthode.</p>
+<ol type="1" start="5">
+<li>Exécutez votre application.</li>
+<li>Cliquez sur l&#39;onglet <strong>Logcat</strong> au bas d&#39;Android Studio pour afficher le volet <strong>Logcat</strong>. Vous devriez voir trois messages de journal indiquant les trois états de cycle de vie dans lesquels l&#39;activité a été transférée au démarrage:</li>
+</ol>
+<pre><code>D/MainActivity: -------
+D/MainActivity: onCreate
+D/MainActivity: onStart
+D/MainActivity: onResume</code></pre>
+<h2 is-upgraded>1.3 Implémentation de rappels (callbacks) de cycle de vie dans SecondActivity</h2>
+<p>Maintenant que vous avez implémenté les méthodes de rappel du cycle de vie pour <code>MainActivity</code>, procédez de la même manière pour <code>SecondActivity</code>.</p>
+<ol type="1" start="1">
+<li>Ouvrez <strong>SecondActivity</strong>.</li>
+<li>En haut de la classe, ajoutez une constante pour la variable <code>LOG_TAG</code>:</li>
+</ol>
+<pre><code>private static final String LOG_TAG = SecondActivity.class.getSimpleName();</code></pre>
+<ol type="1" start="3">
+<li>Ajoutez les rappels de cycle de vie et les instructions de journal à la deuxième activité. (Vous pouvez <strong>copier</strong> et <strong>coller</strong> les méthodes de rappel de <code>MainActivity</code>.)</li>
+<li>Ajoutez une instruction de journal à la méthode <code>returnReply()</code> juste avant la méthode <code>finish()</code>:</li>
+</ol>
+<pre><code>Log.d(LOG_TAG, &#34;End SecondActivity&#34;);</code></pre>
+<h2 is-upgraded>1.4 Observez le journal pendant l&#39;exécution de l&#39;application</h2>
+<ol type="1" start="1">
+<li>Exécutez votre application.</li>
+<li>Cliquez sur l&#39;onglet <strong>Logcat</strong> au bas d&#39;Android Studio pour afficher le volet <strong>Logcat</strong>.</li>
+<li>Entrez <strong>Activity</strong> dans le champ de recherche.</li>
+<li>Le <strong>Logcat</strong> Android peut être très long et encombré. La variable <code>LOG_TAG</code> de chaque classe contient les mots <code>MainActivity</code> ou <code>SecondActivity</code>. Ce mot-clé permet de filtrer le journal uniquement pour les éléments qui vous intéressent.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/f3f0d115d10d2ae3.png"></p>
+<p>Faites des essais avec votre application et notez que les événements du cycle de vie se produisent en réponse à différentes actions. En particulier, essayez ces choses:</p>
+<ul>
+<li>Utilisez l&#39;application normalement (envoyez un message, répondez avec un autre message).</li>
+<li>Utilisez le bouton Back (Précédent) pour revenir de la deuxième activité à l&#39;activité principale.</li>
+<li>Utilisez la flèche vers le haut de la barre d&#39;applications pour revenir de la deuxième activité à l&#39;activité principale.</li>
+<li>Faites pivoter l&#39;appareil à la fois dans l&#39;activité principale et dans la deuxième activité à différents moments de votre application et observez ce qui se passe dans le journal et à l&#39;écran.</li>
+<li>Appuyez sur le bouton de vue d&#39;ensemble (le bouton carré à droite de Accueil) et fermez l&#39;application (appuyez sur le <strong>X</strong>).</li>
+<li>Retournez à l&#39;écran d&#39;accueil et redémarrez votre application.</li>
+</ul>
+<aside class="special"><p><strong>Conseil</strong>: si vous exécutez votre application dans un émulateur, vous pouvez simuler la rotation avec <code>Ctrl + F11</code> ou <code>Ctrl + Fonction + F11</code>.</p>
+</aside>
+<h2 is-upgraded>Code de solution de la tâche 1</h2>
+<p>Les extraits de code suivants montrent le code de la solution pour la première tâche.</p>
+<h3 is-upgraded>MainActivity</h3>
+<p>Les extraits de code suivants montrent le code ajouté dans <code>MainActivity</code>, mais pas la classe entière.</p>
+<p>La méthode <code>onCreate()</code>:</p>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Journaliser le début de la méthode onCreate().
+        Log.d(LOG_TAG, &#34;-------&#34;);
+        Log.d(LOG_TAG, &#34;onCreate&#34;);
+
+        // Initialiser toutes les variables de vue.
+        mMessageEditText = findViewById(R.id.editText_main);
+        mReplyHeadTextView = findViewById(R.id.text_header_reply);
+        mReplyTextView = findViewById(R.id.text_message_reply);
+}</code></pre>
+<p>Les autres méthodes de cycle de vie:</p>
+<pre><code>@Override
+protected void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, &#34;onStart&#34;);
+}
+
+@Override
+protected void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, &#34;onPause&#34;);
+}
+
+@Override
+protected void onRestart() {
+        super.onRestart();
+        Log.d(LOG_TAG, &#34;onRestart&#34;);
+}
+
+@Override
+protected void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, &#34;onResume&#34;);
+}
+
+@Override
+protected void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, &#34;onStop&#34;);
+}
+
+@Override
+protected void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, &#34;onDestroy&#34;);
+}</code></pre>
+<h3 is-upgraded>SecondActivity</h3>
+<p>Les extraits de code suivants montrent le code ajouté dans <code>SecondActivity</code>, mais pas la classe entière.</p>
+<p>Au sommet de la classe <code>SecondActivity</code>:</p>
+<pre><code>private static final String LOG_TAG = SecondActivity.class.getSimpleName();</code></pre>
+<p><em>La méthode </em></p>
+<p><em><code>returnReply()</code></em></p>
+<p><em>:</em></p>
+<pre><code>public void returnReply(View view) {
+        String reply = mReply.getText().toString();
+        Intent replyIntent = new Intent();
+        replyIntent.putExtra(EXTRA_REPLY, reply);
+        setResult(RESULT_OK, replyIntent);
+        Log.d(LOG_TAG, &#34;End SecondActivity&#34;);
+        finish();
+}</code></pre>
+<p>Les autres méthodes de cycle de vie:</p>
+<p>Identique à <code>MainActivity</code> ci-dessus.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 2: Enregistrer et restaurer l&#39;état de l&#39;instance d&#39;activité" duration="0">
+        <p>En fonction des ressources système et du comportement des utilisateurs, chaque activité de votre application peut être détruite et reconstruite bien plus souvent que vous ne le pensez.</p>
+<p>Vous avez peut-être remarqué ce comportement dans la dernière section lorsque vous avez fait pivoter le périphérique ou l&#39;émulateur. La rotation du périphérique est un exemple de changement de configuration de périphérique. Bien que la rotation soit la plus courante, toutes les modifications de configuration entraînent la destruction et la recréation de l&#39;activité en cours comme si elle était nouvelle. Si vous ne tenez pas compte de ce problème dans votre code, en cas de modification de la configuration, votre structure Activité peut revenir à son apparence et à ses valeurs initiales par défaut et vos utilisateurs risquent de perdre leur place, leurs données ou l&#39;état de leur progression dans votre application.</p>
+<p>L&#39;état de chaque activité est stocké sous la forme d&#39;un ensemble de paires clé / valeur dans un objet <a href="https://developer.android.com/reference/android/os/Bundle.html" target="_blank"><code>Bundle</code></a> appelé état d&#39;instance d&#39;activité. Le système enregistre les informations d&#39;état par défaut dans Bundle d&#39;état d&#39;instance juste avant l&#39;arrêt de l&#39;activité et le transmet à la nouvelle instance d&#39;activité à restaurer.</p>
+<p>Pour ne pas perdre de données dans une activité lorsque celle-ci est détruite et recréée de manière inattendue, vous devez implémenter la méthode <code>onSaveInstanceState()</code>. Le système appelle cette méthode sur votre activité (entre <code>onPause()</code> et <code>onStop()</code>) lorsqu&#39;il est possible que l&#39;activité soit détruite et recréée.</p>
+<p>Les données que vous enregistrez dans l&#39;état d&#39;instance sont spécifiques à cette instance de cette activité spécifique au cours de la session d&#39;application en cours. Lorsque vous arrêtez et redémarrez une nouvelle session d&#39;application, l&#39;état de l&#39;instance d&#39;activité est perdu et l&#39;activité reprend son apparence par défaut. Si vous devez enregistrer les données utilisateur entre les sessions d&#39;application, utilisez les préférences partagées ou une base de données. Vous en apprendrez plus sur ces deux choses plus tard.</p>
+<h2 is-upgraded>2.1 Enregistrez l&#39;état de l&#39;instance d&#39;activité avec onSaveInstanceState()</h2>
+<p>Vous avez peut-être remarqué que la rotation de l&#39;appareil n&#39;affecte en rien l&#39;état de la deuxième activité. Cela est dû au fait que la deuxième présentation (layout) et l&#39;état de l&#39;activité sont générés à partir de la présentation (layout) et de l&#39;intention (<code>Intent</code>) qui l&#39;a activée. Même si l&#39;activité est recréée, l&#39;intention (<code>Intent</code>) est toujours présente et les données de cette intention sont toujours utilisées chaque fois que la méthode <code>onCreate()</code> de la deuxième activité est appelée.</p>
+<p>En outre, vous remarquerez peut-être que dans chaque activité, le texte que vous avez saisi dans les éléments message ou réponse <code>EditText</code> est conservé, même lorsque le périphérique est pivoté. Cela est dû au fait que les informations d&#39;état de certains des éléments <code>View</code> de votre présentation (layout) sont automatiquement enregistrées lors des modifications de configuration et que la valeur actuelle d&#39;un <code>EditText</code> est l&#39;un de ces cas.</p>
+<p>Ainsi, les seuls états d&#39;activité qui vous intéressent sont les éléments <code>TextView</code> pour l&#39;en-tête de réponse et le texte de réponse dans l&#39;activité principale. Les deux éléments <code>TextView</code> sont invisibles par défaut. Ils n&#39;apparaissent que lorsque vous envoyez un message à l&#39;activité principale à partir de la deuxième activité.</p>
+<p>Dans cette tâche, vous ajoutez du code pour préserver l&#39;état d&#39;instance de ces deux éléments <code>TextView</code> à l&#39;aide de <code>onSaveInstanceState()</code>.</p>
+<ol type="1" start="1">
+<li>Ouvrez <strong>MainActivity</strong>.</li>
+<li>Ajoutez cette implémentation squelette de <code>onSaveInstanceState()</code> à l&#39;activité ou utilisez  <strong>Code &gt; Override Methods</strong> pour insérer une substitution de squelette.</li>
+</ol>
+<pre><code>@Override
+public void onSaveInstanceState(Bundle outState) {
+          super.onSaveInstanceState(outState);
+}</code></pre>
+<ol type="1" start="3">
+<li>Vérifiez si l&#39;en-tête est actuellement visible, et si c&#39;est le cas, placez cet état de visibilité dans le <code>Bundle</code> avec la méthode <code>putBoolean()</code> et la clé <code>"reply_visible"</code>.</li>
+</ol>
+<pre><code>   if (mReplyHeadTextView.getVisibility() == View.VISIBLE) {
+        outState.putBoolean(&#34;reply_visible&#34;, true);
+    }</code></pre>
+<p>Rappelez-vous que l&#39;en-tête de réponse et le texte sont marqués comme étant invisibles jusqu&#39;à ce qu&#39;il y ait une réponse de la deuxième activité. Si l&#39;en-tête est visible, des données de réponse doivent être enregistrées. Notez que nous ne sommes intéressés que par cet état de visibilité: le texte réel de l&#39;en-tête n&#39;a pas besoin d&#39;être enregistré, car ce texte ne change jamais.</p>
+<ol type="1" start="4">
+<li>À l&#39;intérieur de cette même vérification, ajoutez le texte de réponse dans le <code>Bundle</code>.</li>
+</ol>
+<pre><code>outState.putString(&#34;reply_text&#34;,mReplyTextView.getText().toString());</code></pre>
+<p>Si l&#39;en-tête est visible, vous pouvez supposer que le message de réponse lui-même est également visible. Vous n&#39;avez pas besoin de tester ni d&#39;enregistrer l&#39;état de visibilité actuel du message de réponse. Seul le texte du message passe dans le <code>Bundle</code> d&#39;état avec la clé <code>"reply_text"</code>.</p>
+<p>Vous ne sauvegardez que l&#39;état des éléments de vue susceptibles de changer après la création de l&#39;activité. Les autres éléments <code>View</code> de votre application (<code>EditText</code>, <code>Button</code>) peuvent être recréés à tout moment à partir de la présentation par défaut.</p>
+<p>Notez que le système enregistrera l&#39;état de certains éléments de la vue, tels que le contenu de la propriété <code>EditText</code>.</p>
+<h2 is-upgraded>2.2 Restaurer l&#39;état d&#39;instance d&#39;activité dans <code>onCreate()</code></h2>
+<p>Une fois que vous avez enregistré l&#39;état de l&#39;instance d&#39;activité, vous devez également le restaurer lorsque l&#39;activité est recréée. Vous pouvez le faire dans <code>onCreate()</code> ou en implémentant le rappel <code>onRestoreInstanceState()</code>, appelé après <code>onStart()</code> après la création de l&#39;activité.</p>
+<p>La plupart du temps, le meilleur endroit pour restaurer l&#39;état d&#39;activité est dans <code>onCreate()</code>, afin de s&#39;assurer que l&#39;interface utilisateur (UI), y compris l&#39;état, est disponible dès que possible. Il est parfois pratique de le faire dans <code>onRestoreInstanceState()</code> une fois l&#39;initialisation terminée ou de permettre aux sous-classes de décider d&#39;utiliser ou non votre implémentation par défaut.</p>
+<ol type="1" start="1">
+<li>Dans la méthode <code>onCreate()</code>, une fois les variables <code>View</code> initialisées avec <code>findViewById()</code>, ajoutez un test pour vous assurer que <code>savedInstanceState</code> n&#39;est pas null.</li>
+</ol>
+<pre><code>// Initialiser toutes les variables de vue.
+mMessageEditText = findViewById(R.id.editText_main);
+mReplyHeadTextView = findViewById(R.id.text_header_reply);
+mReplyTextView = findViewById(R.id.text_message_reply);
+
+// Restaurer l&#39;état.
+if (savedInstanceState != null) {
+}</code></pre>
+<p>Lorsque votre activité est créée, le système passe le <code>Bundle</code> d&#39;état à <code>onCreate()</code> comme seul argument. La première fois que <code>onCreate()</code> est appelé et que votre application démarre, le <code>Bundle</code> est <code>nul</code>. Il n&#39;y a pas d&#39;état existant au premier démarrage de votre application. Les appels suivants dans <code>onCreate()</code> ont un <code>Bundle</code> rempli avec les données que vous avez stockées dans <code>onSaveInstanceState()</code>.</p>
+<ol type="1" start="2">
+<li>Dans cette vérification, obtenez la visibilité actuelle (true ou false) du <code>Bundle</code> avec la clé <code>"reply_visible"</code>.</li>
+</ol>
+<pre><code>if (savedInstanceState != null) {
+    boolean isVisible = 
+                     savedInstanceState.getBoolean(&#34;reply_visible&#34;);
+}</code></pre>
+<ol type="1" start="3">
+<li>Ajoutez un test sous la ligne précédente pour la variable isVisible.</li>
+</ol>
+<pre><code>if (isVisible) {
+}</code></pre>
+<p>S&#39;il existe une clé <code>reply_visible</code> dans le Bundle d&#39;état (et que isVisible est donc vrai), vous devrez restaurer l&#39;état.</p>
+<ol type="1" start="4">
+<li>Dans le test <code>isVisible</code>, rendez l&#39;en-tête visible.</li>
+</ol>
+<pre><code>mReplyHeadTextView.setVisibility(View.VISIBLE);</code></pre>
+<ol type="1" start="5">
+<li>Obtenez le message texte de réponse du <code>Bundle</code> avec la clé <code>"reply_text"</code> et configurez la réponse <code>TextView</code> pour afficher cette chaîne.</li>
+</ol>
+<pre><code>mReplyTextView.setText(savedInstanceState.getString(&#34;reply_text&#34;));</code></pre>
+<ol type="1" start="6">
+<li>Rendez le <code>TextView</code>  de la réponse visible également:</li>
+</ol>
+<pre><code>mReplyTextView.setVisibility(View.VISIBLE);</code></pre>
+<ol type="1" start="7">
+<li>Exécutez l&#39;application. Essayez de faire pivoter le périphérique ou l&#39;émulateur pour vous assurer que le message de réponse (s&#39;il en existe un) reste affiché à l&#39;écran une fois l&#39;activité recréée.</li>
+</ol>
+<h2 is-upgraded>Code de solution tâche 2</h2>
+<p>Les extraits de code suivants montrent le code de la solution pour cette tâche.</p>
+<h2 is-upgraded>MainActivity</h2>
+<p>Les extraits de code suivants montrent le code ajouté dans <code>MainActivity</code>, mais pas la classe entière.</p>
+<p>La méthode <code>onSaveInstanceState()</code>:</p>
+<pre><code>@Override
+public void onSaveInstanceState(Bundle outState) {
+   super.onSaveInstanceState(outState);
+
+   // Si le titre est visible, le message doit être sauvegardé.
+   // Sinon, nous utilisons toujours la mise en page par défaut.
+
+   if (mReplyHeadTextView.getVisibility() == View.VISIBLE) {
+       outState.putBoolean(&#34;reply_visible&#34;, true);
+       outState.putString(&#34;reply_text&#34;, 
+                      mReplyTextView.getText().toString());
+   }
+}</code></pre>
+<p>La méthode <code>onCreate()</code>:</p>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+   super.onCreate(savedInstanceState);
+   setContentView(R.layout.activity_main);
+
+   Log.d(LOG_TAG, &#34;-------&#34;);
+   Log.d(LOG_TAG, &#34;onCreate&#34;);
+
+   // Initialiser toutes les variables de vue.
+   mMessageEditText = findViewById(R.id.editText_main);
+   mReplyHeadTextView = findViewById(R.id.text_header_reply);
+   mReplyTextView = findViewById(R.id.text_message_reply);
+
+  // Restaurer l&#39;état enregistré. 
+  // Voir onSaveInstanceState() pour ce qui est enregistré.
+
+   if (savedInstanceState != null) {
+       boolean isVisible = 
+                     savedInstanceState.getBoolean(&#34;reply_visible&#34;);
+       // Affichez à la fois les vues d&#39;en-tête et de message. Si
+       // isVisible est faux ou manquant dans le bundle, utilisez la
+       // disposition par défaut.
+       if (isVisible) {
+           mReplyHeadTextView.setVisibility(View.VISIBLE);
+           mReplyTextView.setText(savedInstanceState
+                                  .getString(&#34;reply_text&#34;));
+           mReplyTextView.setVisibility(View.VISIBLE);
+       }
+   }
+}</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Résumé" duration="0">
+        <ul>
+<li>Le cycle de vie de l&#39;activité est un ensemble d&#39;états par lesquels une activité est migrée, à partir du moment de sa création et se terminant lorsque le système Android récupère les ressources de cette activité.</li>
+<li>Lorsque l&#39;utilisateur navigue d&#39;une activité à une autre, et à l&#39;intérieur et à l&#39;extérieur de votre application, chaque activité passe d&#39;un état à l&#39;autre du cycle de vie de l&#39;activité.</li>
+<li>Chaque état du cycle de vie d&#39;activité a une méthode de rappel correspondante que vous pouvez remplacer dans votre classe d&#39;activité.</li>
+<li>Les méthodes de cycle de vie sont <code>onCreate()</code>, <code>onStart()</code>, <code>onPause()</code>, <code>onRestart()</code>, <code>onResume()</code>, <code>onStop()</code>, <code>onDestroy()</code>.</li>
+<li>Le remplacement d&#39;une méthode de rappel de cycle de vie vous permet d&#39;ajouter un comportement qui se produit lorsque votre activité passe dans cet état.</li>
+<li>Vous pouvez ajouter des méthodes de substitution de squelette à vos classes dans Android Studio avec<strong> Code &gt; Override</strong>.</li>
+<li>Les changements de configuration de l&#39;appareil tels que la rotation entraînent la destruction de l&#39;activité et sa recréation comme si elle était nouvelle.</li>
+<li>Une partie de l&#39;état d&#39;activité est conservée lors d&#39;un changement de configuration, y compris les valeurs actuelles des éléments <code>EditText</code>. Pour toutes les autres données, vous devez explicitement enregistrer ces données vous-même.</li>
+<li>Enregistrer l&#39;état d&#39;instance d&#39;activité dans la méthode <code>onSaveInstanceState()</code>.</li>
+<li>Les données d&#39;état d&#39;instance sont stockées sous forme de simples paires clé / valeur dans un <code>Bundle</code>. Utilisez les méthodes <code>Bundle</code> pour insérer et récupérer des données dans <code>Bundle</code>.</li>
+<li>Restaurez l&#39;état de l&#39;instance dans <code>onCreate()</code>, qui est la méthode préférée, ou <code>onRestoreInstanceState()</code>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Apprendre encore plus" duration="0">
+        <p>Documentation d&#39;Android Studio:</p>
+<ul>
+<li><a href="https://developer.android.com/studio/intro/index.html" target="_blank">Meet Android Studio</a></li>
+</ul>
+<p>Documentation développeur Android:</p>
+<ul>
+<li><a href="http://developer.android.com/guide/components/fundamentals.html" target="_blank">Application Fundamentals</a></li>
+<li><a href="http://developer.android.com/guide/components/activities.html" target="_blank">Activities</a></li>
+<li><a href="https://developer.android.com/guide/components/activities/activity-lifecycle" target="_blank">Understand the Activity Lifecycle</a></li>
+<li><a href="http://developer.android.com/guide/components/intents-filters.html" target="_blank">Intents and Intent Filters</a></li>
+<li><a href="http://developer.android.com/guide/topics/resources/runtime-changes.html" target="_blank">Handle configuration changes</a></li>
+<li><a href="http://developer.android.com/reference/android/app/Activity.html" target="_blank">Activity</a></li>
+<li><a href="http://developer.android.com/reference/android/content/Intent.html" target="_blank">Intent</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Travail à faire (Compte Rendu)" duration="0">
+        <aside class="warning"><p>Pour soumettre votre compte rendu, veuillez suivre ce codelab : </p>
+<p><a href="https://codelabs-enetcom.khammami.tn/codelabs/soumettre-compte-rendu/" target="_blank">Comment soumettre votre compte rendu</a></p>
+</aside>
+<h2 is-upgraded>Créer et exécuter une application</h2>
+<ol type="1" start="1">
+<li>Créez une application avec une mise en page (layout) qui contient un compteur <code>TextView</code>, un bouton pour incrémenter le compteur et un <code>EditText</code>. Voir la capture d&#39;écran ci-dessous à titre d&#39;exemple. Vous n&#39;avez pas à dupliquer précisément la mise en page (layout).</li>
+<li>Ajoutez un gestionnaire de clic pour le bouton qui incrémente le compteur.</li>
+<li>Exécutez l&#39;application et incrémentez le compteur. Entrez du texte dans <code>EditText</code>.</li>
+<li>Faites pivoter l&#39;appareil. Notez que le compteur est réinitialisé, mais pas <code>EditText</code>.</li>
+<li>Implémentez <code>onSaveInstanceState()</code> pour enregistrer l&#39;état actuel de l&#39;application.</li>
+<li>Mettez à jour <code>onCreate()</code> pour restaurer l&#39;état de l&#39;application.</li>
+<li>Assurez-vous que lorsque vous faites pivoter le périphérique, l&#39;état de l&#39;application est préservé.</li>
+</ol>
+<p class="image-container"><img style="width: 238.69px" src="img/ebaf84570af6dd46.png"></p>
+<h2 is-upgraded>Répondre à ces questions</h2>
+<h3 is-upgraded>Question 1</h3>
+<p>Si vous exécutez l&#39;application de travail à faire avant d&#39;implémenter <code>onSaveInstanceState()</code>, que se passe-t-il si vous faites pivoter le périphérique? Choisissez-en un:</p>
+<ul>
+<li>L&#39;<code>EditText</code> ne contient plus le texte que vous avez entré, mais le compteur est conservé.</li>
+<li>Le compteur est réinitialisé à 0 et l&#39; <code>EditText</code> ne contient plus le texte que vous avez entré.</li>
+<li>Le compteur est réinitialisé à 0, mais le contenu de l&#39;<code>EditText</code> est préservé.</li>
+<li>Le compteur et le contenu de <code>EditText</code> sont préservés.</li>
+</ul>
+<h3 is-upgraded>Question 2</h3>
+<p>Quelles méthodes de cycle de vie d&#39;activité sont appelées lorsqu&#39;un changement de configuration de périphérique (tel qu&#39;une rotation) se produit? Choisissez-en un:</p>
+<ul>
+<li>Android ferme immédiatement votre activité en appelant <code>onStop()</code>. Votre code doit redémarrer l&#39;activité.</li>
+<li>Android arrête votre activité en appelant <code>onPause()</code>, <code>onStop()</code> et <code>onDestroy()</code>. Votre code doit redémarrer l&#39;activité.</li>
+<li>Android arrête votre activité en appelant <code>onPause()</code>, <code>onStop()</code> et <code>onDestroy()</code>, puis redémarre l&#39;opération en appelant <code>onCreate()</code>, <code>onStart()</code> et <code>onResume()</code>.</li>
+<li>Android appelle immédiatement <code>onResume()</code>.</li>
+</ul>
+<h3 is-upgraded>Question 3</h3>
+<p>Lorsque dans le cycle de vie de l&#39;activité, <code>onSaveInstanceState()</code> est appelé? Choisissez-en un:</p>
+<ul>
+<li><code>onSaveInstanceState()</code> est appelée avant la méthode <code>onStop()</code>.</li>
+<li><code>onSaveInstanceState()</code> est appelée avant la méthode <code>onResume()</code>.</li>
+<li><code>onSaveInstanceState()</code> est appelée avant la méthode <code>onCreate()</code>.</li>
+<li><code>onSaveInstanceState()</code> est appelée avant la méthode <code>onDestroy()</code>.</li>
+</ul>
+<h3 is-upgraded>Question 4</h3>
+<p>Quelles méthodes de cycle de vie d&#39;Activité sont les meilleures à utiliser pour enregistrer des données avant la fin ou la destruction de l&#39;activité? Choisissez-en un:</p>
+<ul>
+<li><code>onPause()</code> ou <code>onStop()</code></li>
+<li><code>onResume()</code> ou <code>onCreate()</code></li>
+<li><code>onDestroy()</code></li>
+<li><code>onStart()</code> ou <code>onRestart()</code></li>
+</ul>
+<h2 is-upgraded>Soumettez votre application pour la notation</h2>
+<p>Vérifiez que l&#39;application dispose des éléments suivants:</p>
+<ul>
+<li>Il affiche un compteur, un bouton pour incrémenter ce compteur et un <code>EditText</code>.</li>
+<li>Un clic sur le bouton incrémente le compteur de 1.</li>
+<li>Lors de la rotation du périphérique, les états counter et <code>EditText</code> sont conservés.</li>
+<li>L&#39;implémentation de <code>MainActivity.java</code> utilise la méthode <code>onSaveInstanceState()</code> pour stocker la valeur du compteur.</li>
+<li>L&#39;implémentation de <code>onCreate()</code> teste l&#39;existence du <code>bundle</code> <code>outState</code>. Si ce <code>Bundle</code> existe, la valeur du compteur est restaurée et enregistrée dans <code>TextView</code>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

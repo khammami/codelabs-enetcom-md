@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2024-02-19T15:59:10Z",
+  "id": "menus-et-pickers",
+  "duration": 0,
+  "title": "TP 03.1: Les Menus et \"pickers\"",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "1kEqT7MUxKU4g1IdiLt2aS2NHwA4jGK7u5TsnAOoltf0",
+  "theme": "android",
+  "status": [
+    "hidden"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcomtppem",
+    "enetcomtppm",
+    "kiosk",
+    "web"
+  ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
+  "url": "menus-et-pickers"
+}

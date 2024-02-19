@@ -1,0 +1,28 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2024-02-19T15:58:54Z",
+  "id": "deleting-data-room-database",
+  "duration": 0,
+  "title": "TP 04.2B: Suppression de données d'une base de données Room",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "1ntY118_8jq9_exZz96rKfc6kFiwQ-xlReq0jtwcjEJY",
+  "theme": "android",
+  "status": [
+    "hidden"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcomtppem",
+    "enetcomtppm",
+    "kiosk",
+    "web"
+  ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "url": "deleting-data-room-database"
+}
