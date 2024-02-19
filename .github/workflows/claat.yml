@@ -19,6 +19,7 @@ jobs:
         - name: get claat (latest)
           run: |
             go version
+            export PATH=$PATH:$(go env GOPATH)/bin
             go install github.com/googlecodelabs/tools/claat@latest
         
         - name: claat config
