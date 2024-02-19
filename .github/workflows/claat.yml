@@ -28,14 +28,14 @@ jobs:
             claat version
             echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
         
-        - name: claat config
-          env:
-            CLAAT_CRED: ${{ secrets.CLAAT_CREDENTIALS }}
-          run: |
-            if [ ! -d ~/.config/claat ]; then
-                mkdir -p ~/.config/claat
-                echo $CLAAT_CRED > -p ~/.config/claat/goog-cred.json
-            fi
+        # - name: claat config
+        #   env:
+        #     CLAAT_CRED: ${{ secrets.CLAAT_CREDENTIALS }}
+        #   run: |
+        #     if [ ! -d ~/.config/claat ]; then
+        #         mkdir -p ~/.config/claat
+        #         echo $CLAAT_CRED > -p ~/.config/claat/goog-cred.json
+        #     fi
 
         - name: check codelabs directory
           run: |
