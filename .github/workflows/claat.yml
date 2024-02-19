@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-    build_test_node:
+    export_codelabs:
         runs-on: ubuntu-latest
         steps:
         - uses: actions/checkout@v4
@@ -24,7 +24,11 @@ jobs:
         - name: claat config
           env:
             CLAAT_CRED: ${{ secrets.CLAAT_CREDENTIALS }}
-          run: echo $CLAAT_CRED >> .config/claat/goog-cred.json
+          run: |
+            if [ ! -d ~/.config/claat ]; then
+                mkdir -p ~/.config/claat
+                echo $CLAAT_CRED > -p ~/.config/claat/goog-cred.json
+            fi
 
         - name: test export
           working-directory: /codelabs
