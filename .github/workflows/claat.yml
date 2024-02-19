@@ -6,36 +6,50 @@ on:
     # paths:
     #   - 'codelabs-md/*'
 
-concurrency: 
+concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-    export_codelabs:
-        runs-on: ubuntu-latest
+  export_codelabs:
+    runs-on: ubuntu-latest
+    env:
+      CLAAT_VERSION: "v2.2.6"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Export Go bin to all steps
+        run: |
+          go version
+          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+
+      # Save/Restore claat
+      - name: claat cache
+        uses: actions/cache@v4
+        id: claat-cache
+        with:
+          path: |
+            $(go env GOPATH)/bin/*
+          key: go-claat
+
+      - name: get claat (latest)
+        if: steps.claat-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p $(go env GOPATH)/bin
+          curl -L -o $(go env GOPATH)/bin/claat https://github.com/googlecodelabs/tools/releases/download/${{env.CLAAT_VERSION}}/claat-linux-amd64
+          chmod +x $(go env GOPATH)/bin/claat
+          claat version
+
+      - name: Reset codelabs directory
+        run: |
+          if [ -d codelabs ]; then
+              rm -rf codelabs
+          else
+              mkdir codelabs
+          fi
+
+      - name: Test export
         env:
-            CLAAT_VERSION: "v2.2.6"
-        steps:
-        - uses: actions/checkout@v4
-
-        - name: get claat (latest)
-          run: |
-            go version
-            export PATH=$PATH:$(go env GOPATH)/bin
-            mkdir -p $(go env GOPATH)/bin
-            curl -L -o $(go env GOPATH)/bin/claat https://github.com/googlecodelabs/tools/releases/download/${{env.CLAAT_VERSION}}/claat-linux-amd64
-            chmod +x $(go env GOPATH)/bin/claat
-            claat version
-            echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
-
-        - name: check codelabs directory
-          run: |
-            if [ ! -d codelabs ]; then
-                mkdir codelabs
-            fi
-
-        - name: test export
-          env:
-            CLAAT_AUTH_CODE: ${{ secrets.CLAAT_AUTH_CODE }}
-          working-directory: codelabs
-          run: claat export -auth "${{ env.CLAAT_AUTH_CODE }}" 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
+          CLAAT_AUTH_CODE: ${{ secrets.CLAAT_AUTH_CODE }}
+        working-directory: codelabs
+        run: claat export -auth "${{ env.CLAAT_AUTH_CODE }}" 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
