@@ -14,8 +14,8 @@ concurrency:
 jobs:
   export_codelabs:
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: write
+      id-token: write
     runs-on: ubuntu-latest
     env:
       CLAAT_VERSION: "v2.2.6"
