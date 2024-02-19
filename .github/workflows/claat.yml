@@ -22,9 +22,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Export Go bin to all steps
+        id: go-env
         run: |
           go version
           echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+          echo "go-bin-path=$(go env GOPATH)/bin" >> "$GITHUB_OUTPUT"
 
       # Save/Restore claat
       - name: claat cache
@@ -32,7 +34,7 @@ jobs:
         id: claat-cache
         with:
           path: |
-            $(go env GOPATH)/bin/*
+            ${{ steps.go-env.outputs.go-bin-path }}/*
           key: go-claat
 
       - name: get claat (latest)
