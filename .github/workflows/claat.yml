@@ -47,4 +47,4 @@ jobs:
           env:
             CLAAT_AUTH_CODE: ${{ secrets.CLAAT_AUTH_CODE }}
           working-directory: codelabs
-          run: claat export -auth "$CLAAT_AUTH_CODE" 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
+          run: claat export -auth "${{ env.CLAAT_AUTH_CODE }}" 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
