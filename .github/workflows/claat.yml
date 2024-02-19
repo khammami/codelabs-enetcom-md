@@ -46,15 +46,16 @@ jobs:
           chmod +x $(go env GOPATH)/bin/claat
           claat version
 
-      - name: Reset codelabs directory
+      - name: Reset codelabs directories
         run: |
           if [ -d codelabs ]; then
-              rm -r codelabs
-              rm -r codelabs-md
-          else
-              mkdir codelabs
-              mkdir codelabs-md
+              rm -rf codelabs
           fi
+          if [ -d codelabs-md ]; then
+              rm -rf codelabs-md
+          fi
+          mkdir codelabs
+          mkdir codelabs-md
 
       - name: Generate Oauth2 token
         id: "auth"
