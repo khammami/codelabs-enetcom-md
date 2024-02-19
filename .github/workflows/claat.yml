@@ -69,8 +69,8 @@ jobs:
         run: |
           sources=$(cat codelabs.json | grep "source" | sed 's/.*": //; s/"$//')
           while read line; do
-              claat export -o codelabs/ -auth "${{ steps.auth.outputs.access_token }}" $line
-              claat export -o codelabs-md/ -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
+              claat export -o "codelabs/" -auth "${{ steps.auth.outputs.access_token }}" $line
+              claat export -o "codelabs-md/" -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
           done <<< "$sources"
 
       - name: Commit changes
