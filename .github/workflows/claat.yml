@@ -78,5 +78,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
           git add codelabs/* codelabs-md/*
-          git commit -m "Export codelabs $(date '+%Y-%m-%d %H:%M')"
-          git push -u origin $GITHUB_REF
+          git commit -m "Export codelabs $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
