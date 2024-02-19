@@ -56,7 +56,9 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
             token_format: 'access_token'
-            credentials_json: '${{ secrets.SERVICE_ACCOUNT_CREDS }}'
+            workload_identity_provider: 'https://iam.googleapis.com/projects/256840267944/locations/global/workloadIdentityPools/github-action/providers/github'
+            service_account: 'github-action@codelabs-enetcom.iam.gserviceaccount.com'
+            access_token_lifetime: '300s' # optional, default: '3600s' (1 hour)
 
       - name: Test export
         working-directory: codelabs
