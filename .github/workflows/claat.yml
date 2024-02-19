@@ -49,8 +49,8 @@ jobs:
       - name: Reset codelabs directory
         run: |
           if [ -d codelabs ]; then
-              rm -rf codelabs
-              rm -rf codelabs-md
+              rm -r codelabs
+              rm -r codelabs-md
           else
               mkdir codelabs
               mkdir codelabs-md
