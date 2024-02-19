@@ -13,6 +13,8 @@ concurrency:
 jobs:
     export_codelabs:
         runs-on: ubuntu-latest
+        env:
+            CLAAT_VERSION: "v2.2.6"
         steps:
         - uses: actions/checkout@v4
 
@@ -20,7 +22,10 @@ jobs:
           run: |
             go version
             export PATH=$PATH:$(go env GOPATH)/bin
-            go install github.com/googlecodelabs/tools/claat@latest
+            mkdir -p $(go env GOPATH)/bin
+            curl -L -o $(go env GOPATH)/bin/claat https://github.com/googlecodelabs/tools/releases/download/${{env.CLAAT_VERSION}}/claat-linux-amd64
+            chmod +x $(go env GOPATH)/bin/claat
+            claat version
         
         - name: claat config
           env:
