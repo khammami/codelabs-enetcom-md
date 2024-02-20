@@ -21,6 +21,8 @@ jobs:
       CLAAT_VERSION: "v2.2.6"
       GA_ID: "UA-3295395-7"
       GA_ID_V4: "G-E0H6JSF2N3"
+      HTML_PATH: codelabs
+      MD_PATH: codelabs-md
     steps:
       - uses: actions/checkout@v4
 
@@ -40,14 +42,6 @@ jobs:
             ${{ steps.go-env.outputs.go-bin-path }}/*
           key: go-claat
 
-      # - name: get claat (latest)
-      #   if: steps.claat-cache.outputs.cache-hit != 'true'
-      #   run: |
-      #     mkdir -p $(go env GOPATH)/bin
-      #     curl -L -o $(go env GOPATH)/bin/claat https://github.com/googlecodelabs/tools/releases/download/${{env.CLAAT_VERSION}}/claat-linux-amd64
-      #     chmod +x $(go env GOPATH)/bin/claat
-      #     claat version
-
       - name: get claat (latest)
         if: steps.claat-cache.outputs.cache-hit != 'true'
         run: |
@@ -57,14 +51,14 @@ jobs:
 
       - name: Reset codelabs directories
         run: |
-          if [ -d codelabs ]; then
-              rm -rf codelabs
+          if [ -d ${{ env.HTML_PATH }} ]; then
+              rm -rf ${{ env.HTML_PATH }}
           fi
-          if [ -d codelabs-md ]; then
-              rm -rf codelabs-md
+          if [ -d ${{ env.MD_PATH }} ]; then
+              rm -rf ${{ env.MD_PATH }}
           fi
-          mkdir codelabs
-          mkdir codelabs-md
+          mkdir ${{ env.HTML_PATH }}
+          mkdir ${{ env.MD_PATH }}
 
       - name: Generate Oauth2 token
         id: "auth"
@@ -78,14 +72,22 @@ jobs:
         run: |
           sources=$(cat codelabs.json | grep "source" | sed 's/.*": "\(.*\)"/\1/')
           while read line; do
-              claat export -ga ${{ env.GA_ID }} -o "codelabs/" -auth "${{ steps.auth.outputs.access_token }}" $line
-              claat export -ga ${{ env.GA_ID }} -o "codelabs-md/" -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
+              claat export -ga ${{ env.GA_ID }} -o "${{ env.HTML_PATH }}/" -auth "${{ steps.auth.outputs.access_token }}" $line
+              claat export -ga ${{ env.GA_ID }} -o "${{ env.MD_PATH }}/" -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
           done <<< "$sources"
+
+      # ga4id parser has been added to md parser but not yet in gdocs parser
+      - name: Add ga4id
+        working-directory: ${{ env.HTML_PATH }}
+        run: |
+          find . -type f -name "index.html" -print0 | while IFS= read -r -d '' file; do
+            sed -i 's/ga4id=""/ga4id="${{ env.GA_ID_V4 }}"/g; s/codelab-ga4id=""/codelab-ga4id="${{ env.GA_ID_V4 }}"/g' "$file"
+          done
 
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
-          git add codelabs/* codelabs-md/*
+          git add ${{ env.HTML_PATH }}/* ${{ env.MD_PATH }}/*
           git commit -m "Export codelabs $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
           git push origin || echo "No changes to commit"
