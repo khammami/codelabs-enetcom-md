@@ -40,12 +40,19 @@ jobs:
             ${{ steps.go-env.outputs.go-bin-path }}/*
           key: go-claat
 
+      # - name: get claat (latest)
+      #   if: steps.claat-cache.outputs.cache-hit != 'true'
+      #   run: |
+      #     mkdir -p $(go env GOPATH)/bin
+      #     curl -L -o $(go env GOPATH)/bin/claat https://github.com/googlecodelabs/tools/releases/download/${{env.CLAAT_VERSION}}/claat-linux-amd64
+      #     chmod +x $(go env GOPATH)/bin/claat
+      #     claat version
+
       - name: get claat (latest)
         if: steps.claat-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p $(go env GOPATH)/bin
-          curl -L -o $(go env GOPATH)/bin/claat https://github.com/googlecodelabs/tools/releases/download/${{env.CLAAT_VERSION}}/claat-linux-amd64
-          chmod +x $(go env GOPATH)/bin/claat
+          go install github.com/googlecodelabs/tools/claat@latest
           claat version
 
       - name: Reset codelabs directories
