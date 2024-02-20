@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CLAAT_VERSION: "v2.2.6"
+      GA_ID: "UA-3295395-7"
+      GA_ID_V4: "G-E0H6JSF2N3"
     steps:
       - uses: actions/checkout@v4
 
@@ -69,8 +71,8 @@ jobs:
         run: |
           sources=$(cat codelabs.json | grep "source" | sed 's/.*": "\(.*\)"/\1/')
           while read line; do
-              claat export -o "codelabs/" -auth "${{ steps.auth.outputs.access_token }}" $line
-              claat export -o "codelabs-md/" -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
+              claat export -ga ${{ env.GA_ID }} -o "codelabs/" -auth "${{ steps.auth.outputs.access_token }}" $line
+              claat export -ga ${{ env.GA_ID }} -o "codelabs-md/" -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
           done <<< "$sources"
 
       - name: Commit changes
