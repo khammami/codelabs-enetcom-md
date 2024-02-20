@@ -1,0 +1,31 @@
+name: Trigger build on external workflow
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Export gdocs]
+    types: [completed]
+
+jobs:
+  trigger:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set PAT secret
+        run: echo "ACCESS_TOKEN=${{ secrets.CE_MAIN_REPO_ACCESS_TOKEN }}" | core.export-secret -h
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const token = core.getSecret('ACCESS_TOKEN')
+            const owner = 'khammami'
+            const repo = 'codelabs-enetcom'
+
+            github.repos.createDispatchEvent({
+              owner,
+              repo,
+              event_type: 'dispatch_build',
+              client_payload: {
+                message: 'Triggering build from codelabs workflow!'
+              }
+            })
