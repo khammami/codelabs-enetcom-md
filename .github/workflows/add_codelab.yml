@@ -1,0 +1,43 @@
+name: Add new codelab
+
+on:
+  repository_dispatch:
+    types: [gdocs-add-export]
+
+jobs:
+  export_codelabs:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    env:
+      CODELAB_ID: ${{ github.event.client_payload.documentId }}
+      CODELAB_SOURCE: ${{ github.event.client_payload.codelabId }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add a new codelab
+        run: |
+          if [[ -z "${{ env.CODELAB_SOURCE }}" ]]; then
+              echo "Error: Source value cannot be empty!"
+              exit 1
+          fi
+          if [[ -z "${{ env.CODELAB_ID }}" ]]; then
+              echo "Error: ID value cannot be empty!"
+              exit 1
+          fi
+          new_source = ${{ env.CODELAB_SOURCE }}
+          if jq '.[] | select(.source == "$new_source")' codelabs.json >/dev/null 2>&1; then
+              echo "Error: Entry with source '$new_source' already exists!"
+          else
+              new_entry="{\"id\": \"${{ env.CODELAB_ID }}\", \"source\": \"$new_source\"}"
+              jq ". += $new_entry" codelabs.json > temp.json && mv temp.json codelabs.json
+              echo "Successfully added entry with id: $id and source: $new_source"
+          fi
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "github-actions"
+          git add codelabs.json
+          git commit -m "Update codelabs.json" || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
