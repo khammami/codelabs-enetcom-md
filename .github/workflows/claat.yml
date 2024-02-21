@@ -99,7 +99,7 @@ jobs:
           git commit -m "Export codelabs $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
           git push origin || echo "No changes to commit"
 
-      - name: Dispatch buil on main repo
+      - name: Dispatch build on main repo
         if: steps.git-changes.outputs.is-changed == 'true'
         uses: actions/github-script@v7
         with:
