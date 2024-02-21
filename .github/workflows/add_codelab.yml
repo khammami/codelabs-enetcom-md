@@ -5,7 +5,7 @@ on:
     types: [gdocs-add-export]
 
 jobs:
-  export_codelabs:
+  add_codelab:
     permissions:
       contents: write
     runs-on: ubuntu-latest
