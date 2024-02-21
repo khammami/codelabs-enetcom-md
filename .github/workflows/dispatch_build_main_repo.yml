@@ -2,9 +2,9 @@ name: Trigger build on external workflow
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: [Export gdocs]
-    types: [completed]
+  # workflow_run:
+  #   workflows: [Export gdocs]
+  #   types: [completed]
 
 jobs:
   trigger:
