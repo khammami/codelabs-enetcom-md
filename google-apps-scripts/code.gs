@@ -51,16 +51,35 @@ function exportFunction() {
 }
 
 function addAndExportFunction() {
-  // Get document ID
-  const documentId = DocumentApp.getActiveDocument().getId();
+  // Get document UI
+  var ui = DocumentApp.getUi();
 
-  // Construct the payload with the added eventType
-  const payload = JSON.stringify({
-    event_type: 'gdocs-add-export',
-    client_payload: {
-      documentId: documentId
-    },
-  });
+  // Prompt the user to enter the ID
+  const userResponse = ui.prompt('Codelab ID','Please Enter Codelab ID:',ui.ButtonSet.OK_CANCEL);
+  const codelabId = userResponse.getResponseText();
 
-  exportFunction(payload); // Call exportFunction with the modified payload
+  // Handle user clicking away (Cancel)
+  if (userResponse.getSelectedButton() == ui.Button.OK) {
+    // Validate the entered ID (optional)
+    if (!codelabId || codelabId.trim() === '') {
+      ui.alert('Please enter a valid Codelab ID.');
+      Logger.log('The user didn\'t provide a valid ID.');
+    } else {
+      // Get document ID
+      const documentId = DocumentApp.getActiveDocument().getId();
+
+      // Construct the payload with the added eventType
+      const payload = JSON.stringify({
+        event_type: 'gdocs-add-export',
+        client_payload: {
+          documentId: documentId,
+          codelabId: codelabId
+        },
+      });
+
+      exportFunction(payload); // Call exportFunction with the modified payload
+    }
+  } else {
+      Logger.log('The user cancels.');
+  }
 }
