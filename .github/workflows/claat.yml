@@ -84,7 +84,14 @@ jobs:
             sed -i 's/ga4id=""/ga4id="${{ env.GA_ID_V4 }}"/g; s/codelab-ga4id=""/codelab-ga4id="${{ env.GA_ID_V4 }}"/g' "$file"
           done
 
+      - name: Check for worktree changes
+        id: git-changes
+        run: |
+          [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" -gt 0 ] && \
+          echo "is-changed=true" || echo "is-changed=false" >> "$GITHUB_OUTPUT"
+
       - name: Commit changes
+        if: steps.git-changes.outputs.is-changed != 'true' 
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
