@@ -87,16 +87,32 @@ jobs:
       - name: Check for worktree changes
         id: git-changes
         run: |
-          git status
-          git status --porcelain=v1 2>/dev/null
-          git status --porcelain=v1 2>/dev/null | wc -l
-          [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" -gt 0 ] && echo "is-changed=true" || echo "is-changed=false" >> "$GITHUB_OUTPUT"
+          [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" -gt 0 ] && \
+          echo "is-changed=true" || echo "is-changed=false" >> "$GITHUB_OUTPUT"
 
       - name: Commit changes
-        if: steps.git-changes.outputs.is-changed != 'true' 
+        if: steps.git-changes.outputs.is-changed == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
           git add ${{ env.HTML_PATH }}/* ${{ env.MD_PATH }}/*
           git commit -m "Export codelabs $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
           git push origin || echo "No changes to commit"
+
+      - name: Dispatch buil on main repo
+        if: steps.git-changes.outputs.is-changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.CE_MAIN_REPO_ACCESS_TOKEN }}
+          script: |
+            const owner = 'khammami'
+            const repo = 'codelabs-enetcom'
+
+            github.rest.repos.createDispatchEvent({
+              owner,
+              repo,
+              event_type: 'dispatch_build',
+              client_payload: {
+                message: 'Triggering build from codelabs workflow!'
+              }
+            })
