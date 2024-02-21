@@ -2,7 +2,7 @@ name: Add new codelab
 
 on:
   repository_dispatch:
-    types: [gdocs-add-export]
+    types: [gdocs_add]
 
 jobs:
   add_codelab:
