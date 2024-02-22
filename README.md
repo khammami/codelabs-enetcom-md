@@ -1,4 +1,8 @@
-# codelabs-enetcom-md
+# Codelabs for Enet'Com practicals
+
+## Workflows
+
+![A diagra than explain the workflows and how they're dispated between repositories and Google document](assets/enectcom-codelabs_workflows.png)
 
 >[!important]
 >
