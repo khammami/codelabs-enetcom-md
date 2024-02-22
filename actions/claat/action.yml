@@ -94,7 +94,7 @@ runs:
         echo "::group::Export codelab(s)"
         sources="${{ inputs.document-id }}"
         if [[ -n "${{ inputs.codelabs-json }}" ]]; then
-          sources=$(jq -r '.sources[]' <<< "${{ inputs.codelabs-json }}")
+          sources=$(cat codelabs.json | grep "source" | sed 's/.*": "\(.*\)"/\1/')
         fi
         echo "exporting $sources"
         IFS=$'\n'
