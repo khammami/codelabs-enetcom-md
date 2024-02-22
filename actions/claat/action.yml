@@ -37,42 +37,60 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - name: Export Go bin to all steps
-    id: go-env
-    shell: bash
-    run: |
-      go version
-      echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
-      echo "go-bin-path=$(go env GOPATH)/bin" >> "$GITHUB_OUTPUT"
+    - name: Export Go bin to all steps
+      id: go-env
+      shell: bash
+      run: |
+        go version
+        echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+        echo "go-bin-path=$(go env GOPATH)/bin" >> "$GITHUB_OUTPUT"
 
-  # Save/Restore claat
-  - name: claat cache
-    uses: actions/cache@v4
-    id: claat-cache
-    with:
-      path: |
-        ${{ steps.go-env.outputs.go-bin-path }}/*
-      key: go-claat
+    # Save/Restore claat
+    - name: claat cache
+      uses: actions/cache@v4
+      id: claat-cache
+      with:
+        path: |
+          ${{ steps.go-env.outputs.go-bin-path }}/*
+        key: go-claat
 
-  - name: Setup claat (latest)
-    if: steps.claat-cache.outputs.cache-hit != 'true'
-    shell: bash
-    run: |
-      mkdir -p $(go env GOPATH)/bin
-      go install github.com/googlecodelabs/tools/claat@${{ inputs.claat-version }}
-      claat version
+    - name: Setup claat (latest)
+      if: steps.claat-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mkdir -p $(go env GOPATH)/bin
+        go install github.com/googlecodelabs/tools/claat@${{ inputs.claat-version }}
+        claat version
 
-  - name: Check codelabs directory
-    shell: bash
-    run: |
-      if [ ! -d ${{ inputs.codelabs-path }} ]; then
-          mkdir ${{ inputs.codelabs-path }}
-      fi
+    - name: Check codelabs directory
+      shell: bash
+      run: |
+        if [ ! -d ${{ inputs.codelabs-path }} ]; then
+            mkdir ${{ inputs.codelabs-path }}
+        fi
 
-  - name: Create codelabs directory for md format
-    if: inputs.format == 'all'
-    shell: bash
-    run: |
-      if [ ! -d ${{ inputs.codelabs-path }}-md ]; then
-          mkdir ${{ inputs.codelabs-path }}-md
-      fi
+    - name: Create codelabs directory for md format
+      if: inputs.format == 'all'
+      shell: bash
+      run: |
+        if [ ! -d ${{ inputs.codelabs-path }}-md ]; then
+            mkdir ${{ inputs.codelabs-path }}-md
+        fi
+
+    - name: Export codelab(s)
+      shell: bash
+      run: |
+        if [[ -n "${{ inputs.codelabs-json }}" ]]; then
+          sources=${{ inputs.document-id }}
+        else
+          sources=$(cat ${{ inputs.codelabs-json }} | grep "source" | sed 's/.*": "\(.*\)"/\1/')
+        fi
+        echo -e "exporting $sources \n"
+        while read line; do
+          if [[ "$inputs.format" == "all" ]]; then
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -auth "${{ steps.auth.outputs.access_token }}" $line
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}-md/" -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
+          else
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ steps.auth.outputs.access_token }}" $line
+          fi
+        done <<< "$sources"
