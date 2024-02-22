@@ -25,13 +25,12 @@ jobs:
               echo "Error: ID value cannot be empty!"
               exit 1
           fi
-          new_source = ${{ env.CODELAB_SOURCE }}
-          if jq '.[] | select(.source == "$new_source")' codelabs.json >/dev/null 2>&1; then
-              echo "Error: Entry with source '$new_source' already exists!"
+          if jq '.[] | select(.source == "${{ env.CODELAB_SOURCE }}")' codelabs.json >/dev/null 2>&1; then
+              echo "Error: Entry with source '${{ env.CODELAB_SOURCE }}' already exists!"
           else
-              new_entry="{\"id\": \"${{ env.CODELAB_ID }}\", \"source\": \"$new_source\"}"
+              new_entry="{\"id\": \"${{ env.CODELAB_ID }}\", \"source\": \"${{ env.CODELAB_SOURCE }}\"}"
               jq ". += $new_entry" codelabs.json > temp.json && mv temp.json codelabs.json
-              echo "Successfully added entry with id: $id and source: $new_source"
+              echo "Successfully added entry with id: $id and source: ${{ env.CODELAB_SOURCE }}"
           fi
 
       - name: Commit changes
