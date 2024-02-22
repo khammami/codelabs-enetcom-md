@@ -27,6 +27,7 @@ jobs:
           fi
           if jq '.[] | select(.source == "${{ env.CODELAB_SOURCE }}")' codelabs.json >/dev/null 2>&1; then
               echo "Error: Entry with source '${{ env.CODELAB_SOURCE }}' already exists!"
+              exit 1
           else
               new_entry="{\"id\": \"${{ env.CODELAB_ID }}\", \"source\": \"${{ env.CODELAB_SOURCE }}\"}"
               jq ". += $new_entry" codelabs.json > temp.json && mv temp.json codelabs.json
