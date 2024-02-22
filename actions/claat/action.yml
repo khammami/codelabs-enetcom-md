@@ -87,7 +87,7 @@ runs:
         fi
         echo -e "exporting $sources \n"
         while read line; do
-          if [[ "$inputs.format" == "all" ]]; then
+          if [[ "${{ inputs.format }}" == "all" ]]; then
             claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -auth "${{ inputs.auth }}" $line
             claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}-md/" -f "md" -auth "${{ inputs.auth }}" $line
           else
