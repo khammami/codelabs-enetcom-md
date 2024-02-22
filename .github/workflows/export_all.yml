@@ -51,7 +51,6 @@ jobs:
           echo "is-changed=true" || echo "is-changed=false" >> "$GITHUB_OUTPUT"
 
       - name: Commit changes
-        if: steps.git-changes.outputs.is-changed == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
