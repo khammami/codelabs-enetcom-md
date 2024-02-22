@@ -2,10 +2,11 @@ name: Export gdocs
 
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [gdocs_export_all]
   push:
     paths:
       - "codelabs.json"
-      - "./github/workflows/*"
 
 concurrency:
   group: ${{ github.ref }}

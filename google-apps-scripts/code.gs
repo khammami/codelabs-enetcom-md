@@ -7,7 +7,7 @@ GITHUB_TOKEN = PropertiesService.getScriptProperties().getProperty("github_token
 function onOpen() {
   DocumentApp.getUi()
     .createMenu('GitHub')
-    .addItem('Export', 'exportFunction')
+    .addItem('Export All', 'exportFunction')
     .addItem('Add & Export', 'addAndExportFunction')
     .addToUi();
 }
@@ -19,7 +19,7 @@ function exportFunction(payload) {
   if (!payload) {
     // Construct the payload for the GitHub workflow dispatch API
     var payload = JSON.stringify({
-      'event_type': 'gdocs_export',
+      'event_type': 'gdocs_export_all',
       'client_payload': {
         'documentId': documentId
       }
