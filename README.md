@@ -6,7 +6,7 @@
 
 >[!important]
 >
-> Use go to install claat to get the latest commits (eg. support of GA v4)
+> Use the Go module installer to get the latest version of claat with support for Google Analytics v4.
 
 Command claat to export document from gdocs in md file format:
 
