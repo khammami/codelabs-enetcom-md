@@ -27,40 +27,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Export Go bin to all steps
-        id: go-env
-        run: |
-          go version
-          echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
-          echo "go-bin-path=$(go env GOPATH)/bin" >> "$GITHUB_OUTPUT"
-
-      # Save/Restore claat
-      - name: claat cache
-        uses: actions/cache@v4
-        id: claat-cache
-        with:
-          path: |
-            ${{ steps.go-env.outputs.go-bin-path }}/*
-          key: go-claat
-
-      - name: get claat (latest)
-        if: steps.claat-cache.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p $(go env GOPATH)/bin
-          go install github.com/googlecodelabs/tools/claat@latest
-          claat version
-
-      - name: Reset codelabs directories
-        run: |
-          if [ -d ${{ env.HTML_PATH }} ]; then
-              rm -rf ${{ env.HTML_PATH }}
-          fi
-          if [ -d ${{ env.MD_PATH }} ]; then
-              rm -rf ${{ env.MD_PATH }}
-          fi
-          mkdir ${{ env.HTML_PATH }}
-          mkdir ${{ env.MD_PATH }}
-
       - name: Generate Oauth2 token
         id: "auth"
         uses: "google-github-actions/auth@v2"
@@ -69,51 +35,44 @@ jobs:
           access_token_scopes: "https://www.googleapis.com/auth/drive.readonly"
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
-      - name: Export all codelabs
-        run: |
-          sources=$(cat codelabs.json | grep "source" | sed 's/.*": "\(.*\)"/\1/')
-          while read line; do
-              claat export -ga ${{ env.GA_ID }} -o "${{ env.HTML_PATH }}/" -auth "${{ steps.auth.outputs.access_token }}" $line
-              claat export -ga ${{ env.GA_ID }} -o "${{ env.MD_PATH }}/" -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
-          done <<< "$sources"
-
-      # ga4id parser has been added to md parser but not yet in gdocs parser
-      - name: Add ga4id
-        working-directory: ${{ env.HTML_PATH }}
-        run: |
-          find . -type f -name "index.html" -print0 | while IFS= read -r -d '' file; do
-            sed -i 's/ga4id=""/ga4id="${{ env.GA_ID_V4 }}"/g; s/codelab-ga4id=""/codelab-ga4id="${{ env.GA_ID_V4 }}"/g' "$file"
-          done
-
-      - name: Check for worktree changes
-        id: git-changes
-        run: |
-          [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" -gt 0 ] && \
-          echo "is-changed=true" || echo "is-changed=false" >> "$GITHUB_OUTPUT"
-
-      - name: Commit changes
-        if: steps.git-changes.outputs.is-changed == 'true'
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "github-actions"
-          git add ${{ env.HTML_PATH }}/* ${{ env.MD_PATH }}/*
-          git commit -m "Export codelabs $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
-          git push origin || echo "No changes to commit"
-
-      - name: Dispatch build on main repo
-        if: steps.git-changes.outputs.is-changed == 'true'
-        uses: actions/github-script@v7
+      - name: claat export all documents in codelabs.json
+        uses: ./actions/claat
         with:
-          github-token: ${{ secrets.CE_MAIN_REPO_ACCESS_TOKEN }}
-          script: |
-            const owner = 'khammami'
-            const repo = 'codelabs-enetcom'
+          auth: ${{ steps.auth.outputs.access_token }}
+          document-id: 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
+          codelabs-path: ${{ env.HTML_PATH }}
+          codelabs-json: codelabs.json
+          format: all
 
-            github.rest.repos.createDispatchEvent({
-              owner,
-              repo,
-              event_type: 'dispatch_build',
-              client_payload: {
-                message: 'Triggering build from codelabs workflow!'
-              }
-            })
+      # - name: Check for worktree changes
+      #   id: git-changes
+      #   run: |
+      #     [ "$(git status --porcelain=v1 2>/dev/null | wc -l)" -gt 0 ] && \
+      #     echo "is-changed=true" || echo "is-changed=false" >> "$GITHUB_OUTPUT"
+
+      # - name: Commit changes
+      #   if: steps.git-changes.outputs.is-changed == 'true'
+      #   run: |
+      #     git config --local user.email "action@github.com"
+      #     git config --local user.name "github-actions"
+      #     git add ${{ env.HTML_PATH }}/* ${{ env.MD_PATH }}/*
+      #     git commit -m "Export codelabs $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
+      #     git push origin || echo "No changes to commit"
+
+      # - name: Dispatch build on main repo
+      #   if: steps.git-changes.outputs.is-changed == 'true'
+      #   uses: actions/github-script@v7
+      #   with:
+      #     github-token: ${{ secrets.CE_MAIN_REPO_ACCESS_TOKEN }}
+      #     script: |
+      #       const owner = 'khammami'
+      #       const repo = 'codelabs-enetcom'
+
+      #       github.rest.repos.createDispatchEvent({
+      #         owner,
+      #         repo,
+      #         event_type: 'dispatch_build',
+      #         client_payload: {
+      #           message: 'Triggering build from codelabs workflow!'
+      #         }
+      #       })
