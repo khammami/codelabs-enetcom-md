@@ -2,8 +2,6 @@ name: "Claat export"
 
 description: "Export Google documents using claat as a codelab in html/md format"
 
-runs-on: ubuntu-latest
-
 inputs:
   claat-version:
     description: "claat version. By default 'latest' or 'vx.x.x'"
@@ -36,7 +34,9 @@ inputs:
     required: false
     default: "html"
 
-steps:
+runs:
+  using: "ubuntu-latest"
+  steps:
   - uses: actions/checkout@v4
 
   - name: Export Go bin to all steps
