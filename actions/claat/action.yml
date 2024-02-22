@@ -81,16 +81,17 @@ runs:
       shell: bash
       run: |
         if [[ -n "${{ inputs.codelabs-json }}" ]]; then
-          sources=${{ inputs.document-id }}
+          sources="${{ inputs.document-id }}"
         else
-          sources=$(cat ${{ inputs.codelabs-json }} | grep "source" | sed 's/.*": "\(.*\)"/\1/')
+          sources=$(jq -r '.sources[]' <<< "${{ inputs.codelabs-json }}")
         fi
-        echo -e "exporting $sources \n"
-        while read line; do
+        echo -e "exporting $sources\n"
+        IFS=$'\n'
+        for source in $sources; do
           if [[ "${{ inputs.format }}" == "all" ]]; then
-            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -auth "${{ inputs.auth }}" $line
-            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}-md/" -f "md" -auth "${{ inputs.auth }}" $line
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -auth "${{ inputs.auth }}" "$source"
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}-md/" -f "md" -auth "${{ inputs.auth }}" "$source"
           else
-            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ inputs.auth }}" $line
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ inputs.auth }}" "$source"
           fi
-        done <<< "$sources"
+        done
