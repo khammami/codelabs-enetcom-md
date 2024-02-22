@@ -1,8 +1,8 @@
 name: Add new codelab
 
 on:
-  workflow_dispatch:
   repository_dispatch:
+    types: [gdocs_add]
 
 jobs:
   add_codelab:
@@ -17,7 +17,6 @@ jobs:
 
       - name: Add a new codelab
         run: |
-          jq -r 'keys[]' <<< "${{ github.event.client_payload }}"
           if [[ -z "${{ env.CODELAB_SOURCE }}" ]]; then
               echo "Error: Source value cannot be empty!"
               exit 1
