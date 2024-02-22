@@ -27,7 +27,7 @@ jobs:
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
       - name: claat
-        uses: ././github/actions/claat
+        uses: ./.github/actions/claat
         with:
           auth: ${{ steps.auth.outputs.access_token }}
           document-id: 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
