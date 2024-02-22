@@ -80,12 +80,11 @@ runs:
     - name: Export codelab(s)
       shell: bash
       run: |
+        sources="${{ inputs.document-id }}"
         if [[ -n "${{ inputs.codelabs-json }}" ]]; then
-          sources="${{ inputs.document-id }}"
-        else
           sources=$(jq -r '.sources[]' <<< "${{ inputs.codelabs-json }}")
         fi
-        echo -e "exporting $sources\n"
+        echo "exporting $sources"
         IFS=$'\n'
         for source in $sources; do
           if [[ "${{ inputs.format }}" == "all" ]]; then
