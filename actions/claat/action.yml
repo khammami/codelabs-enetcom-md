@@ -110,6 +110,7 @@ runs:
 
     # ga4id parser has been added to md parser but not yet in gdocs parser
     - name: Fix missing ga4id
+      shell: bash
       if: inputs.format != 'md'
       working-directory: ${{ inputs.codelabs-path }}
       run: |
