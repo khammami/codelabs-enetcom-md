@@ -88,9 +88,9 @@ runs:
         echo -e "exporting $sources \n"
         while read line; do
           if [[ "$inputs.format" == "all" ]]; then
-            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -auth "${{ steps.auth.outputs.access_token }}" $line
-            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}-md/" -f "md" -auth "${{ steps.auth.outputs.access_token }}" $line
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -auth "${{ inputs.auth }}" $line
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}-md/" -f "md" -auth "${{ inputs.auth }}" $line
           else
-            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ steps.auth.outputs.access_token }}" $line
+            claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ inputs.auth }}" $line
           fi
         done <<< "$sources"
