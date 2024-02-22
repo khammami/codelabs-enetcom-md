@@ -38,5 +38,33 @@
     {
         "id": "soumettre-compte-rendu",
         "source": "14V2kAVBx6SYb92LxcprvrsPyhmntNx3RSw2QNbvH46o"
+    },
+    {
+        "id": "searching-sqlite-database",
+        "source": "1HhNTjH9DpYzR2Vjf4LRIKQvbxNvNgn7RNcthDiiZotE"
+    },
+    {
+        "id": "sqlite-database",
+        "source": "1SAuplVcxUpPtcnwaTlNF9z9km7kSqkFtuk17e-dIUwg"
+    },
+    {
+        "id": "sensor-based-orientation",
+        "source": "1541Udjn2jmIzjEwbaOEqMKXhXu9YbHIyMyRXzLQhG4o"
+    },
+    {
+        "id": "sending-receiving-sms-messages",
+        "source": "1AWD10r51pFL_cF_1k7qrHSW2g_y4nFXbbhHGgPExrvs"
+    },
+    {
+        "id": "networking-connecting-to-internet",
+        "source": "12Qc2z9H9IPwCYRbr7u_hQUUKu-mrN4EIo10oK2z67EM"
+    },
+    {
+        "id": "making-phone-calls",
+        "source": "1OykVd1bIl0MIh-gXLP_bxoXqVsWWC7HOr0T1cQNMKGE"
+    },
+    {
+        "id": "getting-sensor-data",
+        "source": "16-TUHciMAwnOFPHhJVBdjMa8IPXfhh7JVXyVGPbxW8I"
     }
 ]
