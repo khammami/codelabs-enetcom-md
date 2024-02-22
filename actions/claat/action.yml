@@ -16,7 +16,7 @@ inputs:
   codelabs-path:
     description: "Path where will you export the codelab"
     required: false
-    default: "/"
+    default: "codelabs"
   gaid:
     description: "Google Analytics ID"
     required: false
@@ -45,6 +45,7 @@ runs:
         go version
         echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
         echo "go-bin-path=$(go env GOPATH)/bin" >> "$GITHUB_OUTPUT"
+        echo "go bin exported."
         echo "::endgroup::"
 
     # Save/Restore claat
@@ -72,6 +73,7 @@ runs:
         echo "::group::Check codelabs directory"
         if [ ! -d ${{ inputs.codelabs-path }} ]; then
             mkdir ${{ inputs.codelabs-path }}
+            echo "${{ inputs.codelabs-path }} has been created."
         fi
         echo "::endgroup::"
 
@@ -82,6 +84,7 @@ runs:
         echo "::group::Create codelabs directory for md format"
         if [ ! -d ${{ inputs.codelabs-path }}-md ]; then
             mkdir ${{ inputs.codelabs-path }}-md
+            echo "${{ inputs.codelabs-path }}-md has been created."
         fi
         echo "::endgroup::"
 
@@ -103,4 +106,16 @@ runs:
             claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ inputs.auth }}" "$source"
           fi
         done
+        echo "::endgroup::"
+
+    # ga4id parser has been added to md parser but not yet in gdocs parser
+    - name: Fix missing ga4id
+      if: inputs.format != 'md'
+      working-directory: ${{ inputs.codelabs-path }}
+      run: |
+        echo "::group::Fix missing ga4id"
+        find . -type f -name "index.html" -print0 | while IFS= read -r -d '' file; do
+          sed -i 's/ga4id=""/ga4id="${{ inputs.ga4id }}"/g; s/codelab-ga4id=""/codelab-ga4id="${{ inputs.ga4id }}"/g' "$file"
+        done
+        echo "Missing ga4id in html format has been added."
         echo "::endgroup::"
