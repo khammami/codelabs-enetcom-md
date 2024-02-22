@@ -41,9 +41,11 @@ runs:
       id: go-env
       shell: bash
       run: |
+        echo "::group::Export Go bin to all steps"
         go version
         echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
         echo "go-bin-path=$(go env GOPATH)/bin" >> "$GITHUB_OUTPUT"
+        echo "::endgroup::"
 
     # Save/Restore claat
     - name: claat cache
@@ -58,28 +60,35 @@ runs:
       if: steps.claat-cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
+        echo "::group::Setup claat (latest)"
         mkdir -p $(go env GOPATH)/bin
         go install github.com/googlecodelabs/tools/claat@${{ inputs.claat-version }}
         claat version
+        echo "::endgroup::"
 
     - name: Check codelabs directory
       shell: bash
       run: |
+        echo "::group::Check codelabs directory"
         if [ ! -d ${{ inputs.codelabs-path }} ]; then
             mkdir ${{ inputs.codelabs-path }}
         fi
+        echo "::endgroup::"
 
     - name: Create codelabs directory for md format
       if: inputs.format == 'all'
       shell: bash
       run: |
+        echo "::group::Create codelabs directory for md format"
         if [ ! -d ${{ inputs.codelabs-path }}-md ]; then
             mkdir ${{ inputs.codelabs-path }}-md
         fi
+        echo "::endgroup::"
 
     - name: Export codelab(s)
       shell: bash
       run: |
+        echo "::group::Export codelab(s)"
         sources="${{ inputs.document-id }}"
         if [[ -n "${{ inputs.codelabs-json }}" ]]; then
           sources=$(jq -r '.sources[]' <<< "${{ inputs.codelabs-json }}")
@@ -94,3 +103,4 @@ runs:
             claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ inputs.auth }}" "$source"
           fi
         done
+        echo "::endgroup::"
