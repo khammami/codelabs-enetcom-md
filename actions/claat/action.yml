@@ -41,6 +41,7 @@ runs:
 
   - name: Export Go bin to all steps
     id: go-env
+    shell: bash
     run: |
       go version
       echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
@@ -57,12 +58,14 @@ runs:
 
   - name: Setup claat (latest)
     if: steps.claat-cache.outputs.cache-hit != 'true'
+    shell: bash
     run: |
       mkdir -p $(go env GOPATH)/bin
       go install github.com/googlecodelabs/tools/claat@${{ inputs.claat-version }}
       claat version
 
   - name: Check codelabs directory
+    shell: bash
     run: |
       if [ ! -d ${{ inputs.codelabs-path }} ]; then
           mkdir ${{ inputs.codelabs-path }}
@@ -70,6 +73,7 @@ runs:
 
   - name: Create codelabs directory for md format
     if: inputs.format == 'all'
+    shell: bash
     run: |
       if [ ! -d ${{ inputs.codelabs-path }}-md ]; then
           mkdir ${{ inputs.codelabs-path }}-md
