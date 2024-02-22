@@ -1,0 +1,747 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 04.1A: SQLite Database</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-3295395-7" ga4id="G-E0H6JSF2N3"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id="G-E0H6JSF2N3"
+                  id="sqlite-database"
+                  title="TP 04.1A: SQLite Database"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Bienvenue" duration="0">
+        <p>Ces travaux pratiques se base sur le cours de base pour les développeurs Android fourni par Google afin de  les préparer pour le test de certification <a href="https://developers.google.com/training/certification/associate-android-developer/" target="_blank">Associate Android Developer</a>. Vous obtiendrez le plus de valeur de ce TP si vous travaillez successivement dans les codelabs.</p>
+<h2 is-upgraded>Introduction</h2>
+<p> A SQLite database is a good storage solution when you have structured data that you need to store persistently and access, search, and change frequently.</p>
+<p>When you use a SQLite database, all interactions with the database are through an instance of the<a href="https://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper.html" target="_blank"><code>SQLiteOpenHelper</code></a> class which executes your requests and manages your database for you.</p>
+<p>In this practical, you will create a SQLite database for a set of data, display retrieved data in a RecyclerView, add functionality to add, delete, and edit the data in the <code>RecyclerView</code> and store it in the database.</p>
+<p><strong>Note: </strong>A database that persistently stores your data and abstracts your data into a data model is sufficient for small Android apps with minimal complexity. In later chapters, you will learn to architect your app using loaders and content providers to further separate data from the user interface. These classes will help to move work off the UI thread to assist in making the user&#39;s experience as smooth and natural as possible. In addition to improving the user experience by removing a potential performance issue, they improve your ability to extend and maintain your app.</p>
+<p><strong>Important: </strong>In this practical, the SQLiteOpenHelper executes database operations in the main thread. In a production app, where database operations might take quite some time, you would perform these operations on a background thread, for example, using a<a href="https://developer.android.com/guide/components/loaders.html" target="_blank">loader</a> such as AsyncTaskLoader and CursorLoader.</p>
+<h2 is-upgraded>What you should already know</h2>
+<p>Vous devriez être familier avec:</p>
+<ul>
+<li>Creating, building, and running apps in Android Studio.</li>
+<li>Displaying data in a RecyclerView.</li>
+<li>Using adapters as intermediaries between data and views.</li>
+<li>Adding onClick event handlers to views and dynamically creating onClick handlers.</li>
+<li>Starting a second activity and returning data from a it.</li>
+<li>Passing data between activities using intent extras.</li>
+<li>Using an EditText view to get data entered by the user.</li>
+</ul>
+<p>You also need a basic understanding of SQL databases, how they are organized into tables of rows and columns, and the</p>
+<p>SQL language. See the SQLite Primer</p>
+<h2 class="checklist" is-upgraded>What you&#39;ll learn</h2>
+<ul class="checklist">
+<li>Create and manage a SQLite database with an SQLiteOpenHelper.</li>
+<li>Implement insert, delete, update, and query functionality through your open helper.</li>
+<li>Use an adapter and custom click handler to let users interact with the database from the user interface.</li>
+</ul>
+<h2 is-upgraded>What you&#39;ll do</h2>
+<p>You start with an app that is the same as the RecyclerView word list app you created previously, with additional user</p>
+<p>interface elements already added for you, so that you can focus on the database code.</p>
+<p>You will extend and modify the base app to:</p>
+<ul>
+<li>Implement a custom class to model your data.</li>
+<li>Create a subclass of SQLiteOpenHelper that creates and manages your app&#39;s database.</li>
+<li>Display data from the database in the RecyclerView.</li>
+<li>Implement functionality to add, modify, and delete data in the UI, and store the changes in the database.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Aperçu de l&#39;application" duration="0">
+        <p>Starting from a skeleton app, you will add functionality to:</p>
+<ul>
+<li>Display words from a SQLite database in a RecyclerView.</li>
+<li>Each word can be edited or deleted.</li>
+<li>You can add new words and store them in the database.</li>
+</ul>
+<p class="image-container"><img style="width: 320.00px" src="img/b19886b36893824f.png"></p>
+<p>Minimum SDK Version is API15: Android 4.0.3 IceCreamSandwich and *target* SDK is the current version of Android.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 0: Download and run the starter code" duration="0">
+        <p>In order to save you some work, in particular writing database-unrelated activities and user interface code, you need to get the starter code for this practical.</p>
+<ol type="1" start="1">
+<li>Download the <a href="https://github.com/khammami/android-fundamentals-starter-apps/tree/master/WordListSql-Starter" target="_blank">WordListSqlStarterCode </a>starter code.</li>
+<li>Open the app in Android Studio.</li>
+<li>Run the app. You should see the UI as shown in the previous screenshot. All the displayed words should be &#34;placeholder&#34;. Clicking the buttons does nothing.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 1: Extend SQLiteOpenHelper to create and populate a database" duration="0">
+        <p>Android apps can use standard SQLite databases to store data. This practical does not teach SQLite, but shows how to use it in an Android app.</p>
+<p><a href="http://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper.html" target="_blank"><code>SQLOpenHelper</code></a>  is a utility class in the Android SDK for interacting with a <a href="https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html" target="_blank">SQLite database</a> object. It includes <code>onCreate()</code> and <code>onUpdate()</code> methods that you must implement, and insert, delete, update, and query convenience methods for all your database interactions.</p>
+<p>The <code>SQLOpenHelper</code> class takes care of opening the database if it exists, creating it if it does not, and upgrading it as necessary.</p>
+<p><strong>Note: </strong>You can have more than one database per app, and more than one open helper managing them. However consider creating multiple tables in the same database instead of using multiple databases for performance and architectural simplicity</p>
+<h2 is-upgraded>1.1 Create a skeleton WordListOpenHelper class</h2>
+<p>The first step in adding a database to your code is always to create a subclass of <code>SQLiteOpenHelper</code> and implement its methods.</p>
+<ol type="1" start="1">
+<li>Create a new Java class <strong>WordListOpenHelper</strong> with the following signature.</li>
+</ol>
+<pre><code>public class WordListOpenHelper extends SQLiteOpenHelper {}</code></pre>
+<ol type="1" start="2">
+<li>In the code editor, hover over the error, then click the light bulb image and select <strong>Implement methods</strong>. Make sure both methods are highlighted and click <strong>OK</strong>.</li>
+<li>Add the missing constructor for <code>WordListOpenHelper</code>. (You will define the undefined constants next.)</li>
+</ol>
+<pre><code>public WordListOpenHelper(Context context) { 
+    super(context, DATABASE_NAME, null, DATABASE_VERSION);
+}</code></pre>
+<h2 is-upgraded>1.2 Add database constants to WordListOpenHelper</h2>
+<ol type="1" start="1">
+<li>At the top of the <code>WordListOpenHelper</code> class, define the constants for the tables, rows, and columns as shown in the code below. This should get rid of all the errors.</li>
+</ol>
+<pre><code>// It&#39;s a good idea to always define a log tag like this.
+private static final String TAG = WordListOpenHelper.class.getSimpleName();
+
+// has to be 1 first time or app will crash 
+private static final int DATABASE_VERSION = 1;
+private static final String WORD_LIST_TABLE = &#34;word_entries&#34;; 
+private static final String DATABASE_NAME = &#34;wordlist&#34;;
+
+// Column names...
+public static final String KEY_ID = &#34;_id&#34;; 
+public static final String KEY_WORD = &#34;word&#34;;
+
+// ... and a string array of columns.
+private static final String[] COLUMNS = { KEY_ID, KEY_WORD };</code></pre>
+<ol type="1" start="2">
+<li>Run your code to make sure it has no more errors.</li>
+</ol>
+<h2 is-upgraded>1.3 Build the SQL query and code to create the database</h2>
+<p>SQL queries can become quite complex. It is a best practice to construct the queries separately from the code that uses them. This increases code readability and helps with debugging.</p>
+<p>Continue adding code to <code>WordListOpenHelper.java</code>:</p>
+<ol type="1" start="1">
+<li>Below the constants, add the following code to construct the query. Refer to the SQLite Primer if you need help understanding this query.</li>
+</ol>
+<pre><code>// Build the SQL query that creates the table.
+private static final String WORD_LIST_TABLE_CREATE =
+        &#34;CREATE TABLE &#34; + WORD_LIST_TABLE + &#34; (&#34; +
+                KEY_ID + &#34; INTEGER PRIMARY KEY, &#34; +
+                // id will auto-increment if no value passed
+                KEY_WORD + &#34; TEXT );&#34;;</code></pre>
+<ol type="1" start="2">
+<li>Add instance variables for the references to writable and readable databases. Storing these references saves you to work of getting a database reference every time you need to read or write.</li>
+</ol>
+<pre><code>private SQLiteDatabase mWritableDB;
+private SQLiteDatabase mReadableDB;</code></pre>
+<ol type="1" start="3">
+<li>In the <code>onCreate</code> method, add code to create a database and the table (The helper class does not create another database, if one already exists.)</li>
+</ol>
+<pre><code>@Override
+public void onCreate(SQLiteDatabase db) {
+    db.execSQL(WORD_LIST_TABLE_CREATE);
+}</code></pre>
+<ol type="1" start="4">
+<li>Fix the error by renaming the method argument from SQLiteDatabase to db.</li>
+</ol>
+<h2 is-upgraded>1.4 Create the database in onCreate of the MainActivity</h2>
+<p>To create the database, create an instance of the <code>WordListOpenHelper</code> class you just wrote.</p>
+<ol type="1" start="1">
+<li>Open <strong>MainActivity.java</strong> and add an instance variable for the open helper:</li>
+</ol>
+<pre><code>private WordListOpenHelper mDB;</code></pre>
+<ol type="1" start="2">
+<li>In onCreate, initialize <code>mDB</code> with an instance of <code>WordListOpenHelper</code>. This calls <code>onCreate</code> of the <code>WordListOpenHelper</code>, which creates the database.</li>
+</ol>
+<pre><code>mDB = new WordListOpenHelper(this);</code></pre>
+<ol type="1" start="3">
+<li>Add a breakpoint, run the app with the debugger, and check that <code>mDB</code> is an instance for <code>WordListOpenHelper</code>.</li>
+</ol>
+<h2 is-upgraded>1.5 Add data to the database</h2>
+<p>The list of words for your app could come from many sources. It could be completely user created, or downloaded from the internet, or generated from a file that&#39;s part of your APK. For this practical, you will seed your database with a small amount of hard-coded data.</p>
+<p>Note that acquiring, creating, and formatting data is a whole separate topic that is not covered in this course.</p>
+<ol type="1" start="1">
+<li>Open <strong>WordListOpenHelper.java</strong>.</li>
+<li>In <code>onCreate</code>, after creating the database, add a function call to</li>
+</ol>
+<pre><code>fillDatabaseWithData(db);</code></pre>
+<p>       Next, implement the <code>fillDatabaseWithData()</code> method in <code>WordListOpenHelper</code>.</p>
+<ol type="1" start="3">
+<li>Implement the method stub.</li>
+</ol>
+<pre><code>private void fillDatabaseWithData(SQLiteDatabase db){}</code></pre>
+<ol type="1" start="4">
+<li>Inside the method, declare a string of words as your mock data.</li>
+</ol>
+<pre><code>String[] words = {&#34;Android&#34;, &#34;Adapter&#34;, &#34;ListView&#34;, &#34;AsyncTask&#34;,
+   &#34;Android Studio&#34;, &#34;SQLiteDatabase&#34;, &#34;SQLOpenHelper&#34;,
+   &#34;Data model&#34;, &#34;ViewHolder&#34;,&#34;Android Performance&#34;,
+   &#34;OnClickListener&#34;};</code></pre>
+<ol type="1" start="5">
+<li>Create a container for the data. The insert method that you will call next requires the values to fill a row as an instance of <a href="http://developer.android.com/reference/android/content/ContentValues.html" target="_blank">ContentValues</a>. A ContentValues stores the data for one row as key-value pairs, where the key is the name of the column and the value is the value to set.</li>
+</ol>
+<pre><code>// Create a container for the data.
+ContentValues values = new ContentValues();</code></pre>
+<ol type="1" start="6">
+<li>Add key/value for the first row to values, then insert that row into the database. Repeat for all the words in your array of words.</li>
+</ol>
+<ul>
+<li><a href="https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html#insert" target="_blank">db.insert </a>is a <a href="http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html" target="_blank">SQLiteDatabase </a>convenience method to insert one row into the database. (It&#39;s a convenience method, because you do not have to write the SQL query yourself.)</li>
+<li>The first argument to db.insert is the table name,   <code>WORD_LIST_TABLE</code> .</li>
+<li>The second argument is a <code>String nullColumnHack</code> . It&#39;s a SQL workaround that allows you to insert empty rows. See <a href="https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html" target="_blank">the documentation for insert()</a>. Use null for this argument.</li>
+<li>The third argument must be a <a href="http://developer.android.com/reference/android/content/ContentValues.html" target="_blank">ContentValues </a>container with values to fill the row. This sample only has one column &#34;words&#34; as represented by the constant <code>KEY_WORD</code> set earlier; for tables with multiple columns, add the values for each column to this container.</li>
+</ul>
+<pre><code>for (int i=0; i &lt; words.length; i++) {
+    // Put column/value pairs into the container.
+    // put() overrides existing values.
+    values.put(KEY_WORD, words[i]);
+    db.insert(WORD_LIST_TABLE, null, values);
+}</code></pre>
+<ol type="1" start="7">
+<li> Before you run and test your app, you should clear the data from your SQLite database and delete the database. Then we can run our app and recreate it so that the database is initialized with the seed data. You can uninstall the app from your device, or you can clear all the data in the app from <strong>Settings &gt; Apps &gt; WordList &gt; Storage &gt; Clear Data</strong> on   your Android emulator or physical device</li>
+<li> Run your app. You will not see any changes in the user interface.</li>
+</ol>
+<ul>
+<li>Check the logs and make sure there are no errors before you continue. If you encounter errors, read the logcat messages carefully and use resources, such as Stack Overflow, if you get stuck.</li>
+<li>You can also check in settings, that the app users storage.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 2: Create a data model for a single word" duration="0">
+        <p>A data model is a class that encapsulates a complex data structure and provides an API for accessing and manipulating the data in that structure. You need a data model to pass data retrieved from the database to the UI.</p>
+<p>For this practical, the data model only contains the word and its id. While the unique id will be generated by the database, you need a way of passing the id to the user interface. This will identify the word the user is changing.</p>
+<h2 is-upgraded>2.1 Create a data model for your word data</h2>
+<ol type="1" start="1">
+<li>Create a new class and call it <code>WordItem</code> .</li>
+<li>Add the following class variables.</li>
+</ol>
+<pre><code>private int mId;
+private String mWord;</code></pre>
+<ol type="1" start="3">
+<li>Add an empty constructor.</li>
+<li>Add getters and setters for the id and word.</li>
+<li>Run your app. You will not see any visible UI changes, but there should be no errors.</li>
+</ol>
+<p><strong>Solution:</strong></p>
+<pre><code>public class WordItem {
+
+   private int mId;
+   private String mWord;
+
+   public WordItem() {}
+
+   public int getId() {return this.mId;}
+
+   public String getWord() {return this.mWord;}
+
+   public void setId(int id) {this.mId = id;}
+
+   public void setWord(String word) {this.mWord = word;}
+}</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 3: Implement the query() method in WordListOpenHelper" duration="0">
+        <p>The <code>query()</code> method retrieves rows from the database as selected by a SQL query.</p>
+<p>For this sample, in order to display words in the RecyclerView, we need to get them from the database, one at a time, as needed. The word needed is identified by its position in the view.</p>
+<p>As such, the query method has a parameter for the requested position and returns a WordItem.</p>
+<h2 is-upgraded>3.1. Implement the query() method</h2>
+<ol type="1" start="1">
+<li>Create a query method that takes an integer position argument and returns a WordItem.</li>
+</ol>
+<pre><code>public WordItem query(int position) {
+}</code></pre>
+<ol type="1" start="2">
+<li>Construct a query that returns only the nth row of the result. Use <code>LIMIT</code> with position as the row, and 1 as the number of rows.</li>
+</ol>
+<pre><code>String query = &#34;SELECT * FROM &#34; + WORD_LIST_TABLE +
+               &#34; ORDER BY &#34; + KEY_WORD + &#34; ASC &#34; +
+               &#34;LIMIT &#34; + position + &#34;,1&#34;;</code></pre>
+<ol type="1" start="3">
+<li>Instantiate a <code>Cursor</code> variable to <code>null</code> to hold the result from the database.</li>
+</ol>
+<pre><code>Cursor cursor = null;</code></pre>
+<p>The <code>SQLiteDatabase</code> always presents the results as a <a href="https://developer.android.com/reference/android/database/Cursor.html" target="_blank"><code>Cursor</code></a>in a table format that resembles of a SQL database.</p>
+<p>A cursor is a pointer into a row of structured data. You can think of it as an array of rows. The <code>Cursor</code> class provides methods for moving the cursor through that structure, and methods to get the data from the columns of each row.</p>
+<ol type="1" start="4">
+<li>Instantiate a <code>WordItem</code> entry.</li>
+</ol>
+<pre><code>WordItem entry = new WordItem();</code></pre>
+<ol type="1" start="5">
+<li>Add a try/catch/finally block.</li>
+</ol>
+<pre><code>try {} catch (Exception e) {} finally {}</code></pre>
+<ol type="1" start="6">
+<li>Inside the try block,</li>
+</ol>
+<ol type="1" start="1">
+<li>get a readable database if it doesn&#39;t exist.</li>
+</ol>
+<pre><code>if (mReadableDB == null) {
+    mReadableDB = getReadableDatabase();
+}</code></pre>
+<ol type="1" start="2">
+<li>send a raw query to the database and store the result in a cursor.</li>
+</ol>
+<pre><code>cursor = mReadableDB.rawQuery(query, null);</code></pre>
+<p>The open helper query method can construct a SQL query string and send it as a rawQuery to the database which returns a cursor. If your data is supplied by your app, and under your full control, you can use raw query().</p>
+<ol type="1" start="1">
+<li>Move the cursor to the first item.</li>
+</ol>
+<pre><code>cursor.moveToFirst();</code></pre>
+<ol type="1" start="2">
+<li>Set the the id and word of the <code>WordItem</code> entry to the values returned by the cursor.</li>
+</ol>
+<pre><code>entry.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
+entry.setWord(cursor.getString(cursor.getColumnIndex(KEY_WORD)));</code></pre>
+<ol type="1" start="7">
+<li>In the catch block, log the exception.</li>
+</ol>
+<pre><code>Log.d(TAG, &#34;EXCEPTION! &#34; + e);</code></pre>
+<ol type="1" start="8">
+<li>In the finally block, close the cursor and return the WordItem entry.</li>
+</ol>
+<pre><code>cursor.close();
+return entry;</code></pre>
+<p><strong>Solution:</strong></p>
+<pre><code>public WordItem query(int position) {
+   String query = &#34;SELECT * FROM &#34; + WORD_LIST_TABLE +
+           &#34; ORDER BY &#34; + KEY_WORD + &#34; ASC &#34; +
+           &#34;LIMIT &#34; + position + &#34;,1&#34;;
+
+   Cursor cursor = null;
+   WordItem entry = new WordItem();
+
+   try {
+       if (mReadableDB == null) {
+           mReadableDB = getReadableDatabase();
+       }
+       cursor = mReadableDB.rawQuery(query, null);
+       cursor.moveToFirst();
+       entry.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
+       entry.setWord(cursor.getString(cursor.getColumnIndex(KEY_WORD)));
+   } catch (Exception e) {
+       Log.d(TAG, &#34;QUERY EXCEPTION! &#34; + e.getMessage());
+   } finally {
+       cursor.close();
+       return entry;
+   }
+}</code></pre>
+<h2 is-upgraded>3.2. The onUpgrade method</h2>
+<p>Every <code>SQLiteOpenHelper</code> must implement the <code>onUpgrade()</code> method, which determines what happens if the database version number changes. This may happen if you have existing users of your app that use an older version of the database. This method is triggered when a database is first opened. The customary default action is to delete the current database and recreate it.</p>
+<p>Important: While it&#39;s OK to drop the table in a sample app, In a production app you need to carefully migrate the user&#39;s valuable data.</p>
+<p>You can use the code below to implement the <code>onUpgrade()</code> method for this sample.</p>
+<p><strong>Boilerplate code for onUpgrade():</strong></p>
+<pre><code>@Override
+public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+   Log.w(WordListOpenHelper.class.getName(),
+           &#34;Upgrading database from version &#34; + oldVersion + &#34; to &#34;
+            + newVersion + &#34;, which will destroy all old data&#34;);
+
+   db.execSQL(&#34;DROP TABLE IF EXISTS &#34; + WORD_LIST_TABLE);
+   onCreate(db);
+}</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 4: Display data in the RecyclerView" duration="0">
+        <p>You now have a database, with data. Next, you will update the WordListAdapter and MainActivity to fetch and display this data.</p>
+<h2 is-upgraded>4.1. Update WordListAdapter to display WordItems</h2>
+<ol type="1" start="1">
+<li>Open <strong>WordListAdapter</strong>.</li>
+<li>In <code>onBindViewHolder</code> replace the code that displays mock data with code to get an item from the database and display it. You will notice an error on <code>mDB</code>.</li>
+</ol>
+<pre><code>WordItem current = mDB.query(position);
+holder.wordItemView.setText(current.getWord());</code></pre>
+<ol type="1" start="3">
+<li>Declare <code>mDB</code> as an instance variable.</li>
+</ol>
+<pre><code>WordListOpenHelper mDB;</code></pre>
+<ol type="1" start="4">
+<li>To get the value for <code>mDB</code>, change the constructor for <code>WordListAdapter</code> and add a second parameter for the <code>WordListOpenHelper</code>.</li>
+<li>Assign the value of the parameter to <code>mDB</code>. Your constructor should look like this:</li>
+</ol>
+<pre><code>public WordListAdapter(Context context, WordListOpenHelper db) {
+        mInflater = LayoutInflater.from(context);
+        mContext = context;
+        mDB = db;
+}</code></pre>
+<p>This generates an error in <code>MainActivity</code>, because you added an argument to the <code>WordListAdapter</code> constructor.</p>
+<ol type="1" start="6">
+<li>Open <strong>MainActivity</strong> and add the missing <code>mDB</code> argument.</li>
+</ol>
+<pre><code>mAdapter = new WordListAdapter (this, mDB);</code></pre>
+<ol type="1" start="7">
+<li>Run your app. You should see all the words from the database.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 5: Add new words to the database" duration="0">
+        <p>When the user clicks the FAB, an activity opens that lets them enter a word that gets added to the database when they click save.</p>
+<p>The starter code provides you with the click listener and the <code>EditWordActivity</code> started by clicking the FAB. You will add the database specific code and tie the pieces together, from the bottom up, like you just did with the query method.</p>
+<h2 is-upgraded>5.1. Write the insert() method</h2>
+<p>In <code>WordListOpenHelper</code>:</p>
+<ol type="1" start="1">
+<li>Create the <code>insert()</code> method with the following signature. The user supplies a word, and the method returns the id for the new entry. Generated id&#39;s can be big, so insert returns a number of type long.</li>
+</ol>
+<pre><code>public long insert(String word){}</code></pre>
+<ol type="1" start="2">
+<li>Declare a variable for the id. If the insert operation fails, the method returns 0.</li>
+</ol>
+<pre><code>long newId = 0;</code></pre>
+<ol type="1" start="3">
+<li>As before, create a <code>ContentValues</code> value for the row data.</li>
+</ol>
+<pre><code>ContentValues values = new ContentValues();
+values.put(KEY_WORD, word);</code></pre>
+<ol type="1" start="4">
+<li>Put your database operation into a try/catch block.</li>
+</ol>
+<pre><code>try {} catch (Exception e) {}</code></pre>
+<ol type="1" start="5">
+<li>Get a writable database if one doesn&#39;t already exist.</li>
+</ol>
+<pre><code>if (mWritableDB == null) {
+    mWritableDB = getWritableDatabase();
+}</code></pre>
+<ol type="1" start="6">
+<li>Insert the row.</li>
+</ol>
+<pre><code>newId = mWritableDB.insert(WORD_LIST_TABLE, null, values);</code></pre>
+<ol type="1" start="7">
+<li>Log the exception.</li>
+</ol>
+<pre><code>Log.d(TAG, &#34;INSERT EXCEPTION! &#34; + e.getMessage());</code></pre>
+<ol type="1" start="8">
+<li>Return the id.</li>
+</ol>
+<pre><code>return newId;</code></pre>
+<p><strong>Solution:</strong></p>
+<pre><code>public long insert(String word){
+    long newId = 0;
+    ContentValues values = new ContentValues();
+    values.put(KEY_WORD, word);
+    try {
+        if (mWritableDB == null) {
+            mWritableDB = getWritableDatabase();
+        }
+        newId = mWritableDB.insert(WORD_LIST_TABLE, null, values);
+    } catch (Exception e) {
+        Log.d(TAG, &#34;INSERT EXCEPTION! &#34; + e.getMessage());
+    }
+    return newId;
+}</code></pre>
+<h2 is-upgraded>5.2. Get the word to insert from the user and update the database</h2>
+<p>The starter code comes with an <code>EditWordActivity</code> that gets a word from the user and returns it to the main activity. In <code>MainActivity</code>, you just have to fill in the <code>onActivityResult()</code> method.</p>
+<ol type="1" start="1">
+<li>Check to ensure the result is from the correct activity and get the word that the user entered from the extras.</li>
+</ol>
+<pre><code>if (requestCode == WORD_EDIT) {
+   if (resultCode == RESULT_OK) {
+        String word = data.getStringExtra(EditWordActivity.EXTRA_REPLY);</code></pre>
+<ol type="1" start="2">
+<li>If the word is not empty, check whether we have been passed an id with the extras. If there is no id, insert a new word. In the next task, you will update the existing word if an id is passed.</li>
+</ol>
+<pre><code>if (!TextUtils.isEmpty(word)) {
+    int id = data.getIntExtra(WordListAdapter.EXTRA_ID, -99);
+    if (id == WORD_ADD) {
+        mDB.insert(word);
+}</code></pre>
+<ol type="1" start="3">
+<li>To update the UI, notify the adapter that the underlying data has changed.</li>
+</ol>
+<pre><code>mAdapter.notifyDataSetChanged();</code></pre>
+<ol type="1" start="4">
+<li>If the word is empty because the user didn&#39;t enter anything, show a toast letting them know. And don&#39;t forget to close all the parentheses.</li>
+</ol>
+<pre><code>} else {
+    Toast.makeText(
+        getApplicationContext(),
+        R.string.empty_not_saved,
+        Toast.LENGTH_LONG).show();
+        }
+    }
+}</code></pre>
+<p><strong>Solution:</strong></p>
+<pre><code>if (requestCode == WORD_EDIT) {
+    if (resultCode == RESULT_OK) {
+        String word = data.getStringExtra(EditWordActivity.EXTRA_REPLY);
+        // Update the database
+        if (!TextUtils.isEmpty(word)) {
+            int id = data.getIntExtra(WordListAdapter.EXTRA_ID, -99);
+            if (id == WORD_ADD) {
+                mDB.insert(word);
+             }
+             // Update the UI
+             mAdapter.notifyDataSetChanged();
+        } else {
+             Toast.makeText(
+                     getApplicationContext(),
+                     R.string.empty_not_saved,
+                     Toast.LENGTH_LONG).show();
+        }
+    }
+}</code></pre>
+<h2 is-upgraded>5.3. Implement getItemCount()</h2>
+<p>In order for the new items to be displayed properly, <code>getItemCount</code> in <code>WordListAdapter</code> has to return the actual number of entries in the database instead of the number of words in the starter list of words.</p>
+<ol type="1" start="1">
+<li>Change <code>getItemCount</code> to the code below, which will trigger an error.</li>
+</ol>
+<pre><code>return (int) mDB.count();</code></pre>
+<ol type="1" start="2">
+<li>Open <code>WordListOpenHelper</code> and implement <code>count()</code> to return the number of entries in the database.</li>
+</ol>
+<pre><code>public long count(){
+    if (mReadableDB == null) {
+        mReadableDB = getReadableDatabase();
+    }
+    return DatabaseUtils.queryNumEntries(mReadableDB, WORD_LIST_TABLE);
+}</code></pre>
+<ol type="1" start="3">
+<li>Run your app and add some words.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 6: Delete words from the database" duration="0">
+        <p>To implement the delete functionality you need to:</p>
+<ul>
+<li>Implement the <code>delete()</code> method in <code>WordListOpenHelper</code></li>
+<li>Add a click handler to the <code>DELETE</code> button in <code>WordListAdapter</code></li>
+</ul>
+<h2 is-upgraded>6.1. Write the delete() method</h2>
+<p>You use the <code>delete()</code> method on <code>SQLiteDatabase</code> to delete an entry in the database. Add a method delete to the <code>WordListOpenHelper</code> that:</p>
+<ol type="1" start="1">
+<li>Create the method stub for <code>delete()</code>, which takes an int argument for the id of the item to delete, and returns the number of rows deleted.</li>
+</ol>
+<pre><code>public int delete(int id) {}</code></pre>
+<ol type="1" start="2">
+<li>Declare a variable to hold the result.</li>
+</ol>
+<pre><code>int deleted = 0;</code></pre>
+<ol type="1" start="3">
+<li>As for insert, add a try block.</li>
+</ol>
+<pre><code>try {} catch (Exception e) {}</code></pre>
+<ol type="1" start="4">
+<li>Get a writable database, if necessary.</li>
+</ol>
+<pre><code>if (mWritableDB == null) {
+    mWritableDB = getWritableDatabase();
+}</code></pre>
+<ol type="1" start="5">
+<li>Call delete on the <code>WORD_LIST_TABLE</code>, selecting by <code>KEY_ID</code> and passing the value of the id as the argument. The &#34;<code>?</code>&#34; is a placeholder that gets filled with the string. This is a more secure way of building queries.</li>
+</ol>
+<pre><code>deleted = mWritableDB.delete(WORD_LIST_TABLE,
+    KEY_ID + &#34; = ? &#34;, new String[]{String.valueOf(id)});</code></pre>
+<ol type="1" start="6">
+<li>Print a log message for exceptions.</li>
+</ol>
+<pre><code>Log.d (TAG, &#34;DELETE EXCEPTION! &#34; + e.getMessage());</code></pre>
+<ol type="1" start="7">
+<li>Return the number of rows deleted.</li>
+</ol>
+<pre><code>return deleted;</code></pre>
+<p><strong>Solution:</strong></p>
+<pre><code>public int delete(int id) {
+    int deleted = 0;
+    try {
+        if (mWritableDB == null) {
+            mWritableDB = getWritableDatabase();
+        }
+        deleted = mWritableDB.delete(WORD_LIST_TABLE, //table name
+                KEY_ID + &#34; =? &#34;, new String[]{String.valueOf(id)});
+    } catch (Exception e) {
+        Log.d (TAG, &#34;DELETE EXCEPTION! &#34; + e.getMessage());
+    }
+    return deleted;
+}</code></pre>
+<h2 is-upgraded>6.2. Add a click handler to DELETE button</h2>
+<p>You can now add a click handler to the <code>DELETE</code> button that calls the <code>delete()</code> method you just wrote.</p>
+<p>Take a look at the <code>MyButtonOnClickListener</code> class in your starter code. The <code>MyButtonOnClickListener</code> class implements a click listener that stores the id, and the word that you need to make changes to the database.</p>
+<p>Each view holder, when attached (bound) to the <code>RecyclerView</code> in the <code>onBindViewHolder</code> method of <code>WordListAdapter</code>, needs to also attach a click listener to the <code>DELETE</code> button, passing the id, and word to the <code>MyButtonOnClickListener</code> constructor. These values are then used by the <code>onClick</code> handler to delete the correct item and notify the adapter, which item has been removed.</p>
+<p>Note that you cannot use the position argument passed into <code>onBindViewHolder</code>, because it may be stale by the time the click handler is called. You have to keep a reference to the view holder and get the position with <a href="https://developer.android.com/reference/android/support/v7/widget/RecyclerView.ViewHolder.html#getAdapterPosition()" target="_blank"><code>getAdapterPosition()</code></a>.</p>
+<p><strong>Solution:</strong></p>
+<pre><code>// Keep a reference to the view holder for the click listener
+final WordViewHolder h = holder; // needs to be final for use in callback
+
+   // Attach a click listener to the DELETE button.
+   holder.delete_button.setOnClickListener(
+       new MyButtonOnClickListener(current.getId(), null) {
+
+           @Override
+           public void onClick(View v ) {
+               int deleted = mDB.delete(id);
+               if (deleted &gt;= 0)
+                   notifyItemRemoved(h.getAdapterPosition());
+           }
+        });</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 7: Update words in the database" duration="0">
+        <p>To update existing words you have to:</p>
+<ul>
+<li>Add an <code>update()</code> method to <code>WordListOpenHelper</code>. </li>
+<li>Add a click handler to the <code>EDIT</code> button of your view.</li>
+</ul>
+<h2 is-upgraded>7.1. Write the update() method</h2>
+<p>You use the <code>update()</code> method on SQLiteDatabase to update an existing entry in the database.</p>
+<ol type="1" start="1">
+<li>Add a method to the <code>WordListOpenHelper</code> that:</li>
+</ol>
+<ul>
+<li>Takes an integer id and a <code>String</code> word for its arguments and returns an integer.</li>
+</ul>
+<pre><code>public int update(int id, String word)</code></pre>
+<ul>
+<li>Initializes int <code>mNumberOfRowsUpdated</code> to -1.</li>
+</ul>
+<pre><code>int mNumberOfRowsUpdated = -1;</code></pre>
+<ol type="1" start="2">
+<li>Inside a try block, do the following steps:</li>
+<li>Get a writable SQLiteDatabase db if there isn&#39;t one already.</li>
+</ol>
+<pre><code>if (mWritableDB == null) {
+    mWritableDB = getWritableDatabase();
+}</code></pre>
+<ol type="1" start="4">
+<li>Create a new instance of <code>ContentValues</code> and at the <code>KEY_WORD</code> word to it.</li>
+</ol>
+<pre><code>ContentValues values = new ContentValues();
+values.put(KEY_WORD, word);</code></pre>
+<ol type="1" start="5">
+<li>Call <code>db.update</code> using the following arguments:</li>
+</ol>
+<pre><code>mNumberOfRowsUpdated = db.update(WORD_LIST_TABLE,
+       values, // new values to insert
+       // selection criteria for row (the _id column)
+       KEY_ID + &#34; = ?&#34;,
+       //selection args; value of id
+       new String[]{String.valueOf(id)});</code></pre>
+<ol type="1" start="6">
+<li>In the catch block, print a log message if any exceptions are encountered.</li>
+</ol>
+<pre><code>Log.d (TAG, &#34;UPDATE EXCEPTION: &#34; + e.getMessage());</code></pre>
+<ol type="1" start="7">
+<li>Return the number of rows updated, which should be -1 (fail), 0 (nothing updated), or 1 (success).</li>
+</ol>
+<pre><code>return mNumberOfRowsUpdated;</code></pre>
+<p><strong>Solution:</strong></p>
+<pre><code>public int update(int id, String word) {
+    int mNumberOfRowsUpdated = -1;
+    try {
+        if (mWritableDB == null) {
+            mWritableDB = getWritableDatabase();
+        }
+        ContentValues values = new ContentValues();
+        values.put(KEY_WORD, word);
+        mNumberOfRowsUpdated = mWritableDB.update(WORD_LIST_TABLE,
+                values,
+                KEY_ID + &#34; = ?&#34;,
+                new String[]{String.valueOf(id)});
+    } catch (Exception e) {
+        Log.d (TAG, &#34;UPDATE EXCEPTION! &#34; + e.getMessage());
+    }
+    return mNumberOfRowsUpdated;
+}</code></pre>
+<h2 is-upgraded>7.2. Add a click listener to the EDIT button</h2>
+<p>And here is the code for the Edit click listener when we bind the <code>View</code> in the <code>onBindViewHolder</code> method of <code>WordListAdapter</code>. This listener has nothing database specific. It starts the <code>EditWordActivity</code> Activity using an <code>Intent</code> and passes it the current   id, position, and word in the Extras.</p>
+<p>If you get an error on the <code>EXTRA_POSITION</code> constant, add it with a value of <code>"POSITION"</code>,</p>
+<p><strong>Solution:</strong></p>
+<pre><code>// Attach a click listener to the EDIT button.
+holder.edit_button.setOnClickListener(new MyButtonOnClickListener(
+        current.getId(), current.getWord()) {
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(mContext, EditWordActivity.class);
+
+        intent.putExtra(EXTRA_ID, id);
+        intent.putExtra(EXTRA_POSITION, h.getAdapterPosition());
+        intent.putExtra(EXTRA_WORD, word);
+
+        // Start an empty edit activity.
+        ((Activity) mContext).startActivityForResult(
+                intent, MainActivity.WORD_EDIT);
+   }
+});</code></pre>
+<h2 is-upgraded>7.3. Add updating to onActivityResult</h2>
+<p>As implemented, clicking edit starts an activity that shows the user the current word, and they can edit it. To make the update happen,</p>
+<ol type="1" start="1">
+<li>Add one line of code to the <code>onActivityResult</code> method in your <code>MainActivity</code>.</li>
+</ol>
+<pre><code>else if (id &gt;= 0) {
+    mDB.update(id, word);
+}</code></pre>
+<ol type="1" start="2">
+<li>Run your app and play with it</li>
+</ol>
+<h2 is-upgraded>7.4. Design and error considerations</h2>
+<ul>
+<li>The methods you wrote to add, update and delete entries in the database all assume that their input is valid. This is acceptable for sample code because the purpose of this sample code is to teach you the basic functionality of a SQLite database, and so not every edge case is considered, not every value is tested, and everybody is assumed to be well behaved. If this were a production app, you would have greater security considerations, and content would need to be tested for validity until you know it is not malicious.</li>
+<li>In a production app, you must catch specific exceptions and handle them appropriately.</li>
+<li>You tested the correct functioning of the app by running it. For a production app with real data, you will need more thorough testing, for example, using unit and interface testing.</li>
+<li>For this practical, you created the database schema/tables from the <code>SQLiteOpenHelper</code> class. This is sufficient for   a simple example, like this one. For a more complex app, it is a better practice to separate schema definitions from the rest of the code in a helper class that cannot be instantiated. You will learn how to do that in the chapter on content providers.</li>
+<li>As mentioned above, some database operations can be lengthy and should be done on a background thread. Use <code>AsyncTask</code> for operations that take a long time. Use loaders to load large amounts of data.</li>
+</ul>
+<h2 is-upgraded>Solution code</h2>
+<p>Android Studio project: <a href="https://github.com/khammami/android-fundamentals-v1/tree/master/WordListSql%20finished" target="_blank">WordListSql finished</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Résumé" duration="0">
+        <p>In this chapter, you learned how to</p>
+<ul>
+<li>Use a <a href="https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html" target="_blank"><code>SQLiteDatabase</code></a> to store user data persistently. </li>
+<li>Work with a <a href="https://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper.html" target="_blank"><code>SQLiteOpenHelper</code></a> to manage your database. Retrieve and display data from the database</li>
+<li>Edit data in the user interface and reflect those changes in the database</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Apprendre encore plus" duration="0">
+        <p>Android developer documentation:</p>
+<ul>
+<li><a href="http://developer.android.com/guide/topics/data/data-storage.html" target="_blank">Storage Options</a></li>
+<li><a href="http://developer.android.com/training/basics/data-storage/databases.html" target="_blank">Saving Data in SQL Databases</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,364 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>P 02.1: Networking - Connecting to the internet</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-3295395-7" ga4id="G-E0H6JSF2N3"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id="G-E0H6JSF2N3"
+                  id="networking-connecting-to-internet"
+                  title="P 02.1: Networking - Connecting to the internet"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="GitHub Repo Search Code" duration="0">
+        <p>The Github Repo Search app searches for a <a href="https://github.com/" target="_blank">GitHub</a> repository by name. The URL you&#39;ll use to get search information will be something like the URL below, which searches for repositories containing the word android and sorts by the number of stars the repo has:</p>
+<p><a href="https://api.github.com/search/repositories?q=android&sort=stars" target="_blank">https://api.github.com/search/repositories?q=android&amp;sort=stars</a></p>
+<p>Which returns information in JSON. We&#39;ll be going over how to make sense of this returned JSON, parse it and display it in your app during this lesson. We&#39;ll also cover how to connect to the internet and download data. Let&#39;s get started!</p>
+<p>The code for this app can be found in the <a href="https://github.com/khammami/ud851-Exercises/tree/student/Lesson02-GitHub-Repo-Search" target="_blank">Lesson02-GitHub-Repo-Search</a> folder of the <a href="https://github.com/khammami/ud851-Exercises" target="_blank">Toy App Repository</a>.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 1: Create Layout" duration="0">
+        <p><strong>Exercise Code:</strong></p>
+<p><a href="https://github.com/khammami/ud851-Exercises/tree/student/Lesson02-GitHub-Repo-Search/T02.01-Exercise-CreateLayout" target="_blank"><paper-button class="colored" raised>T02.01-Exercise-CreateLayout</paper-button></a></p>
+<p><strong>Exercise:</strong></p>
+<ol type="1" start="1">
+<li>Convert the ConstraintLayout to a LinearLayout</li>
+<li>Add the EditText for the query</li>
+<li>Add a TextView to display the URL</li>
+<li>Add a scrolling TextView (TextView in a ScrollView) to display the query result</li>
+<li>Create and populate the MainActivity member variables for the Search Box EditText, the URLDisplay TextView, and the SearchResults TextView</li>
+<li>Remove the unneeded reference to the ConstraintLayout library</li>
+<li>Migrate to Androidx and update dependencies</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 2: Add a menu" duration="0">
+        <p><strong>Exercise Code: </strong></p>
+<p><a href="https://github.com/khammami/ud851-Exercises/tree/student/Lesson02-GitHub-Repo-Search/T02.02-Exercise-AddMenu" target="_blank"><paper-button class="colored" raised>T02.02-Exercise-AddMenu</paper-button></a></p>
+<p><strong>Exercise:</strong></p>
+<ol type="1" start="1">
+<li>Create the Menu Resource <code>main.xml</code><br></li>
+</ol>
+<pre><code>&lt;menu xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;
+      xmlns:app=&#34;http://schemas.android.com/apk/res-auto&#34;&gt;
+
+&lt;!-- TO DO --&gt;
+
+&lt;/menu&gt;</code></pre>
+<ol type="1" start="2">
+<li>Add the menu item for Search to the Menu Resource, setting it to showAsAction ifRoom<br></li>
+</ol>
+<pre><code>&lt;item
+        android:id=&#34;@+id/action_search&#34;
+        android:orderInCategory=&#34;1&#34;
+        app:showAsAction=&#34;ifRoom&#34;
+        android:title=&#34;@string/search&#34;/&gt;</code></pre>
+<ol type="1" start="3">
+<li>Inflate the menu in onCreateOptionsMenu<br></li>
+</ol>
+<pre><code>@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        // Return true to display your menu
+        return true;
+    }</code></pre>
+<ol type="1" start="4">
+<li>Display a toast in onOptionsItemSelected when Search is selected<br></li>
+</ol>
+<pre><code>@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemThatWasClickedId = item.getItemId();
+        if (itemThatWasClickedId == R.id.action_search) {
+            Context context = MainActivity.this;
+            String textToShow = &#34;Search clicked&#34;;
+            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 3: Build our URL" duration="0">
+        <p>Build the Url that will be used to query Github and display it when the Search button is pressed.</p>
+<p><strong>Exercise Code: </strong></p>
+<p><a href="https://github.com/khammami/ud851-Exercises/tree/student/Lesson02-GitHub-Repo-Search/T02.03-Exercise-DisplayUrl" target="_blank"><paper-button class="colored" raised>T02.03-Exercise-DisplayUrl</paper-button></a></p>
+<p><strong>Exercise:</strong></p>
+<ol type="1" start="1">
+<li>Fill in the buildUrl method from NetworkUtils using Uri.Builder and the URL constructor<br></li>
+</ol>
+<pre><code>public static URL buildUrl(String githubSearchQuery) {
+        Uri builtUri = Uri.parse(GITHUB_BASE_URL).buildUpon()
+                .appendQueryParameter(PARAM_QUERY, githubSearchQuery)
+                .appendQueryParameter(PARAM_SORT, sortBy)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }</code></pre>
+<ol type="1" start="2">
+<li>Implement the makeGithubSearchQuery method<br></li>
+</ol>
+<pre><code>private void makeGithubSearchQuery() {
+        String githubQuery = mSearchBoxEditText.getText().toString();
+        URL githubSearchUrl = NetworkUtils.buildUrl(githubQuery);
+        mUrlDisplayTextView.setText(githubSearchUrl.toString());
+    }</code></pre>
+<ol type="1" start="3">
+<li>Call the makeGithubSearchQuery method when Search is selected</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 4: Connect to the internet" duration="0">
+        <p>Follow the TODOS. But it will crash when you run it.</p>
+<p><strong>Exercise Code: </strong></p>
+<p><a href="https://github.com/khammami/ud851-Exercises/tree/student/Lesson02-GitHub-Repo-Search/T02.04-Exercise-ConnectingToTheInternet" target="_blank"><paper-button class="colored" raised>T02.04-Exercise-ConnectingToTheInternet</paper-button></a></p>
+<p><strong>Exercise:</strong></p>
+<ol type="1" start="1">
+<li>Add the Internet permission<br></li>
+</ol>
+<pre><code>&lt;uses-permission android:name=&#34;android.permission.INTERNET&#34; /&gt;</code></pre>
+<ol type="1" start="2">
+<li>Change the makeGithubSearchQuery to call NetworkUtils.getResponseFromHttpUrl<br></li>
+</ol>
+<pre><code>String githubSearchResults = null;
+        try {
+            githubSearchResults = NetworkUtils.getResponseFromHttpUrl(githubSearchUrl);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }</code></pre>
+<ol type="1" start="3">
+<li>Set the results in our searchResultsTextView<br></li>
+</ol>
+<pre><code>mSearchResultsTextView.setText(githubSearchResults);</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 5: Create an AsyncTask" duration="0">
+        <h2 is-upgraded>Thread Basics</h2>
+<p>&#34;When an application component starts and the application does not have any other components running, the Android system starts a new Linux process for the application with a single thread of execution. By default, all components of the same application run in the same process and thread (called the &#34;main&#34; thread). If an application component starts and there already exists a process for that application (because another component from the application exists), then the component is started within that process and uses the same thread of execution. However, you can arrange for different components in your application to run in separate processes, and you can create additional threads for any process.&#34;</p>
+<iframe class="youtube-video" src="https://www.youtube.com/embed/fos0rP73LFc?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>Check <a href="https://developer.android.com/guide/components/processes-and-threads" target="_blank">Processes and threads overview</a> for more details how the processes works.</p>
+<h2 is-upgraded>AsyncTask</h2>
+<p>Android <code>AsyncTask</code> going to do background operation on background thread and update on main thread. In android we can&#39;t directly touch background thread to main thread in android development. asynctask helps us to make communication between background thread to main thread.</p>
+<p><strong>Methods of AsyncTask</strong></p>
+<ul>
+<li><code>onPreExecute()</code> − Before doing background operation we should show something on screen like progressbar or any animation to the user. We can directly communicate background operations using doInBackground() but for best practice, we should call all asyncTask methods .</li>
+<li><code>doInBackground(Params)</code> − In this method we have to do background operation on the background thread. Operations in this method should not touch on any mainthread activities or fragments.</li>
+<li><code>onProgressUpdate(Progress...)</code> − While doing background operations, if you want to update some information on UI, we can use this method.</li>
+<li><code>onPostExecute(Result)</code> − In this method we can update the ui of background operation result.</li>
+</ul>
+<p><strong>Generic Types in Async Task</strong></p>
+<ul>
+<li><code>TypeOfVarArgParams</code> − It contains information about what type of params used for execution.</li>
+<li><code>ProgressValue</code> − It contains information about progress units. While doing background operation we can update information on the ui using onProgressUpdate().</li>
+<li><code>ResultValue</code> −It contains information about the result type.</li>
+</ul>
+<iframe class="youtube-video" src="https://www.youtube.com/embed/8CO0UmLZH80?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p><strong>Exercise Code: </strong></p>
+<p><a href="https://github.com/khammami/ud851-Exercises/tree/student/Lesson02-GitHub-Repo-Search/T02.05-Exercise-CreateAsyncTask" target="_blank"><paper-button class="colored" raised>T02.05-Exercise-CreateAsyncTask</paper-button></a></p>
+<p><strong>Exercise:</strong></p>
+<ol type="1" start="1">
+<li>Create GithubQueryTask as an inner class of MainActivity, with the types URL, Void, and String.<br></li>
+</ol>
+<pre><code>public class GithubQueryTask extends AsyncTask&lt;URL, Void, String&gt; {
+
+}</code></pre>
+<ol type="1" start="2">
+<li>Override doInBackground to query Github and return a string<br></li>
+</ol>
+<pre><code>@Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String githubSearchResults = null;
+            try {
+                githubSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return githubSearchResults;
+        }</code></pre>
+<ol type="1" start="3">
+<li>Override onPostExecute to set our searchResultsTextView with the GitHub query search results<br></li>
+</ol>
+<pre><code>@Override
+        protected void onPostExecute(String githubSearchResults) {
+            if (githubSearchResults != null &amp;&amp; !githubSearchResults.equals(&#34;&#34;)) {
+                mSearchResultsTextView.setText(githubSearchResults);
+            }
+        }</code></pre>
+<ol type="1" start="4">
+<li>Instantiate and call GithubQueryTask in the makeGithubSearchQuery function<br></li>
+</ol>
+<pre><code>new GithubQueryTask().execute(githubSearchUrl);</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 6: Missing Permission" duration="0">
+        <p>Comment out the </p>
+<pre><code>&lt;uses-permission android:name=&#34;android.permission.INTERNET&#34; /&gt; </code></pre>
+<p>statement in the <code>AndroidManifest.xml</code> and then run the app. Make a search in the app, and then look in the <strong>Android Monitor logcat.</strong></p>
+<p><strong>QUESTION</strong></p>
+<p>In the <strong>Android Monitor logcat</strong>, what error do you see when the app tries to connect to the Internet?</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 7: Add Polish" duration="0">
+        <p><strong>Exercise Code: </strong></p>
+<p><a href="https://github.com/khammami/ud851-Exercises/tree/student/Lesson02-GitHub-Repo-Search/T02.06-Exercise-AddPolish" target="_blank"><paper-button class="colored" raised>T02.06-Exercise-AddPolish</paper-button></a></p>
+<p><strong>Exercise:</strong></p>
+<ol type="1" start="1">
+<li>Add error text string<br></li>
+</ol>
+<pre><code>&lt;string name=&#34;error_message&#34;&gt;
+        Failed to get results. Please try again.
+    &lt;/string&gt;</code></pre>
+<ol type="1" start="2">
+<li>Wrap the ScrollView with a FrameLayout<br></li>
+</ol>
+<pre><code>&lt;FrameLayout
+        android:layout_width=&#34;match_parent&#34;
+        android:layout_height=&#34;match_parent&#34;&gt;
+&lt;/FrameLayout&gt;</code></pre>
+<ol type="1" start="3">
+<li>Insert an error TextView into the FrameLayout set to our new text string<br></li>
+</ol>
+<pre><code>&lt;TextView
+            android:id=&#34;@+id/tv_error_message_display&#34;
+            android:textSize=&#34;22sp&#34;
+            android:layout_width=&#34;wrap_content&#34;
+            android:layout_height=&#34;wrap_content&#34;
+            android:padding=&#34;16dp&#34;
+            android:text=&#34;@string/error_message&#34;
+            android:visibility=&#34;invisible&#34; /&gt;</code></pre>
+<ol type="1" start="4">
+<li>Add helper functions in MainActivity to swap the visibility of JsonData and the ErrorView.<br></li>
+</ol>
+<pre><code>private void showJsonDataView() {
+        // First, make sure the error is invisible
+        mErrorMessageDisplay.setVisibility(View.INVISIBLE);
+        // Then, make sure the JSON data is visible
+        mSearchResultsTextView.setVisibility(View.VISIBLE);
+    }</code></pre>
+<pre><code>private void showErrorMessage() {
+        // First, hide the currently visible data
+        mSearchResultsTextView.setVisibility(View.INVISIBLE);
+        // Then, show the error
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }</code></pre>
+<ol type="1" start="5">
+<li>Call the error view on null or empty data.</li>
+<li>Add a progressBar to the FrameLayout<br></li>
+</ol>
+<pre><code>&lt;ProgressBar
+            android:id=&#34;@+id/pb_loading_indicator&#34;
+            android:layout_height=&#34;42dp&#34;
+            android:layout_width=&#34;42dp&#34;
+            android:layout_gravity=&#34;center&#34;
+            android:visibility=&#34;invisible&#34; /&gt;</code></pre>
+<ol type="1" start="7">
+<li>Show the progressBar during loading and hide it afterwards</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="JSON Format" duration="0">
+        <p><code>JSON</code> stands for JavaScript Object Notation.It is an independent data exchange format and is the best alternative for <code>XML</code>. This chapter explains how to parse the <code>JSON</code> file and extract necessary information from it.</p>
+<p>Android provides four different classes to manipulate <code>JSON</code> data. These classes are <a href="https://developer.android.com/reference/org/json/JSONArray" target="_blank"><code>JSONArray</code></a>, <a href="https://developer.android.com/reference/org/json/JSONObject" target="_blank"><code>JSONObject</code></a>, <a href="https://developer.android.com/reference/org/json/JSONStringer" target="_blank"><code>JSONStringer</code></a> and <a href="https://developer.android.com/reference/org/json/JSONTokener" target="_blank"><code>JSONTokenizer</code></a>.</p>
+<iframe class="youtube-video" src="https://www.youtube.com/embed/0IOCgHrTJGU?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Exercice Sunshine App" duration="0">
+        <ol type="1" start="1">
+<li>Networking</li>
+</ol>
+<p><strong>Exercise Code:</strong></p>
+<p><a href="https://github.com/khammami/ud851-Sunshine/tree/student/S02.01-Exercise-Networking" target="_blank"><paper-button class="colored" raised>S02.01-Exercise-Networking</paper-button></a></p>
+<p>In this Exercise, you will get to apply what you&#39;ve learned on Sunshine to add an async task and permissions to load weather data.</p>
+<ol type="1" start="1">
+<li>Fill in buildUrl in NetworkUtils.java</li>
+<li>Add the Internet Permission</li>
+<li>Delete the dummy data-related code</li>
+<li>Create a FetchWeatherTask AsyncTask to perform the network requests</li>
+<li>Override the doInBackground and onPostExecute methods to get and display the results of the network request</li>
+<li>Create a loadWeatherData function to get the preferredWeatherLocation from SunshinePreferences and execute the FetchWeatherTask</li>
+<li>Call loadWeatherData from onCreate</li>
+</ol>
+<ol type="1" start="2">
+<li>Add a menu to Sunshine</li>
+</ol>
+<p><strong>Exercise Code: </strong></p>
+<p><a href="https://github.com/khammami/ud851-Sunshine/tree/student/S02.02-Exercise-Menus" target="_blank"><paper-button class="colored" raised>S02.02-Exercise-Menus</paper-button></a></p>
+<p>Look at your TODOs. This is going to look a lot like what we did to add that menu to the Github query app earlier.</p>
+<ol type="1" start="8">
+<li>Add a &#34;Refresh&#34; string named action_refresh</li>
+<li>Create a new &#34;forecast&#34; menu with a single &#34;Refresh&#34; menu item</li>
+<li>Inflate the menu on onCreateOptionsMenu</li>
+<li>Handle the menu action in onOptionsItemSelected by clearing the weatherTextView and calling loadWeatherData</li>
+</ol>
+<ol type="1" start="3">
+<li>Add Loading Polish and Error Messages to Sunshine</li>
+</ol>
+<p><strong>Exercise Code: </strong></p>
+<p><a href="https://github.com/khammami/ud851-Sunshine/tree/student/S02.03-Exercise-Polish" target="_blank"><paper-button class="colored" raised>S02.03-Exercise-Polish</paper-button></a></p>
+<p>In this Exercise, you will get to apply what you&#39;ve learned about adding polish to Sunshine.</p>
+<p>Add code and views to display an error message for a failed data retrieval, and loading indicators for loading data.</p>
+<ol type="1" start="12">
+<li>Add a string resource for an error message, should loading data fail.</li>
+<li>Add a TextView that you will show the user if there is an error loading content.</li>
+<li>Add a ProgressBar to show the user content is loading.</li>
+<li>In onPostExecute, show the error message, progress bar, or data views as appropriate.</li>
+<li>Override the method onPreExecute and show the loading indicator.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

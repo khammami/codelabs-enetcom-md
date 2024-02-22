@@ -1,0 +1,320 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 04.1B: Searching a SQLite Database</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-3295395-7" ga4id="G-E0H6JSF2N3"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id="G-E0H6JSF2N3"
+                  id="searching-sqlite-database"
+                  title="TP 04.1B: Searching a SQLite Database"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Bienvenue" duration="0">
+        <p>Ces travaux pratiques se base sur le cours de base pour les développeurs Android fourni par Google afin de  les préparer pour le test de certification <a href="https://developers.google.com/training/certification/associate-android-developer/" target="_blank">Associate Android Developer</a>. Vous obtiendrez le plus de valeur de ce TP si vous travaillez successivement dans les codelabs.</p>
+<h2 is-upgraded>What you should already know</h2>
+<p>Vous devriez être familier avec:</p>
+<ul>
+<li>SQLite databases</li>
+<li>Writing basic SQLite queries</li>
+</ul>
+<h2 class="checklist" is-upgraded>What you&#39;ll learn</h2>
+<ul class="checklist">
+<li>Add search functionality to your app via the options menu</li>
+<li>Build search queries for the SQLite database from user input.</li>
+</ul>
+<h2 is-upgraded>What you&#39;ll do</h2>
+<p>In this practical you will add an item to the options menu for searching the database, and an activity that allows users to enter a search string and displays the result of the search in a text view.</p>
+<p><strong>Why</strong>: Users should always be able to search the data on their own terms.</p>
+<p><strong>Note</strong>: The focus of this practical is not optimizing the UX of the search request, but showing you how to query the database.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Aperçu de l&#39;application" duration="0">
+        <p>You will make a copy of the finished WordListSQLInteractive app (or WordListSqlStarterCode if you didn&#39;t rename it; from a previous practical), call it WordListSQLInteractiveWithSearch, and add an activity that lets users search for partial and full words in the database. For example, entering &#34;Android&#34; will return all entries that contain the substring &#34;Android&#34;.</p>
+<p class="image-container"><img style="width: 276.32px" src="img/be9cd3afabf43e4b.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 0: Download and run the base code" duration="0">
+        <p>In order to save you some work, this practical will build on an app you have already built. In a production environment, building on existing application code is a common developer task to add features or fix problems.</p>
+<h2 is-upgraded>1. Create your project</h2>
+<ol type="1" start="1">
+<li>Download the <a href="https://github.com/khammami/android-fundamentals-v1/tree/master/WordListSql%20finished" target="_blank">WordListSQL finished </a>app.<br><br>You can use your own app, or download the base app. As long as the app uses a SQLite database, you can use these instructions to extend it.<br></li>
+<li>Load a copy of the app into Android Studio. Refer to the <a href="https://google-developer-training.gitbooks.io/android-developer-fundamentals-course-practicals/content/appendix_utilities.html#copy_project" target="_blank">Appendix </a>for information on copying a project.</li>
+<li>Rename the package using <strong>Refactor &gt; Rename</strong>.</li>
+<li>Change the package name in your <code>build.gradle</code> file.</li>
+<li>Run the app to ensure it builds and functions correctly.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 1: Add Search" duration="0">
+        <h2 is-upgraded>1.1. Add an Options Menu with Search item</h2>
+<p>Use the OptionsMenuSample code from your previous practicals if you need an example of how to do this.</p>
+<ol type="1" start="1">
+<li>In your project, create an Android Resource directory and call it menu with &#34;<strong>menu</strong>&#34; as the resource type (<strong>res &gt; menu</strong>).</li>
+<li>Add a <strong>main_menu.xml</strong> menu resource file to <strong>res &gt; menu</strong>.</li>
+<li>Create a menu with one item <strong>Search</strong>. Reference the code snippet for values.</li>
+</ol>
+<pre><code>&lt;menu
+   xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;
+   xmlns:app = &#34;http://schemas.android.com/apk/res-auto&#34;
+   xmlns:tools=&#34;http://schemas.android.com/tools&#34;
+   tools:context=&#34;com.android.example.wordlistsqlsearchable.MainActivity&#34;&gt;
+   &lt;item
+       android:id=&#34;@+id/action_search&#34;
+       android:title=&#34;Search...&#34;
+       android:orderInCategory=&#34;1&#34;
+       app:showAsAction=&#34;never&#34; /&gt;
+&lt;/menu&gt;</code></pre>
+<ol type="1" start="4">
+<li>In <code>MainAcvitiy</code>, inflate the menu by overriding <code>onCreateOptionsMenu</code>.</li>
+</ol>
+<pre><code>@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+   getMenuInflater().inflate(R.menu.menu_main, menu);
+   return true;
+}</code></pre>
+<ol type="1" start="5">
+<li>Override <code>onOptionsItemSelected</code> method. Switch on <code>action_search</code>, and just return true.</li>
+</ol>
+<pre><code>@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+   switch (item.getItemId()) {
+       case R.id.action_search:
+       return true;
+   }
+   return super.onOptionsItemSelected(item);
+}</code></pre>
+<ol type="1" start="6">
+<li>Run your app. You should see the dots for the options menu. When you click it, you should see one menu item for search that does nothing.</li>
+</ol>
+<h2 is-upgraded>1.2. Create the layout for the search activity</h2>
+<p>This layout is similar to <code>activity_edit_word</code>, so you can take advantage of existing code and copy it.</p>
+<ol type="1" start="1">
+<li>Create a copy of <code>activity_editword</code> and call it <code>activity_search.xml</code>.</li>
+<li>In <code>activity_search.xml</code>, change the id&#39;s and strings to be representative of searching.</li>
+<li>Change the <code>onClick</code> method for the button to <code>showResult</code>.</li>
+<li>Add a <code>TextView</code> with an id of <code>search_result</code>, at least 300dp height, and 18sp font size.</li>
+<li>Run your app. You should notice no difference.</li>
+</ol>
+<h2 is-upgraded>1.3. Add an Activity for searching</h2>
+<ol type="1" start="1">
+<li>Create a new activity, <code>SearchActivity</code>. If your create it by <strong>New &gt; Android &gt; Activity</strong> then DON&#39;T generate the layout file because we created it in the previous task.</li>
+<li>Add a private <code>TextView</code> class variable <code>mTextView</code>.</li>
+<li>Add a private <code>EditText</code> class variable <code>mEditWordView</code>.</li>
+<li>Add a private <code>WordListOpenHelper</code> variable <code>mDB</code>.</li>
+<li> In <code>onCreate</code>, initialize <code>mDB</code> with a <code>new WordListOpenHelper(this)</code>.</li>
+<li>In <code>onCreate</code>, initialize <code>mTextView</code> and <code>mEditWordView</code> to their respective views.</li>
+</ol>
+<pre><code>public class SearchActivity extends AppCompatActivity {
+
+   private static final String TAG = EditWordActivity.class.getSimpleName();
+
+   private TextView mTextView;
+   private EditText mEditWordView;
+   private WordListOpenHelper mDB;
+
+   @Override
+   public void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      setContentView(R.layout.activity_search);
+
+      mEditWordView = ((EditText) findViewById(R.id.search_word));
+      mTextView = ((TextView) findViewById(R.id.search_result));
+      mDB = new WordListOpenHelper(this);
+   }
+}</code></pre>
+<ol type="1" start="7">
+<li>Add the activity to the <code>AndroidManifest</code>.</li>
+</ol>
+<pre><code>&lt;activity
+    android:name=&#34;com.android.example.wordlistsqlsearchable.SearchActivity&#34;&gt;
+&lt;/activity&gt;</code></pre>
+<h2 is-upgraded>1.4. Trigger SearchActivity from the menu</h2>
+<ol type="1" start="1">
+<li>To start <code>SearchActivity</code> when the menu item is selected, insert code to start <code>SearchActivity</code> into the switch statement in the <code>onOptionSelected()</code> method in <code>MainActivity</code>.</li>
+</ol>
+<pre><code>Intent intent = new Intent(getBaseContext(), SearchActivity.class);
+startActivity(intent);</code></pre>
+<ol type="1" start="2">
+<li>Build and run your app to make sure <code>SearchActivity</code> is launched when the &#34;Search&#34; menu item is selected from the <code>OptionsMenu</code>.</li>
+<li>Enter a search string and press &#34;Search&#34;. Your app crashes.</li>
+<li>Find out why the app has crashed, then move to the next task.</li>
+</ol>
+<h2 is-upgraded>1.5. Implement the onClick handler for the Search button in the SearchActivity</h2>
+<p>Your app crashed, because the <code>onClick</code> handler set for the <strong>Search</strong> button in the XML code doesn&#39;t exist yet. So you will build <code>showResult</code> next.</p>
+<p>When the <strong>Search</strong> button is pressed, several things need to happen:</p>
+<ul>
+<li>The event handler calls <code>public void showResult(View view)</code> in <code>SearchActivity</code>.</li>
+<li>Your app has to get the current value from the <code>mEditWordView</code>, which is your search string. </li>
+<li>You print the &#34;Result for&#34; and the word in <code>mTextView</code>.</li>
+<li>You call the (not yet written) search function on <code>mDB</code> (<code>mDB.search(word)</code> and get back a SQlite database cursor. You will implement the search function in the next task.</li>
+<li>You process the cursor and add the result to <code>mTextView</code>.</li>
+</ul>
+<ol type="1" start="1">
+<li>In <code>SearchActivity</code>, create the <code>showResult</code> function. It is public, takes a <code>View</code> argument, and returns nothing.</li>
+<li>Create a <code>String</code> variable called word and initialize it with the contents of the input edit text view, <code>mEditWordView</code> .</li>
+<li>Show the search term in the search results <code>TextView</code>; something like</li>
+</ol>
+<pre><code>&#34;Search term: &#34; + word</code></pre>
+<ol type="1" start="4">
+<li>Search the database and get the cursor.<br></li>
+</ol>
+<pre><code>Cursor cursor = mDB.search(word);</code></pre>
+<ol type="1" start="5">
+<li>To process the cursor, you need to do the following:<br>5.1. Make sure the cursor is not null.<br>5.2. Move the cursor to the first entry.<br>5.3. Iterate over the cursor processing the current entry, then advancing the cursor.<br>5.4. Extract the word.<br>5.5. Display the word in the text view.</li>
+<li>Close the cursor.</li>
+<li>If no results are found, the user sees a blank screen with no results. You would want this to be handled in a production app.</li>
+<li>Check the annotated code for additional details.</li>
+</ol>
+<pre><code>public void showResult(View view){
+   String word = mEditWordView.getText().toString();
+   mTextView.setText(&#34;Result for &#34; + word + &#34;:\n\n&#34;);
+
+   // Search for the word in the database.
+   Cursor cursor = mDB.search(word);
+
+   // Only process a non-null cursor with rows.
+   if (cursor != null &amp; cursor.getCount() &gt; 0) {
+       // You must move the cursor to the first item.
+       cursor.moveToFirst();
+       int index;
+       String result;
+       // Iterate over the cursor, while there are entries.
+       do {
+           // Don&#39;t guess at the column index.
+           // Get the index for the named column.
+           index = cursor.getColumnIndex(WordListOpenHelper.KEY_WORD);
+           // Get the value from the column for the current cursor.
+           result = cursor.getString(index);
+           // Add result to what&#39;s already in the text view.
+           mTextView.append(result + &#34;\n&#34;);
+       } while (cursor.moveToNext()); // Returns true or false
+       cursor.close();
+   } // You should add some handling of null case. Right now, nothing happens.
+}</code></pre>
+<p>Your app will not run without at least a stub for <code>search()</code> implemented. Android Studio will create the stub for you. In the light bulb, choose create method.</p>
+<ol type="1" start="9">
+<li>Open <code>WordListOpenHelper</code>.</li>
+<li>Implement a stub for search, with a <code>String</code> parameter, that returns a null cursor.</li>
+<li>Run your app and fix any errors you may have. Note that most of the code in <code>showResult()</code> is not exercised yet.</li>
+</ol>
+<h2 is-upgraded>1.6. Implement the search method in WordListOpenHelper</h2>
+<p>The final step is to implement the actual searching of the database.</p>
+<p>Inside the <code>search()</code> method, you need to build a query with the search string and send the query to the database. A more secure way to do this is by using parameters for each part of the query.</p>
+<p><strong>WHY</strong>: In the previous practical, for the query in <code>WordListOpenHelper</code>, you could build the query string directly and submit it as a <code>rawQuery()</code>, because you had full control over the contents of the query. As soon as you are handling user input, you must assume that it could be malicious.</p>
+<p><strong>Important</strong>: For security reasons, you should always validate user input before you build your query! You will learn more about security in the Security chapter and <a href="https://developer.android.com/training/articles/security-tips.html" target="_blank">Security Tips</a>.</p>
+<p>The SQL query for searching for all entries in the wordlist matching a substring has this form:</p>
+<pre><code>SELECT * FROM WORD_LIST_TABLE WHERE KEY_WORD LIKE %searchString%;</code></pre>
+<p>The parametrized form of the query method you will call looks like this:</p>
+<pre><code>Cursor query (String table, // The table to query
+             String[] columns, // The columns to return
+             String selection, // WHERE statement
+             String[] selectionArgs, // Arguments to WHERE
+             String groupBy, // Grouping filter. Not used.
+             String having, // Additional condition filter. Not used.
+             String orderBy) // Ordering. Setting to null uses default.</code></pre>
+<p>See the <a href="https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html" target="_blank">SQLite Database Android </a>and the documentation for various <code>query()</code>) methods. For the query in the <code>search()</code> method, you need to assign only the first four arguments.</p>
+<ol type="1" start="1">
+<li>The table is already defined as the <code>WORD_LIST_TABLE</code> constant.</li>
+<li>In <code>search()</code>, create a variable for the columns. You need only the value from the <code>KEY_WORD</code> column.</li>
+</ol>
+<pre><code>String[] columns = new String[]{KEY_WORD};</code></pre>
+<ol type="1" start="3">
+<li>Add the <code>%</code> to the <code>searchString</code> parameter.</li>
+</ol>
+<pre><code>searchString = &#34;%&#34; + searchString + &#34;%&#34;;</code></pre>
+<ol type="1" start="4">
+<li>Create the where clause. Omit &#34;<code>WHERE</code>&#34; as it&#39;s implied. Use a question mark for the argument to <code>LIKE</code>. Make sure you have the correct spacing.</li>
+</ol>
+<pre><code>String where = KEY_WORD + &#34; LIKE ?&#34;;</code></pre>
+<ol type="1" start="5">
+<li>Specify the argument to the where clause, which is the <code>searchString</code>.</li>
+</ol>
+<pre><code>String[] whereArgs = new String[]{searchString};</code></pre>
+<ol type="1" start="6">
+<li>Add a <code>Cursor</code> cursor variable and initialize it to null.</li>
+<li>In a try/catch block.<br>7.1. Get a readable database if <code>mReadable</code> is not set yet.<br>7.2. Query the database using the above form of the query. Pass null for the unused parameters.<br>7.3. Handle the exception. You can just log it.</li>
+</ol>
+<ol type="1" start="8">
+<li>Return the cursor.</li>
+<li>Run your app and search for some strings.</li>
+</ol>
+<p><strong>Here is the solution for the complete method:</strong></p>
+<pre><code>public Cursor search (String searchString) {
+   String[] columns = new String[]{KEY_WORD};
+   searchString = &#34;%&#34; + searchString + &#34;%&#34;;
+   String where = KEY_WORD + &#34; LIKE ?&#34;;
+   String[]whereArgs = new String[]{searchString};
+
+   Cursor cursor = null;
+
+   try {
+       if (mReadableDB == null) {mReadableDB = getReadableDatabase();}
+       cursor = mReadableDB.query(WORD_LIST_TABLE, columns, where, whereArgs, null, null, null);
+   } catch (Exception e) {
+       Log.d(TAG, &#34;SEARCH EXCEPTION! &#34; + e);
+   }
+  
+   return cursor;
+}</code></pre>
+<p><strong>Solution code</strong></p>
+<p>Android Studio project: <a href="https://github.com/khammami/android-fundamentals-v1/tree/master/WordListSqlSearchable" target="_blank">WordListSqlSearchable</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Résumé" duration="0">
+        <p>In this chapter, you learned how to</p>
+<ul>
+<li>Use a <a href="https://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html" target="_blank"><code>SQLiteDatabase</code></a> to store user data persistently. </li>
+<li>Work with a <a href="https://developer.android.com/reference/android/database/sqlite/SQLiteOpenHelper.html" target="_blank"><code>SQLiteOpenHelper</code></a> to manage your database. Retrieve and display data from the database</li>
+<li>Edit data in the user interface and reflect those changes in the database</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Apprendre encore plus" duration="0">
+        <p>Android developer documentation:</p>
+<ul>
+<li><a href="http://developer.android.com/guide/topics/data/data-storage.html" target="_blank">Storage Options</a></li>
+<li><a href="http://developer.android.com/training/basics/data-storage/databases.html" target="_blank">Saving Data in SQL Databases</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

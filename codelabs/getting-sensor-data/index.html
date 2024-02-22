@@ -1,0 +1,466 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>P 04.1: Getting sensor data</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-3295395-7" ga4id="G-E0H6JSF2N3"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id="G-E0H6JSF2N3"
+                  id="getting-sensor-data"
+                  title="P 04.1: Getting sensor data"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Welcome" duration="0">
+        <h2 is-upgraded>Introduction</h2>
+<p>Many Android-powered devices include built-in sensors that measure motion, orientation, and environmental conditions such as ambient light or temperature. These sensors can provide data to your app with high precision and accuracy. Sensors can be used to monitor three-dimensional device movement or positioning, or to monitor changes in the environment near a device, such as changes to temperature or humidity. For example, a game might track readings from a device&#39;s accelerometer sensor to infer complex user gestures and motions, such as tilt, shake, or rotation.</p>
+<p>In this codelab you learn about the Android sensor framework, which is used to find the available sensors on a device and retrieve data from those sensors.</p>
+<p>The device camera, fingerprint sensor, microphone, and GPS (location) sensor all have their own APIs and are not considered part of the Android sensor framework.</p>
+<h2 is-upgraded>What you should already know</h2>
+<p>You should be familiar with:</p>
+<ul>
+<li>Creating, building, and running apps in Android Studio.</li>
+<li>Running and testing apps with the Android emulator.</li>
+</ul>
+<h2 class="checklist" is-upgraded>What you&#39;ll learn</h2>
+<ul class="checklist">
+<li>Query the sensor manager for available sensors, and retrieve information about specific sensors.</li>
+<li>Register listeners for sensor data.</li>
+<li>React to incoming sensor data.</li>
+</ul>
+<h2 is-upgraded>What you&#39;ll do</h2>
+<ul>
+<li>Create an app that lists the available device sensors.</li>
+<li>Run the app on a device and on the emulator to view sensors.</li>
+<li>Create a second app that gets data from the light and proximity sensors, and displays that data.</li>
+<li>Interact with the device and note the changes in sensor data.</li>
+<li>Run the app in the emulator and learn about the emulator&#39;s virtual sensors.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="App overview" duration="0">
+        <p>You will build two apps in this codelab. The first app lists the available sensors on the device or emulator. The list of sensors is scrollable, if it is too big to fit the screen.</p>
+<p class="image-container"><img alt="d3be39f13b00d11c.png" style="width: 288.00px" src="img/d3be39f13b00d11c.png"></p>
+<p>The second app, modified from the first, gets data from the ambient light and proximity sensors, and displays that data. Light and proximity sensors are some of the most common Android device sensors.</p>
+<p class="image-container"><img alt="623e49ed13046ed3.png" style="width: 288.00px" src="img/623e49ed13046ed3.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 1. List the available sensors" duration="0">
+        <p>In this task, you build a simple app that queries the sensor manager for the list of sensors available on the device.</p>
+<h2 is-upgraded>1.1 Build the app</h2>
+<ol type="1" start="1">
+<li>Create a new Android project. Call it SensorSurvey and use the Empty activity template.</li>
+<li>Open <code>res/layout/activity_main.xml</code>.</li>
+<li>Add a margin of 16 dp to the constraint layout.</li>
+</ol>
+<pre><code>android:layout_margin=&#34;16dp&#34;</code></pre>
+<ol type="1" start="4">
+<li>Delete the existing <code>TextView</code>.</li>
+<li>Add a <a href="https://developer.android.com/reference/android/widget/ScrollView.html" target="_blank"><code>ScrollView</code></a> element inside the constraint layout. Give it these attributes:</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Attribute</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Value</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_width</p>
+</td><td colspan="1" rowspan="1"><p>&#34;match_parent&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_height</p>
+</td><td colspan="1" rowspan="1"><p>&#34;match_parent&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>app:layout_constraintBottom_toBottomOf</p>
+</td><td colspan="1" rowspan="1"><p>&#34;parent&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>app:layout_constraintTop_toTopOf</p>
+</td><td colspan="1" rowspan="1"><p>&#34;parent&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>app:layout_constraintLeft_toLeftOf</p>
+</td><td colspan="1" rowspan="1"><p>&#34;parent&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>app:layout_constraintRight_toRightOf</p>
+</td><td colspan="1" rowspan="1"><p>&#34;parent&#34;</p>
+</td></tr>
+</table>
+<p>The <code>ScrollView</code> is here to allow the list of sensors to scroll if it is longer than the screen.</p>
+<ol type="1" start="6">
+<li>Add a <code>TextView</code> element inside the <code>ScrollView</code> and give it these attributes:</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Attribute</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Value</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/sensor_list&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_width</p>
+</td><td colspan="1" rowspan="1"><p>&#34;wrap_content&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_height</p>
+</td><td colspan="1" rowspan="1"><p>&#34;wrap_content&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;(placeholder)&#34;</p>
+</td></tr>
+</table>
+<p>This <code>TextView</code> holds the list of sensors. The placeholder text is replaced at runtime by the actual sensor list. The layout for your app should look like this screenshot:</p>
+<p class="image-container"><img alt="8fc088edd87031ac.png" style="width: 288.00px" src="img/8fc088edd87031ac.png"></p>
+<ol type="1" start="7">
+<li>Open <code>MainActivity</code> and add a variable at the top of the class to hold an instance of <code>SensorManager</code>:</li>
+</ol>
+<pre><code>private SensorManager mSensorManager;</code></pre>
+<p>The sensor manager is a system service that lets you access the device sensors.</p>
+<ol type="1" start="8">
+<li>In the <code>onCreate()</code> method, below the <code>setContentView()</code> method, get an instance of the sensor manager from system services, and assign it to the <code>mSensorManager</code> variable:</li>
+</ol>
+<pre><code>mSensorManager =
+   (SensorManager) getSystemService(Context.SENSOR_SERVICE);</code></pre>
+<ol type="1" start="9">
+<li>Get the list of all sensors from the sensor manager. Store the list in a <a href="https://developer.android.com/reference/java/util/List.html" target="_blank"><code>List</code></a> object whose values are of type <a href="https://developer.android.com/reference/android/hardware/Sensor.html" target="_blank"><code>Sensor</code></a>:</li>
+</ol>
+<pre><code>List&lt;Sensor&gt; sensorList  =
+    mSensorManager.getSensorList(Sensor.TYPE_ALL);</code></pre>
+<p>The <a href="https://developer.android.com/reference/android/hardware/Sensor.html" target="_blank"><code>Sensor</code></a> class represents an individual sensor and defines constants for the available sensor types. The <a href="https://developer.android.com/reference/android/hardware/Sensor.html#TYPE_ALL" target="_blank"><code>Sensor.TYPE_ALL</code></a> constant indicates all the available sensors.</p>
+<ol type="1" start="10">
+<li>Iterate over the list of sensors. For each sensor, get that sensor&#39;s official name with the <a href="https://developer.android.com/reference/android/hardware/Sensor.html#getName()" target="_blank"><code>getName()</code></a> method, and append that name to the <code>sensorText</code> string. Each line of the sensor list is separated by the value of the <code>line.separator</code> property, typically a newline character:</li>
+</ol>
+<pre><code>StringBuilder sensorText = new StringBuilder();
+
+for (Sensor currentSensor : sensorList ) {
+         sensorText.append(currentSensor.getName()).append(
+            System.getProperty(&#34;line.separator&#34;));
+}</code></pre>
+<ol type="1" start="11">
+<li>Get a reference to the <code>TextView</code> for the sensor list, and update the text of that view with the string containing the list of sensors:</li>
+</ol>
+<pre><code>TextView sensorTextView = (TextView) findViewById(R.id.sensor_list);
+sensorTextView.setText(sensorText);</code></pre>
+<h2 is-upgraded>1.2 Run the app on a device and in the emulator</h2>
+<p>Different Android devices have different sensors available, which means the SensorSurvey app shows different results for each device. In addition, the Android emulator includes a small set of simulated sensors.</p>
+<ol type="1" start="1">
+<li>Run the app on a physical device. The output of the app looks something like this screenshot:</li>
+</ol>
+<p class="image-container"><img alt="d3be39f13b00d11c.png" style="width: 288.00px" src="img/d3be39f13b00d11c.png"></p>
+<p>In this list, lines that begin with a letter/number code represent physical hardware in the device. The letters and numbers indicate sensor manufacturers and model numbers. In most devices the accelerometer, gyroscope, and magnetometer are physical sensors.</p>
+<p>Lines without letter/number codes are virtual or composite sensors, that is, sensors that are simulated in software. These sensors use the data from one or more physical sensors. So, for example, the gravity sensor may use data from the accelerometer, gyroscope, and magnetometer to provide the direction and magnitude of gravity in the device&#39;s coordinate system.</p>
+<ol type="1" start="2">
+<li>Run the app in an emulator. The output of the app looks something like this screenshot:</li>
+</ol>
+<p class="image-container"><img alt="9865c7528519d0af.png" style="width: 288.00px" src="img/9865c7528519d0af.png"></p>
+<p>Because the Android emulator is a simulated device, all the available sensors are virtual sensors. &#34;Goldfish&#34; is the name of the emulator&#39;s Linux kernel.</p>
+<ol type="1" start="3">
+<li>Click the More button (three horizontal dots) on the emulator&#39;s control panel. The Extended Controls window appears.</li>
+<li>Click Virtual Sensors.</li>
+</ol>
+<p class="image-container"><img alt="d59d4c1d987a8bd2.png" style="width: 624.00px" src="img/d59d4c1d987a8bd2.png"></p>
+<p>This window shows the settings and current values for the emulator&#39;s virtual sensors. Drag the image of the device to simulate motion and acceleration with the accelerometer. Dragging the device image may also rotate the main emulator window.</p>
+<ol type="1" start="5">
+<li>Click the Additional Sensors tab.</li>
+</ol>
+<p class="image-container"><img alt="599f9798f917ccfd.png" style="width: 624.00px" src="img/599f9798f917ccfd.png"></p>
+<p>This tab shows the other available virtual sensors for the emulator, including the light, temperature, and proximity sensors. You use more of these sensors in the next task.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 2. Get sensor data" duration="0">
+        <p>The Android sensor framework provides the ability for your app to register for and react to changes in sensor data. In this task you modify your existing app to listen to and report values from the proximity and light sensors.</p>
+<ul>
+<li>The light sensor measures ambient light in <a href="https://en.wikipedia.org/wiki/Lux" target="_blank">lux</a>, a standard unit of illumination. The light sensor typically is used to automatically adjust screen brightness.</li>
+<li>The proximity sensor measures when the device is close to another object. The proximity sensor is often used to turn off touch events on a phone&#39;s screen when you answer a phone call, so that touching your phone to your face does not accidentally launch apps or otherwise interfere with the device&#39;s operation.</li>
+</ul>
+<h2 is-upgraded>2.1 Modify the layout</h2>
+<ol type="1" start="1">
+<li>Open <code>res/layout/activity_main.xml</code>.</li>
+<li>Delete the <code>ScrollView</code> and <code>TextView</code> elements from the previous app.</li>
+<li>Add a <code>TextView</code> and give it the attributes in the following table. Extract the string into a resource called <code>"label_light"</code>. This text view will print the current value from the light sensor.</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Attribute</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Value</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/label_light&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_width</p>
+</td><td colspan="1" rowspan="1"><p>&#34;wrap_content&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_height</p>
+</td><td colspan="1" rowspan="1"><p>&#34;wrap_content&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;Light Sensor: %1$.2f&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>app:layout_constraintLeft_toLeftOf</p>
+</td><td colspan="1" rowspan="1"><p>&#34;parent&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>app:layout_constraintTop_toBottomOf</p>
+</td><td colspan="1" rowspan="1"><p>&#34;parent&#34;</p>
+</td></tr>
+</table>
+<p>The <code>"%1$.2f"</code> part of the text string is a placeholder code. This code will be replaced in the Java code for your app with the placeholder filled in with an actual numeric value. In this case the placeholder code has three parts:</p>
+<ul>
+<li><code>%1</code>: The first placeholder. You could include multiple placeholders in the same string with <code>%2</code>, <code>%3</code>, and so on.</li>
+<li><code>$.2</code>: The number format. In this case, <code>.2</code> indicates that the value should be formatted with only two digits after the decimal point.</li>
+<li><code>f</code>: Indicates that the value to display is a floating-point number. Use <code>s</code> for string values and <code>d</code> for decimal values.</li>
+</ul>
+<p>The part of the string that is not made up of placeholders (<code>"Light Sensor: "</code>) is passed through to the new string. You can find out more about placeholders and formatting codes in the <a href="https://developer.android.com/reference/java/util/Formatter.html#syntax" target="_blank">Formatter</a> documentation.</p>
+<ol type="1" start="4">
+<li>Copy and paste the <code>TextView</code> element. Change the attributes in the following table. Extract the string into a resource called <code>"label_proximity"</code>. This text view will print values from the proximity sensor.</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Attribute</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Value</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/label_proximity&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;Proximity Sensor: %1$.2f&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>app:layout_constraintTop_toBottomOf</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/label_light&#34;</p>
+</td></tr>
+</table>
+<p>The layout for your app should look like this screenshot:</p>
+<p class="image-container"><img alt="deb6e3eb73315a1b.png" style="width: 288.00px" src="img/deb6e3eb73315a1b.png"></p>
+<ol type="1" start="5">
+<li>Open <code>res/values/strings.xml</code> and add this line:</li>
+</ol>
+<pre><code>&lt;string name=&#34;error_no_sensor&#34;&gt;No sensor&lt;/string&gt;</code></pre>
+<p>You&#39;ll use this message in the next task when you test if a sensor is available.</p>
+<h2 is-upgraded>2.2 Get the sensors</h2>
+<p>In this task, you modify the activity&#39;s <code>onCreate()</code> method to gain access to the light and proximity sensors.</p>
+<ol type="1" start="1">
+<li>Open <code>MainActivity</code> and add private member variables at the top of the class to hold <a href="https://developer.android.com/reference/android/hardware/Sensor.html" target="_blank"><code>Sensor</code></a> objects for the light and proximity sensors. Also add private member variables to hold the <code>TextView</code> objects from the layout:</li>
+</ol>
+<pre><code>// Individual light and proximity sensors.
+private Sensor mSensorProximity;
+private Sensor mSensorLight;
+
+// TextViews to display current sensor values  
+private TextView mTextSensorLight;
+private TextView mTextSensorProximity;</code></pre>
+<ol type="1" start="2">
+<li>In the <code>onCreate()</code> method, delete all the existing code after the line to get the sensor manager.</li>
+<li>Add code to <code>onCreate()</code> to get the two <code>TextView</code> views and assign them to their respective variables:</li>
+</ol>
+<pre><code>mTextSensorLight = (TextView) findViewById(R.id.label_light);
+mTextSensorProximity = (TextView) findViewById(R.id.label_proximity);</code></pre>
+<ol type="1" start="4">
+<li>Get instances of the default light and proximity sensors. These will be instances of the <code>Sensor</code> class. Assign them to their respective variables:</li>
+</ol>
+<pre><code>mSensorProximity =
+   mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+mSensorLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);</code></pre>
+<p>The <a href="https://developer.android.com/reference/android/hardware/SensorManager.html#getDefaultSensor(int)" target="_blank"><code>getDefaultSensor()</code></a> method is used to query the sensor manager for sensors of a given type. The sensor types are defined by the <code>Sensor</code> class. If there is no sensor available for the given type, the <code>getDefaultSensor()</code> method returns <code>null</code>.</p>
+<ol type="1" start="5">
+<li>Get the error string you defined earlier from the <code>strings.xml</code> resource:</li>
+</ol>
+<pre><code>String sensor_error = getResources().getString(R.string.error_no_sensor);</code></pre>
+<ol type="1" start="6">
+<li>Test that there is an available light sensor. If the sensor is not available (that is, if <code>getDefaultSensor()</code> returns <code>null</code>), set the display text for the light sensor&#39;s <code>TextView</code> to the error string.</li>
+</ol>
+<pre><code>if (mSensorLight == null) {
+   mTextSensorLight.setText(sensor_error);
+}</code></pre>
+<p>Different devices have different sensors, so it is important that your app check that a sensor exists before using the sensor. If a sensor is not available, your app should turn off features that use that sensor and provide helpful information to the user. If your app&#39;s functionality relies on a sensor that is not available, your app should provide a message and gracefully quit. Do not assume that any device will have any given sensor.</p>
+<ol type="1" start="7">
+<li>Test for the existence of the proximity sensor.</li>
+</ol>
+<pre><code>if (mSensorProximity == null) {
+   mTextSensorProximity.setText(sensor_error);
+}</code></pre>
+<h2 is-upgraded>2.3 Listen for new sensor data</h2>
+<p>When sensor data changes, the Android sensor framework generates an event (a <a href="https://developer.android.com/reference/android/hardware/SensorEvent.html" target="_blank"><code>SensorEvent</code></a>) for that new data. Your app can register listeners for these events, then handle the new sensor data in an <a href="https://developer.android.com/reference/android/hardware/SensorEventListener.html#onSensorChanged(android.hardware.SensorEvent)" target="_blank"><code>onSensorChanged()</code></a> callback. All of these tasks are part of the <a href="https://developer.android.com/reference/android/hardware/SensorEventListener.html" target="_blank"><code>SensorEventListener</code></a> interface.</p>
+<p>In this task, you register listeners for changes to the light and proximity sensors. You process new data from those sensors and display that data in the app layout.</p>
+<ol type="1" start="1">
+<li>At the top of the class, modify the class signature to implement the <code>SensorEventListener</code> interface.</li>
+</ol>
+<pre><code>public class MainActivity
+   extends AppCompatActivity implements SensorEventListener {</code></pre>
+<ol type="1" start="2">
+<li>Click the red light bulb icon, select &#34;implement methods,&#34; and select all methods.</li>
+</ol>
+<p>The <code>SensorEventListener</code> interface includes two callback methods that enable your app to handle sensor events:</p>
+<ul>
+<li><a href="https://developer.android.com/reference/android/hardware/SensorEventListener.html#onSensorChanged(android.hardware.SensorEvent)" target="_blank"><code>onSensorChanged()</code></a>: Called when new sensor data is available. You will use this callback most often to handle new sensor data in your app.</li>
+<li><a href="https://developer.android.com/reference/android/hardware/SensorEventListener.html#onAccuracyChanged(android.hardware.Sensor,%20int)" target="_blank"><code>onAccuracyChanged()</code></a>: Called if the sensor&#39;s accuracy changes, so your app can react to that change. Most sensors, including the light and proximity sensors, do not report accuracy changes. In this app, you leave <code>onAccuracyChanged()</code> empty.</li>
+</ul>
+<ol type="1" start="3">
+<li>Override the <code>onStart()</code> activity lifecycle method to register your sensor listeners. Listening to incoming sensor data uses device power and consumes battery life. Don&#39;t register your listeners in <code>onCreate()</code>, as that would cause the sensors to be on and sending data (using device power) even when your app was not in the foreground. Use the <code>onStart()</code> and <code>onStop()</code> methods to register and unregister your sensor listeners.</li>
+</ol>
+<pre><code>@Override
+protected void onStart() {
+   super.onStart();
+
+   if (mSensorProximity != null) {
+      mSensorManager.registerListener(this, mSensorProximity,
+         SensorManager.SENSOR_DELAY_NORMAL);
+   }
+   if (mSensorLight != null) {
+      mSensorManager.registerListener(this, mSensorLight,
+         SensorManager.SENSOR_DELAY_NORMAL);
+   }
+}</code></pre>
+<aside class="special"><p>Note: The <code>onStart()</code> and <code>onStop()</code> methods are preferred over <code>onResume()</code> and <code>onPause()</code> to register and unregister listeners. As of Android 7.0 (API 24), apps can run in multi-window mode (split-screen or picture-in-picture mode). Apps running in this mode are paused, but still visible on screen. Use <code>onStart()</code> and <code>onStop()</code> to ensure that sensors continue running even if the app is in multi-window mode.</p>
+</aside>
+<p>Each sensor that your app uses needs its own listener, and you should make sure that those sensors exist before you register a listener for them. Use the <a href="https://developer.android.com/reference/android/hardware/SensorManager.html#registerListener(android.hardware.SensorEventListener,%20android.hardware.Sensor,%20int)" target="_blank"><code>registerListener()</code></a> method from the <code>SensorManager</code> to register a listener. This method takes three arguments:</p>
+<ul>
+<li>An app or activity <a href="https://developer.android.com/reference/android/content/Context.html" target="_blank"><code>Context</code></a>. You can use the current activity (<code>this</code>) as the context.</li>
+<li>The <code>Sensor</code> object to listen to.</li>
+<li>A delay constant from the <code>SensorManager</code> class. The delay constant indicates how quickly new data is reported from the sensor. Sensors can report a lot of data very quickly, but more reported data means that the device consumes more power. Make sure that your listener is registered with the minimum amount of new data it needs. In this example you use the slowest value ( <a href="https://developer.android.com/reference/android/hardware/SensorManager.html#SENSOR_DELAY_NORMAL" target="_blank"><code>SensorManager.SENSOR_DELAY_NORMAL</code></a>). For more data-intensive apps such as games, you may need a faster rate such as <a href="https://developer.android.com/reference/android/hardware/SensorManager.html#SENSOR_DELAY_GAME" target="_blank"><code>SENSOR_DELAY_GAME</code></a> or <a href="https://developer.android.com/reference/android/hardware/SensorManager.html#SENSOR_DELAY_FASTEST" target="_blank"><code>SENSOR_DELAY_FASTEST</code></a>.</li>
+</ul>
+<ol type="1" start="4">
+<li>Implement the <code>onStop()</code> lifecycle method to unregister your sensor listeners when the app pauses:</li>
+</ol>
+<pre><code>@Override
+protected void onStop() {
+   super.onStop();
+   mSensorManager.unregisterListener(this);
+}</code></pre>
+<p>A single call to the <code>SensorManager.</code> <a href="https://developer.android.com/reference/android/hardware/SensorManager.html#unregisterListener(android.hardware.SensorEventListener)" target="_blank"><code>unregisterListener()</code></a> method unregisters all the registered listeners. Unregistering the sensor listeners in the onStop() method prevents the device from using power when the app is not visible.</p>
+<ol type="1" start="5">
+<li>In the <a href="https://developer.android.com/reference/android/hardware/SensorEventListener.html#onSensorChanged(android.hardware.SensorEvent)" target="_blank"><code>onSensorChanged()</code></a> method, get the sensor type.</li>
+</ol>
+<pre><code>int sensorType = event.sensor.getType();</code></pre>
+<p>The <code>onSensorChanged()</code> method is called with a <a href="https://developer.android.com/reference/android/hardware/SensorEvent.html" target="_blank"><code>SensorEvent</code></a> object. The <code>SensorEvent</code> object includes important properties of the event, such as which sensor is reporting new data, and the new data values. Use the <code>sensor</code> property of the <code>SensorEvent</code> to get a <code>Sensor</code> object, and then use <code>getType()</code> to get the type of that sensor. Sensor types are defined as constants in the <code>Sensor</code> class, for example, <a href="https://developer.android.com/reference/android/hardware/Sensor.html#TYPE_LIGHT" target="_blank"><code>Sensor.TYPE_LIGHT</code></a>.</p>
+<ol type="1" start="6">
+<li>Also in <code>onSensorChanged()</code>, get the sensor value.</li>
+</ol>
+<pre><code>float currentValue = event.values[0];</code></pre>
+<p>The sensor event stores the new data from the sensor in the <code>values</code> array. Depending on the sensor type, this array may contain a single piece of data or a multidimensional array full of data. For example, the accelerometer reports data for the <em>x</em>-axis, <em>y</em>-axis, and <em>z</em>-axis for every change in the <code>values[0]</code>, <code>values[1]</code>, and <code>values[2]</code> positions. Both the light and proximity sensors only report one value, in <code>values[0]</code>.</p>
+<ol type="1" start="7">
+<li>Add a <code>switch</code> statement for the <code>sensorType</code> variable. Add a <code>case</code> for <code>Sensor.TYPE_LIGHT</code> to indicate that the event was triggered by the light sensor.</li>
+</ol>
+<pre><code>switch (sensorType) {
+   // Event came from the light sensor.
+   case Sensor.TYPE_LIGHT:
+      // Handle light sensor
+      break;
+   default:
+       // do nothing
+}</code></pre>
+<ol type="1" start="8">
+<li>Inside the light sensor <code>case</code>, get the template string from the resources, and update the value in the light sensor&#39;s <code>TextView</code>.</li>
+</ol>
+<pre><code>mTextSensorLight.setText(getResources().getString(
+   R.string.label_light, currentValue));</code></pre>
+<p>When you defined this <code>TextView</code> in the layout, the original string resource included a placeholder code, like this:</p>
+<pre><code>Light Sensor: %1$.2f</code></pre>
+<p>When you call <code>getString()</code> to get the string from the resources, you include values to substitute into the string where the placeholder codes are. The part of the string that is not made up of placeholders (<code>"Light Sensor: "</code>) is passed through to the new string.</p>
+<ol type="1" start="9">
+<li>Add a second <code>case</code> for the proximity sensor ( <a href="https://developer.android.com/reference/android/hardware/Sensor.html#TYPE_PROXIMITY" target="_blank"><code>Sensor.TYPE_PROXIMITY</code></a>).</li>
+</ol>
+<pre><code>case Sensor.TYPE_PROXIMITY:
+   mTextSensorProximity.setText(getResources().getString(
+       R.string.label_proximity, currentValue));
+   break;</code></pre>
+<h2 is-upgraded>2.4 Run the app on a device and in the emulator</h2>
+<ol type="1" start="1">
+<li>Run the app on a physical device. The output of the app looks something like this screenshot:</li>
+</ol>
+<p class="image-container"><img alt="623e49ed13046ed3.png" style="width: 288.00px" src="img/623e49ed13046ed3.png"></p>
+<ol type="1" start="2">
+<li>Move the device towards a light source, or shine a flashlight on it. Move the device away from the light or cover the device with your hand. Note how the light sensor reports changes in the light level.</li>
+</ol>
+<p>TIP: The light sensor is often placed on the top right of the device&#39;s screen.</p>
+<p>The light sensor&#39;s value is generally measured in lux, a standard unit of illumination. However, the lux value that a sensor reports may differ across different devices, and the maximum may vary as well. If your app requires a specific range of values for the light sensor, you must translate the raw sensor data into something your app can use.</p>
+<ol type="1" start="3">
+<li>Move your hand toward the device, and then move it away again. Note how the proximity sensor reports values indicating &#34;near&#34; and &#34;far.&#34; Depending on how the proximity sensor is implemented, you may get a range of values, or you may get just two values (for example, 0 and 5) to represent near and far.</li>
+</ol>
+<p><strong>TIP:</strong> The proximity sensor is often a virtual sensor that gets its data from the light sensor. For that reason, covering the light sensor may produce changes to the proximity value.</p>
+<p>As with the light sensor, the sensor data for the proximity sensor can vary from device to device. Proximity values may be a range between a minimum and a maximum. More often there are only two proximity values, one to indicate &#34;near,&#34; and one to indicate &#34;far.&#34; All these values may vary across devices.</p>
+<ol type="1" start="4">
+<li>Run the app in an emulator, and click the More button (three horizontal dots) on the emulator&#39;s control panel to bring up the Extended controls window.</li>
+<li>Click Virtual sensors, and then click the Additional sensors tab.</li>
+</ol>
+<p class="image-container"><img alt="599f9798f917ccfd.png" style="width: 624.00px" src="img/599f9798f917ccfd.png"></p>
+<p>The sliders in this window enable you to simulate changes to sensor data that would normally come from the hardware sensors. Changes in this window generate sensor events in the emulator that your app can respond to.</p>
+<ol type="1" start="6">
+<li>Move the sliders for the light and proximity sensors and observe that the values in the app change as well.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Coding challenge" duration="0">
+        <aside class="special"><p><strong>Note:</strong> All coding challenges are optional and are not prerequisites for later lessons.</p>
+</aside>
+<h2 is-upgraded>Challenge</h2>
+<p>Modify the SensorListeners app such that:</p>
+<ul>
+<li>The background color of the app changes in response to the light level.</li>
+</ul>
+<p>TIP: You can use <code>getWindow().getDecorView().setBackgroundColor()</code> to set the app&#39;s background color.</p>
+<ul>
+<li>Place an <code>ImageView</code> or <code>Drawable</code> in the layout. Make the image larger or smaller based on the value that the app receives from the proximity sensor.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Summary" duration="0">
+        <ul>
+<li>The Android sensor framework provides access to data coming from a set of device sensors. These sensors include accelerometers, gyroscopes, magnetometers, barometers, humidity sensors, light sensors, proximity sensors, and so on.</li>
+<li>The <code>SensorManager</code> service lets your app access and list sensors and listen for sensor events (<code>SensorEvent</code>). The sensor manager is a system service you can request with <code>getSystemService()</code>.</li>
+<li>The <code>Sensor</code> class represents a specific sensor and contains methods to indicate the properties and capabilities of a given sensor. It also provides constants for sensor types, which define how the sensors behave and what data they provide.</li>
+<li>Use <code>getSensorList(Sensor.TYPE_ALL)</code> to get a list of all the available sensors.</li>
+<li>Use <code>getDefaultSensor()</code> with a sensor type to gain access to a particular sensor as a <code>Sensor</code> object.</li>
+<li>Sensors provide data through a series of sensor events. A <code>SensorEvent</code> object includes information about the sensor that generated it, the time, and new data. The data a sensor provides depends on the sensor type. Simple sensors such as light and proximity sensors report only one data value, whereas motion sensors such as the accelerometer provide multidimensional arrays of data for each event.</li>
+<li>Your app uses sensor listeners to receive sensor data. Implement the <code>SensorEventListener</code> interface to listen for sensor events.</li>
+<li>Use the <code>onSensorChanged()</code> method to handle individual sensor events. From the <code>SensorEvent</code> object passed into that method, you can get the sensor that generated the event and the new data.</li>
+<li>Register the sensor listeners in the <code>onResume()</code> lifecycle method, and unregister them in <code>onPause()</code>. Doing this prevents your app from drawing system resources when your app is not in the foreground.</li>
+<li>Use the <code>registerListener()</code> method to listen to sensor events. Listener registration includes both the type of sensor your app is interested in, and the rate at which your app prefers to receive data. A higher data rate provides more data events, but uses more system resources.</li>
+<li>Use the <code>unregisterListener()</code> method to stop listening to sensor events.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Learn more" duration="0">
+        <p>Android developer documentation:</p>
+<ul>
+<li><a href="https://developer.android.com/guide/topics/sensors/sensors_overview.html" target="_blank">Sensors Overview</a></li>
+</ul>
+<p>Android API reference:</p>
+<ul>
+<li><a href="https://developer.android.com/reference/android/hardware/Sensor.html" target="_blank"><code>Sensor</code></a></li>
+<li><a href="https://developer.android.com/reference/android/hardware/SensorEvent.html" target="_blank"><code>SensorEvent</code></a></li>
+<li><a href="https://developer.android.com/reference/android/hardware/SensorManager.html" target="_blank"><code>SensorManager</code></a></li>
+<li><a href="https://developer.android.com/reference/android/hardware/SensorEventListener.html" target="_blank"><code>SensorEventListener</code></a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

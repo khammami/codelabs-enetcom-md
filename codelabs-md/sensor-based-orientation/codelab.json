@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "md",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-3295395-7",
+  "updated": "2024-02-22T17:17:32Z",
+  "id": "sensor-based-orientation",
+  "duration": 0,
+  "title": "P 04.2: Sensor-based orientation",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "1541Udjn2jmIzjEwbaOEqMKXhXu9YbHIyMyRXzLQhG4o",
+  "theme": "android",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcommp",
+    "enetcommpie",
+    "kiosk",
+    "web"
+  ],
+  "url": "sensor-based-orientation"
+}

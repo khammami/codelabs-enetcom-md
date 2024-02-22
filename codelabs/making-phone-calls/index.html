@@ -1,0 +1,942 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>P 03.1: Making Phone Calls</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-3295395-7" ga4id="G-E0H6JSF2N3"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id="G-E0H6JSF2N3"
+                  id="making-phone-calls"
+                  title="P 03.1: Making Phone Calls"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Welcome" duration="0">
+        <h2 is-upgraded>Introduction</h2>
+<p>Android mobile devices with telephone/cellular service are pre-installed with a Phone app for making calls, which includes a dialer for dialing any phone number. You use an implicit <a href="https://developer.android.com/reference/android/content/Intent.html" target="_blank"><code>Intent</code></a> to launch the Phone app from your app. You have two choices:</p>
+<ul>
+<li>Use <a href="https://developer.android.com/reference/android/content/Intent.html#ACTION_DIAL" target="_blank"><code>ACTION_DIAL</code></a> to launch the Phone app independently from your app with the phone number displayed in the dialer. The user then makes the call in the Phone app. This is the preferred action for apps that don&#39;t have to monitor the phone&#39;s state.</li>
+<li>Use <a href="https://developer.android.com/reference/android/content/Intent.html#ACTION_CALL" target="_blank"><code>ACTION_CALL</code></a> to launch the Phone app in the context of your app, making the call directly from your app, and monitoring the phone state. This action keeps the user within your app, without having to navigate back to the app. Your app must request permission from the user before making the call if the user hasn&#39;t already granted permission.</li>
+</ul>
+<h2 is-upgraded>What you should already know</h2>
+<ul>
+<li>Create and run interactive apps in Android Studio.</li>
+<li>Work with XML layouts.</li>
+<li>Create an implicit intent to perform an action using another app.</li>
+</ul>
+<h2 class="checklist" is-upgraded>What you&#39;ll learn</h2>
+<ul class="checklist">
+<li>Pass a phone number to the Phone app&#39;s dialer.</li>
+<li>Perform a phone call within your app.</li>
+<li>Test to see if telephony services are enabled.</li>
+<li>Check for calling permission, and request permission if required.</li>
+</ul>
+<h2 is-upgraded>What you&#39;ll do</h2>
+<ul>
+<li>Create an app that uses an implicit intent to launch the Phone app.</li>
+<li>Create another app that makes phone calls from within the app.</li>
+<li>Test to see if telephony services are enabled before enabling the app.</li>
+<li>Check for calling permission, which can change at any time.</li>
+<li>Request permission from the user, if necessary, to make the call.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="App overview" duration="0">
+        <p>You will create two apps:</p>
+<ul>
+<li><a href="https://github.com/khammami/android-fundamentals-phone-sms/tree/master/PhoneCallDial" target="_blank"><code>PhoneCallDial</code></a>: A basic app that uses an implicit intent to launch the Phone app with a hard-coded phone number for dialing. The Phone app makes the call. You could use this technique to provide a one-button dialer to custom support. In this lesson you will build a layout, shown in the figure below. It includes a <code>TextView</code> with a hard-coded phone number, and an <code>ImageButton</code> with an icon to launch the Phone app with that phone number in its dialer.</li>
+</ul>
+<p class="image-container"><img alt="PhoneCallDial app to pass a phone number to the dialer" title="PhoneCallDial app to pass a phone number to the dialer" style="width: 206.50px" src="img/38f2c6137fc38804.png"></p>
+<ul>
+<li><a href="https://github.com/khammami/android-fundamentals-phone-sms/tree/master/PhoneCallingSample" target="_blank"><code>Phone Calling Sample</code></a>: An app that secures permission, uses an implicit intent to make a phone call from the app, and uses the <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a> class to monitor the phone&#39;s state. You would use this technique if you want to keep the user within your app, without having to navigate back to the app. In this lesson, you modify the above layout to use an <code>EditText</code> so that users can enter the phone number. The layout looks like the figure below:</li>
+</ul>
+<p class="image-container"><img alt="App to make a phone call to a user-entered number" title="App to make a phone call to a user-entered number" style="width: 220.65px" src="img/3d946a18ec5a95bf.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 1: Send an intent with the phone number to dial" duration="0">
+        <p>In this task you will create an app that uses an implicit intent to launch the Phone app to dial a given phone number. To send that intent, your app needs to prepare a Uniform Resource Identifier (URI) that is prefixed by &#34;tel:&#34; (for example <code>tel:14155551212</code>).</p>
+<h2 is-upgraded>1.1 Create the app and layout</h2>
+<ol type="1" start="1">
+<li>Create a project using the <strong>Empty Activity</strong> template and call it <strong>PhoneCallDial</strong>.</li>
+<li>Add an icon for the call button by following these steps:</li>
+</ol>
+<ul>
+<li>Select the drawable/ folder in the Project: Android view and choose <strong>File &gt; New &gt; Vector Asset</strong>.</li>
+<li>Click the Android icon next to &#34;Icon:&#34; to choose an icon. To find a handset icon, choose <strong>Communication</strong> in the left column.</li>
+<li>Select the icon, click OK, click Next, and then click Finish.</li>
+</ul>
+<ol type="1" start="3">
+<li>Open the <code>activity_main.xml</code> layout file.</li>
+</ol>
+<ul>
+<li>Change the root view to RelativeLayout.</li>
+<li>In the &#34;Hello World&#34; <code>TextView</code> element, remove the <code>layout_constraint</code> attributes, if they are present.</li>
+<li>Change the <code>TextView</code> to show a dummy contact name, as if the app had retrieved the name from a contacts database and assigned it to a <code>TextView</code>:</li>
+</ul>
+<pre><code>&lt;TextView
+android:id=&#34;@+id/contact_name&#34;
+android:layout_width=&#34;wrap_content&#34;
+android:layout_height=&#34;wrap_content&#34;
+android:layout_margin=&#34;@dimen/activity_horizontal_margin&#34;
+android:textSize=&#34;24sp&#34;
+android:text=&#34;Jane Doe&#34; /&gt;</code></pre>
+<ol type="1" start="4">
+<li>Extract the strings and dimensions into resources:</li>
+</ol>
+<ul>
+<li><code>24sp</code>: <code>contact_text_size</code> for the text size.</li>
+<li><code>Jane Doe</code>: <code>contact_name</code> for the text.</li>
+</ul>
+<ol type="1" start="5">
+<li>Add another <code>TextView</code> for the phone number:</li>
+</ol>
+<pre><code>&lt;TextView
+    android:id=&#34;@+id/number_to_call&#34;
+    android:layout_width=&#34;wrap_content&#34;
+    android:layout_height=&#34;wrap_content&#34;
+    android:layout_margin=&#34;@dimen/activity_horizontal_margin&#34;
+    android:layout_below=&#34;@id/contact_name&#34;
+    android:text=&#34;14155551212&#34; /&gt;
+</code></pre>
+<p><br>You will use the <code>android:id number_to_call</code> to retrieve the phone number.</p>
+<ol type="1" start="6">
+<li>After adding a hard-coded phone number string, extract it into the resource <code>phone_number</code>.</li>
+<li>Add an <code>ImageButton</code> for initiating the call:</li>
+</ol>
+<pre><code>&lt;ImageButton
+    android:id=&#34;@+id/phone_icon&#34;
+    android:contentDescription=&#34;Make a call&#34;
+    android:layout_width=&#34;wrap_content&#34;
+    android:layout_height=&#34;wrap_content&#34;
+    android:layout_below=&#34;@id/contact&#34;
+    android:layout_toRightOf=&#34;@id/number_to_call&#34;
+    android:layout_toEndOf=&#34;@id/number_to_call&#34;
+    android:src=&#34;@drawable/ic_call_black_24dp&#34;
+    android:onClick=&#34;dialNumber&#34;/&gt;</code></pre>
+<p><br>Use the vector asset you added previously (for example <code>ic_call_black_24dp</code> for a phone handset icon) for the <code>android:src</code> attribute. You will use the <code>android:id @phone_icon</code> to refer to the button for dialing the phone.<br>The <code>dialNumber</code> method referred to in the <code>android:onClick</code> attribute remains highlighted until you create this method in the <code>MainActivity</code>, which you do in the next step.</p>
+<ol type="1" start="8">
+<li>After adding a hard-coded content description, extract it into the string resource <code>make_a_call</code>.</li>
+<li>Click <code>dialNumber</code> in the <code>android:onClick</code> attribute, click the red light bulb that appears, and then select <strong>Create dialNumber(View) in &#39;MainActivity&#39;</strong>. Android Studio automatically creates the <code>dialNumber()</code> method in <strong>MainActivity</strong> as <code>public</code>, returning <code>void</code>, with a <code>View</code> parameter. This method is called when the user taps the ImageButton.</li>
+</ol>
+<pre><code>public void dialNumber(View view) {
+}</code></pre>
+<p>The layout should look something like the figure below.</p>
+<p class="image-container"><img alt="PhoneCallDial app to launch the Phone app with a hard-coded phone number for dialing" title="PhoneCallDial app to launch the Phone app with a hard-coded phone number for dialing" style="width: 281.05px" src="img/38f2c6137fc38804.png"></p>
+<p>The following is the complete code for the XML layout in <code>activity_main.xml</code>, including comments:</p>
+<pre><code>&lt;RelativeLayout ...
+    &lt;!-- TextView for a dummy contact name from a contacts database --&gt;
+    &lt;TextView
+        android:id=&#34;@+id/contact_name&#34;
+        android:layout_width=&#34;wrap_content&#34;
+        android:layout_height=&#34;wrap_content&#34;
+        android:layout_margin=&#34;@dimen/activity_horizontal_margin&#34;
+        android:textSize=&#34;@dimen/contact_text_size&#34;
+        android:text=&#34;@string/contact&#34; /&gt;
+
+    &lt;!-- TextView for a hard-coded phone number  --&gt;
+    &lt;TextView
+        android:id=&#34;@+id/number_to_call&#34;
+        android:layout_width=&#34;wrap_content&#34;
+        android:layout_height=&#34;wrap_content&#34;
+        android:layout_margin=&#34;@dimen/activity_horizontal_margin&#34;
+        android:layout_below=&#34;@id/contact_name&#34;
+        android:text=&#34;@string/phone_number&#34; /&gt;
+
+    &lt;!-- The dialNumber() method will be called by this button.  --&gt;
+    &lt;ImageButton
+        android:id=&#34;@+id/phone_icon&#34;
+        android:contentDescription=&#34;@string/make_a_call&#34;
+        android:layout_width=&#34;wrap_content&#34;
+        android:layout_height=&#34;wrap_content&#34;
+        android:layout_below=&#34;@id/contact_name&#34;
+        android:layout_toRightOf=&#34;@id/number_to_call&#34;
+        android:layout_toEndOf=&#34;@id/number_to_call&#34;
+        android:src=&#34;@drawable/ic_call_black_24dp&#34;
+        android:onClick=&#34;dialNumber&#34;/&gt;
+&lt;/RelativeLayout&gt;
+</code></pre>
+<h2 is-upgraded>1.2 Edit the onClick method in MainActivity</h2>
+<ol type="1" start="1">
+<li>In <strong>MainActivity</strong>, define a constant for the log tag.<br></li>
+</ol>
+<pre><code>public static final String TAG = MainActivity.class.getSimpleName();</code></pre>
+<ol type="1" start="2">
+<li>Inside the <code>dialNumber()</code>method created in the previous section, create a reference to the <code>number_to_call</code> <code>TextView</code>:<br></li>
+</ol>
+<pre><code>public void dialNumber(View view) {
+   TextView textView = (TextView) findViewById(R.id.number_to_call);
+...</code></pre>
+<ol type="1" start="3">
+<li>To create the phone number URI string <code>phoneNumber</code>, get the phone number from <code>textView</code> and use it with <code>String.format</code> to include the <code>tel:</code> prefix:</li>
+</ol>
+<pre><code>...
+// Use format with &#34;tel:&#34; and phone number to create mPhoneNum.
+String phoneNumber = String.format(&#34;tel: %s&#34;,
+                                   textView.getText().toString());
+...</code></pre>
+<ol type="1" start="4">
+<li>Define an implicit intent (<code>dialIntent</code>) with the intent action <code>ACTION_DIAL</code>, and set the <code>phoneNumber</code> as data for the intent:</li>
+</ol>
+<pre><code>...
+// Create the intent.
+Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+// Set the data for the intent as the phone number.
+dialIntent.setData(Uri.parse(phoneNumber));
+...</code></pre>
+<ol type="1" start="5">
+<li>To verify that an app exists to receive the intent, call <a href="https://developer.android.com/reference/android/content/pm/PackageManager.html#resolveActivity(android.content.Intent,%20int)" target="_blank">resolveActivity()</a> on your Intent object with <a href="https://developer.android.com/reference/android/content/Context.html#getPackageManager()" target="_blank">getPackageManager()</a> to get a PackageManager instance for finding package information. The <code>resolveActivity()</code> method determines the best action to perform for a given intent. If the result is non-null, there is at least one app that can handle the intent and it&#39;s safe to call <code>startActivity()</code>.</li>
+</ol>
+<pre><code>...
+// If package resolves to an app, send intent.
+if (dialIntent.resolveActivity(getPackageManager()) != null) {
+     startActivity(dialIntent);
+} else {
+     Log.e(TAG, &#34;Can&#39;t resolve app for ACTION_DIAL Intent.&#34;);
+}
+...</code></pre>
+<p>The full method should now look like the following:</p>
+<pre><code>public void dialNumber() {
+    TextView textView = (TextView) findViewById(R.id.number_to_call);
+    // Use format with &#34;tel:&#34; and phone number to create phoneNumber.
+    String phoneNumber = String.format(&#34;tel: %s&#34;,
+                                       textView.getText().toString());
+    // Create the intent.
+    Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+    // Set the data for the intent as the phone number.
+    dialIntent.setData(Uri.parse(phoneNumber));
+    // If package resolves to an app, send intent.
+    if (dialIntent.resolveActivity(getPackageManager()) != null) {
+        startActivity(dialIntent);
+    } else {
+        Log.e(TAG, &#34;Can&#39;t resolve app for ACTION_DIAL Intent.&#34;);
+    }
+}</code></pre>
+<h2 is-upgraded>1.3 Run the app</h2>
+<p>You can run the app on either an emulator or a device:</p>
+<ol type="1" start="1">
+<li>Click or tap the phone icon. The dialer should appear with the phone number ready to use, as shown in the figure below:</li>
+</ol>
+<p class="image-container"><img alt="The dialer in the Phone app" title="The dialer in the Phone app" style="width: 251.23px" src="img/8499fe6494aece01.png"></p>
+<ol type="1" start="2">
+<li>The <code>phone_number</code> string holds a fixed number (1-415-555-1212). You can change the number in the Phone app&#39;s dialer before calling.</li>
+<li>Use the <strong>Back</strong> button to return to the app. You may need to tap or click it two or three times to navigate backwards from the Phone app&#39;s dialer and Favorites list.</li>
+</ol>
+<h4 is-upgraded><strong>Solution code</strong></h4>
+<p>Android Studio project: <a href="https://github.com/khammami/android-fundamentals-phone-sms/tree/master/PhoneCallDial" target="_blank">PhoneCallDial</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 2: Make a phone call from within an app" duration="0">
+        <p>In this task you will copy the <strong>PhoneCallDial</strong> app from the previous task, refactor and rename it to <strong>PhoneCallingSample</strong>, and modify its layout and code to create an app that enables a user to enter a phone number and perform the phone call from within your app.</p>
+<p>In the first step you will add the code to make the call, but the app will work only if telephony is enabled, and if the app&#39;s permission for Phone is set manually in Settings on the device or emulator.</p>
+<p>In subsequent steps you will do away with setting this permission manually by requesting phone permission from the user if it is not already granted. You will also add a telephony check to display a message if telephony is not enabled and code to monitor the phone state.</p>
+<h2 is-upgraded>2.1 Create the app and add permission</h2>
+<ol type="1" start="1">
+<li>Copy the <strong>PhoneCallDial</strong> project folder, rename the folder to <strong>PhoneCallingSample</strong>, and refactor the app to populate the new name throughout the app project. </li>
+<li>Add the following permission to the <code>AndroidManifest.xml</code> file after the first line (with the <code>package</code> definition) and before the <code><application></code> section:<br> </li>
+</ol>
+<pre><code>&lt;uses-permission android:name=&#34;android.permission.CALL_PHONE&#34; /&gt;</code></pre>
+<p><br>Your app can&#39;t make a phone call without the <code>CALL_PHONE</code> permission line in <code>AndroidManifest.xml</code>. This permission line enables a setting for the app in the Settings app that gives the user the choice of allowing or disallowing use of the phone. (In the next task you will add a way for the user to grant that permission from within the app.)</p>
+<h2 is-upgraded>2.2 Create the app layout</h2>
+<ol type="1" start="1">
+<li>Open <code>activity_main.xml</code> to edit the layout.</li>
+<li>Remove the <code>contact_name</code> <code>TextView</code>, and replace the <code>number_to_call</code> <code>TextView</code> with the following <code>EditText</code> view:<br></li>
+</ol>
+<pre><code>&lt;EditText
+    android:id=&#34;@+id/editText_main&#34;
+    android:layout_width=&#34;wrap_content&#34;
+    android:layout_height=&#34;wrap_content&#34;
+    android:layout_margin=&#34;@dimen/activity_horizontal_margin&#34;
+    android:inputType=&#34;phone&#34;
+    android:hint=&#34;Enter a phone number&#34; /&gt;</code></pre>
+<ol type="1" start="3">
+<li>After adding a hard-coded string for the <code>android:hint</code> attribute, extract it into the string resource <code>enter_phone</code>, and note the following:</li>
+</ol>
+<ul>
+<li>You will use the <code>android:id</code> for the <code>EditText</code> view in your code to retrieve the phone number.</li>
+<li>The <code>EditText</code> view uses the <code>android:inputType</code> attribute set to <code>"phone"</code> for a phone-style numeric keypad.</li>
+</ul>
+<ol type="1" start="4">
+<li>Change the <code>ImageButton</code> as follows:</li>
+</ol>
+<ol type="1" start="1">
+<li>Change the <code>android:layout_below</code>, <code>android:layout_toRightOf</code>, and <code>android:layout_toEndOf</code> attributes to refer to <code>editText_main</code>.</li>
+<li>Add the <code>android:visibility</code> attribute set to <code>visible</code>. You will control the visibility of this <code>ImageButton</code> from your code.</li>
+<li>Change the <code>android:onClick</code> method to <code>callNumber</code>. This will remain highlighted until you add that method to <code>MainActivity</code>.</li>
+</ol>
+<pre><code>&lt;ImageButton
+  android:id=&#34;@+id/phone_icon&#34;
+  android:contentDescription=&#34;@string/make_a_call&#34;
+  android:layout_width=&#34;wrap_content&#34;
+  android:layout_height=&#34;wrap_content&#34;
+  android:layout_margin=&#34;@dimen/activity_horizontal_margin&#34;
+  android:layout_toRightOf=&#34;@id/editText_main&#34;
+  android:layout_toEndOf=&#34;@id/editText_main&#34;
+  android:src=&#34;@drawable/ic_call_black_24dp&#34;
+  android:visibility=&#34;visible&#34;
+  android:onClick=&#34;callNumber&#34;/&gt;</code></pre>
+<ol type="1" start="5">
+<li>Add the following Button at the end of the layout, before the ending <code></RelativeLayout></code> tag:<br></li>
+</ol>
+<pre><code>&lt;Button
+    android:id=&#34;@+id/button_retry&#34;
+    android:layout_width=&#34;wrap_content&#34;
+    android:layout_height=&#34;wrap_content&#34;
+    android:contentDescription=&#34;Retry&#34;
+    android:layout_below=&#34;@id/editText_main&#34;
+    android:text=&#34;Retry&#34;
+    android:visibility=&#34;invisible&#34;/&gt;
+&lt;/RelativeLayout&gt;</code></pre>
+<ol type="1" start="6">
+<li>After adding a hard-coded string <code>"Retry"</code> for the <code>android:contentDescription</code> attribute, extract it into the string resource retry, and then replace the hard-coded string in the <code>android:text</code> attribute to <code>"@string/retry"</code>.</li>
+<li>Note the following:</li>
+</ol>
+<ul>
+<li>You will refer to the <code>android:id</code> <code>button_retry</code> in your code.</li>
+<li>Make sure you include the <code>android:visibility</code> attribute set to <code>"invisible"</code>. It should appear only if the app detects that telephony is not enabled, or if the user previously denied phone permission when the app requested it.</li>
+</ul>
+<p>Your app&#39;s layout should look like the following figure (the <code>button_retry</code> Button is invisible):</p>
+<p class="image-container"><img alt="App layout with an EditText and ImageButton" title="App layout with an EditText and ImageButton" style="width: 283.30px" src="img/3d946a18ec5a95bf.png"></p>
+<h2 is-upgraded>2.3 Change the onClick method in MainActivity</h2>
+<ol type="1" start="1">
+<li>In <code>MainActivity</code>, refactor and rename the <code>dialNumber()</code> method to call it <code>callNumber()</code>.</li>
+<li>Change the first statement, which referred to a <code>TextView</code>, to use an <code>EditText</code> view:</li>
+</ol>
+<pre><code>public void callNumber(View view) {
+  EditText editText = (EditText) findViewById(R.id.editText_main);
+  ...
+}</code></pre>
+<ol type="1" start="3">
+<li>Change the next statement to get the phone number from the <code>EditText</code> view (<code>editText</code>) to create the phone number URI string <code>phoneNumber</code>:</li>
+</ol>
+<pre><code>// Use format with &#34;tel:&#34; and phone number to create phoneNumber.
+String phoneNumber = String.format(&#34;tel: %s&#34;,
+                                     editText.getText().toString());</code></pre>
+<ol type="1" start="4">
+<li>Before the intent, add code to show a log message and a toast message with the phone number:</li>
+</ol>
+<pre><code>// Log the concatenated phone number for dialing.
+Log.d(TAG, &#34;Phone Status: DIALING: &#34; + phoneNumber);
+Toast.makeText(this,
+              &#34;Phone Status: DIALING: &#34; + phoneNumber,
+              Toast.LENGTH_LONG).show();</code></pre>
+<ol type="1" start="5">
+<li>Extract <code>"Phone Status: DIALING: "</code> to a string resource (<code>dial_number</code>). Replace the second use of the string in the <code>Toast.makeText()</code> statement to <code>getString(R.string.dial_number)</code>.</li>
+<li>Refactor and rename the <code>dialIntent</code> implicit intent to <code>callIntent</code>, and replace <code>ACTION_DIAL</code> with <code>ACTION_CALL</code>. As a result, the statements should now look like this:</li>
+</ol>
+<pre><code>...
+// Create the intent.
+Intent callIntent = new Intent(Intent.ACTION_CALL);
+// Set the data for the intent as the phone number.
+callIntent.setData(Uri.parse(phoneNumber));
+// If package resolves to an app, send intent.
+if (callIntent.resolveActivity(getPackageManager()) != null) {
+   startActivity(callIntent);
+} else {
+   Log.e(TAG, &#34;Can&#39;t resolve app for ACTION_CALL Intent.&#34;);
+}
+...</code></pre>
+<p>The full method should now look like the following:</p>
+<pre><code>public void callNumber() {
+    EditText editText = (EditText) findViewById(R.id.editText_main);
+    // Use format with &#34;tel:&#34; and phone number to create phoneNumber.
+    String phoneNumber = String.format(&#34;tel: %s&#34;,
+                                         editText.getText().toString());
+    // Log the concatenated phone number for dialing.
+    Log.d(TAG, getString(R.string.dial_number) + phoneNumber);
+    Toast.makeText(this,
+                  getString(R.string.dial_number) + phoneNumber,
+                  Toast.LENGTH_LONG).show();
+    // Create the intent.
+    Intent callIntent = new Intent(Intent.ACTION_CALL);
+    // Set the data for the intent as the phone number.
+    callIntent.setData(Uri.parse(phoneNumber));
+    // If package resolves to an app, send intent.
+    if (callIntent.resolveActivity(getPackageManager()) != null) {
+        startActivity(callIntent);
+    } else {
+        Log.e(TAG, &#34;Can&#39;t resolve app for ACTION_CALL Intent.&#34;);
+    }
+}</code></pre>
+<h2 is-upgraded>2.4 Run the app</h2>
+<p>When you run the app, the app may crash with the following screen depending on whether the device or emulator has been previously set to allow the app to make phone calls:</p>
+<p class="image-container"><img alt="The app crashes without phone permission" title="The app crashes without phone permission" style="width: 238.00px" src="img/3e7759cb490cb6fc.png"></p>
+<p>In some versions of Android, this permission is turned on by default. In others, this permission is turned off by default.</p>
+<p>To set the app&#39;s permission on a device or emulator instance, perform the function that a user would perform: choose <strong>Settings &gt; Apps &gt; Phone Calling Sample &gt; Permissions</strong> on the device or emulator, and turn on the Phone permission for the app. Since the user can turn on or off Phone permission at any time, you have to add a check in your app for this permission, and request it from the user if required. You will do this in the next task.</p>
+<p>If you don&#39;t have cellular service on your device, or if telephony is not enabled, you can test the app using two emulator instances—one emulator instance calls the other one. Follow these steps:</p>
+<ol type="1" start="1">
+<li>To launch an emulator directly from the AVD Manager, choose <strong>Tools &gt; Android &gt; AVD Manager</strong>.</li>
+<li>Double-click a predefined device. Note the number that appears in the emulator&#39;s window title on the far right, as shown in the figure below as #1 (5556). This is the port number of the emulator instance.</li>
+</ol>
+<p class="image-container"><img alt="The port number of the emulator instance" title="The port number of the emulator instance" style="width: 347.00px" src="img/92e6aafd4021b34.png"></p>
+<ol type="1" start="3">
+<li>Open the Android Studio project for the app, if it isn&#39;t already open.</li>
+<li>Run the app, but choose another emulator—not the one that is already running. Android Studio launches the other emulator.</li>
+<li>In the app, enter the port number of the other emulator rather than a real phone number.</li>
+<li>Click the call button in the app. The emulator shows the phone call starting up, as shown in the figure below.</li>
+</ol>
+<p class="image-container"><img alt="Making a call on the emulator" title="Making a call on the emulator" style="width: 281.62px" src="img/64785809e5d509d0.png"></p>
+<p>The other emulator instance should now be receiving the call, as shown in the figure below:</p>
+<p class="image-container"><img alt="Receiving a call on the emulator" title="Receiving a call on the emulator" style="width: 310.87px" src="img/4d708a7e458b2859.png"></p>
+<ol type="1" start="7">
+<li>Click <strong>Answer</strong> or <strong>Dismiss</strong> on the emulator receiving the call. If you click <strong>Answer</strong>, also click the red <strong>Hang-up</strong> button to end the call.</li>
+</ol>
+<p class="image-container"><img alt="Click the red hang-up button to finish the call" title="Click the red hang-up button to finish the call" style="width: 316.50px" src="img/3bec28793720ee7.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 3: Check for telephony service and request permission" duration="0">
+        <p>If telephony features are not enabled for a device, your app should detect that and disable the phone features.</p>
+<p>In addition, your app must always get permission to use anything that is not part of the app itself. In the previous task you added the following permission to the <code>AndroidManifest.xml</code> file:</p>
+<pre><code>&lt;uses-permission android:name=&#34;android.permission.CALL_PHONE&#34; /&gt;</code></pre>
+<p>This statement enables a permission setting for this app in Settings. The user can allow or disallow this permission at any time in Settings. You can add code to request permission if the user has turned off phone permission.</p>
+<h2 is-upgraded>3.1 Check if telephony services are enabled</h2>
+<ol type="1" start="1">
+<li>Open the Android Studio project for the <strong>PhoneCallingSample</strong> app, if it isn&#39;t already open.</li>
+<li>At the top of <code>MainActivity</code> below the class definition, define a variable for the <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a> class object:<br></li>
+</ol>
+<pre><code>private TelephonyManager mTelephonyManager;</code></pre>
+<ol type="1" start="3">
+<li>Add the following statement to <code>onCreate()</code> method in <code>MainActivity</code> to use the string constant <code>TELEPHONY_SERVICE</code> with <code>getSystemService()</code> and assign it to <code>mTelephonyManager</code>. This gives you access to some of the telephony features of the device.</li>
+</ol>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+   super.onCreate(savedInstanceState);
+   setContentView(R.layout.activity_main);
+   // Create a telephony manager.
+   mTelephonyManager = (TelephonyManager)
+                              getSystemService(TELEPHONY_SERVICE);</code></pre>
+<ol type="1" start="4">
+<li>Create a method in <code>MainActivity</code> to check if telephony is enabled:</li>
+</ol>
+<pre><code>private boolean isTelephonyEnabled() {
+      if (mTelephonyManager != null) {
+          if (mTelephonyManager.getSimState() ==
+                                TelephonyManager.SIM_STATE_READY) {
+              return true;
+          }
+      }
+      return false;
+  }</code></pre>
+<ol type="1" start="5">
+<li>Call the above method in the <code>onCreate()</code> method, right after assigning <code>mTelephonyManager</code>, in an if statement to take action if telephony is enabled. The action should be to log a message (to show that telephony is enabled), and include a comment about checking permission, which you will add in the next step. If telephony is not enabled, display a toast message, log a message, and disable the call button:</li>
+</ol>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+  ...    
+  mTelephonyManager = (TelephonyManager)
+                    getSystemService(TELEPHONY_SERVICE);
+  if (isTelephonyEnabled()) {
+       Log.d(TAG, &#34;Telephony is enabled&#34;);
+       // ToDo: Check for phone permission.
+       // ToDo: Register the PhoneStateListener.
+  } else {
+       Toast.makeText(this,
+                    &#34;TELEPHONY NOT ENABLED! &#34;,
+                    Toast.LENGTH_LONG).show();
+       Log.d(TAG, &#34;TELEPHONY NOT ENABLED! &#34;);
+       // Disable the call button
+       disableCallButton();
+  }
+}</code></pre>
+<ol type="1" start="6">
+<li>Extract the hard-coded strings in the above code to string resources:</li>
+</ol>
+<ul>
+<li><code>"Telephony is enabled"</code>: <code>telephony_enabled</code></li>
+<li><code>"TELEPHONY NOT ENABLED! "</code>: <code>telephony_not_enabled</code></li>
+</ul>
+<ol type="1" start="7">
+<li>Create the <code>disableCallButton()</code> method in <code>MainActivity</code>, and code to:</li>
+</ol>
+<ul>
+<li>Display a toast to notify the user that the phone feature is disabled.</li>
+<li>Find and then set the call button to be invisible so that the user can&#39;t make a call.</li>
+<li>If telephony is enabled (but the phone permission has not been granted), set the <strong>Retry</strong> button to be visible, so that the user can start the activity again and allow permission.</li>
+</ul>
+<pre><code>private void disableCallButton() {
+  Toast.makeText(this,
+            &#34;Phone calling disabled&#34;, Toast.LENGTH_LONG).show();
+  ImageButton callButton = (ImageButton) findViewById(R.id.phone_icon);
+  callButton.setVisibility(View.INVISIBLE);
+  if (isTelephonyEnabled()) {
+      Button retryButton = (Button) findViewById(R.id.button_retry);
+      retryButton.setVisibility(View.VISIBLE);
+  }
+}</code></pre>
+<ol type="1" start="8">
+<li>Extract a string resource (<code>phone_disabled</code>) for the hard-coded string &#34;Phone calling disabled&#34; in the toast statement.</li>
+<li>Create an <code>enableCallButton()</code> method in <code>MainActivity</code> that finds and then sets the call button to be visible:</li>
+</ol>
+<pre><code>private void enableCallButton() {
+  ImageButton callButton = (ImageButton) findViewById(R.id.phone_icon);
+  callButton.setVisibility(View.VISIBLE);
+}</code></pre>
+<ol type="1" start="10">
+<li>Create the <code>retryApp()</code> method in MainActivity that will be called when the user clicks the visible <strong>Retry</strong> button. Add code to:</li>
+</ol>
+<ul>
+<li>Call <code>enableCallButton()</code> to enable the call button.</li>
+<li>Create an intent to start (in this case, restart) the activity.</li>
+</ul>
+<pre><code>public void retryApp(View view) {
+   enableCallButton();
+   Intent intent = getPackageManager()
+            .getLaunchIntentForPackage(getPackageName());
+   startActivity(intent);
+}</code></pre>
+<ol type="1" start="11">
+<li>Add the <code>android:onClick</code> attribute to the <strong>Retry</strong> button to call retryApp:</li>
+</ol>
+<pre><code>&lt;Button
+   ...
+   android:id=&#34;@+id/button_retry&#34;
+   ...
+   android:onClick=&#34;retryApp&#34;/&gt;</code></pre>
+<h2 is-upgraded>3.2 Request permission for phone calling</h2>
+<ol type="1" start="1">
+<li>At the top of <code>MainActivity</code> below the class definition, define a global constant for the call-phone permission request code, and set it to 1:<br></li>
+</ol>
+<pre><code>private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;</code></pre>
+<p>Why the integer 1? Each permission request needs three parameters: the context, a string array of permissions, and an integer <code>requestCode</code>. The <code>requestCode</code> is a code attached to the request, and can be any integer that suits your use case. When a result returns back to the activity, it contains this code and uses it to differentiate multiple permission results from each other.</p>
+<ol type="1" start="2">
+<li>In MainActivity, create a private method called <code>checkForPhonePermission</code> to check for <code>CALL_PHONE</code> permission, which returns <code>void</code>. You put this code in a separate method because you will use it more than once:</li>
+</ol>
+<pre><code>private void checkForPhonePermission() {
+  if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.CALL_PHONE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+  Log.d(TAG, &#34;PERMISSION NOT GRANTED!&#34;);
+  ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+  } else {
+      // Permission already granted. Enable the call button.
+      enableCallButton();
+  }
+}</code></pre>
+<ol type="1" start="3">
+<li>Use <a href="https://developer.android.com/reference/android/support/v4/content/ContextCompat.html#checkSelfPermission(android.content.Context,%20java.lang.String)" target="_blank"><code>checkSelfPermission()</code></a> to determine whether your app has been granted a particular permission by the user. If permission has not been granted by the user, use the <a href="https://developer.android.com/reference/android/support/v4/app/ActivityCompat.html#requestPermissions(android.app.Activity,%20java.lang.String[],%20int)" target="_blank"><code>requestPermissions()</code></a> method to display a standard dialog for the user to grant permission.</li>
+<li>When your app calls <a href="https://developer.android.com/reference/android/support/v4/app/ActivityCompat.html#requestPermissions(android.app.Activity,%20java.lang.String[],%20int)" target="_blank"><code>requestPermissions()</code></a>, the system shows a standard dialog to the user, as shown in the figure below.</li>
+</ol>
+<ol type="1" start="5">
+<li>Extract the hard-coded string <code>"PERMISSION NOT GRANTED!"</code> in the above code to the string resource <code>permission_not_granted</code>.</li>
+<li>In the <code>onCreate()</code> method after checking to see if telephony is enabled, add a call to <code>checkForPhonePermission()</code>:</li>
+</ol>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+...
+if (isTelephonyEnabled()) {
+    // Check for phone permission.
+    checkForPhonePermission();
+    // ToDo: Register the PhoneStateListener.
+    ...</code></pre>
+<ol type="1" start="7">
+<li>When the user responds to the request permission dialog, the system invokes your app&#39;s <a href="https://developer.android.com/reference/android/support/v4/app/ActivityCompat.OnRequestPermissionsResultCallback.html#onRequestPermissionsResult(int,%20java.lang.String[],%20int[])" target="_blank"><code>onRequestPermissionsResult()</code></a> method, passing it the user response. Override that method to find out whether the permission was granted:</li>
+</ol>
+<pre><code>@Override
+public void onRequestPermissionsResult(int requestCode,
+                String permissions[], int[] grantResults) {
+   // Check if permission is granted or not for the request.
+   ...
+}</code></pre>
+<ol type="1" start="8">
+<li>For your implementation of <code>onRequestPermissionsResult()</code>, use a <code>switch</code> statement with each <code>case</code> based on the value of <code>requestCode</code>. Use one <code>case</code> to check if the permission is the one you defined as <code>MY_PERMISSIONS_REQUEST_CALL_PHONE</code>:</li>
+</ol>
+<pre><code>...
+// Check if permission is granted or not for the request.
+switch (requestCode) {
+    case MY_PERMISSIONS_REQUEST_CALL_PHONE: {
+        if (permissions[0].equalsIgnoreCase
+                    (Manifest.permission.CALL_PHONE)
+                    &amp;&amp; grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED) {
+            // Permission was granted.
+        } else {
+            // Permission denied.
+            Log.d(TAG, &#34;Failure to obtain permission!&#34;);
+            Toast.makeText(this,
+                        &#34;Failure to obtain permission!&#34;,
+                        Toast.LENGTH_LONG).show();
+            // Disable the call button
+            disableCallButton();
+        }
+    }
+}</code></pre>
+<ol type="1" start="9">
+<li>Extract the hard-coded string <code>"Failure to obtain permission!"</code> in the above code to the string resource <code>failure_permission</code>, and note the following:</li>
+</ol>
+<ul>
+<li>The user&#39;s response to the request dialog is returned in the <code>permissions</code> array (index 0 if only one permission is requested in the dialog). The code snippet above compares this to the corresponding grant result, which is either <code>PERMISSION_GRANTED</code> or <code>PERMISSION_DENIED</code>.</li>
+<li>If the user denies a permission request, your app should take appropriate action. For example, your app might disable the functionality that depends on this permission and show a dialog explaining why it could not perform it. For now, log a debug message, display a toast to show that permission was not granted, and disable the call button with <code>disableCallButton()</code>.</li>
+</ul>
+<h2 is-upgraded>3.3 Run the app and test permission</h2>
+<ol type="1" start="1">
+<li>Run the app once. After running the app, turn off the Phone permission for the app on your device or emulator so that you can test the permission-request function:</li>
+</ol>
+<ul>
+<li>Choose <strong>Settings &gt; Apps &gt; Phone Calling Sample &gt; Permissions</strong> on the device or emulator.</li>
+<li>Turn off the Phone permission for the app.</li>
+</ul>
+<ol type="1" start="2">
+<li>Run the app again. You should see the request dialog in the figure in the previous section.</li>
+</ol>
+<ul>
+<li>Tap <strong>Deny</strong> to deny permission. The app should display a toast message showing the failure to gain permission, and the <strong>Retry</strong> button. The phone icon should disappear.</li>
+<li>Tap <strong>Retry</strong>, and when the request dialog appears, tap <strong>Allow</strong>. The phone icon should reappear. Test the app&#39;s ability to make a phone call.</li>
+</ul>
+<p>Since the user might turn off Phone permission while the app is still running, add the same permission check method to the <code>callNumber()</code> method—after the intent resolves to a package, as shown below—to check for permission right before making a call:</p>
+<pre><code>// If package resolves to an app, check for phone permission,
+// and send intent.
+if (callIntent.resolveActivity(getPackageManager()) != null) {
+   checkForPhonePermission();
+   startActivity(callIntent);
+} else {
+   Log.e(TAG, &#34;Can&#39;t resolve app for ACTION_CALL Intent&#34;);
+}</code></pre>
+<ol type="1" start="3">
+<li>Run the app. If the user changes the Phone permission for the app while the app is running, the request dialog appears again for the user to <strong>Allow</strong> or <strong>Deny</strong> the permission.</li>
+</ol>
+<ul>
+<li>Click <strong>Allow</strong> to test the app&#39;s ability to make a phone call. The app should make the call without a problem.</li>
+<li>Jump to the Settings app to turn off Phone permission for the app (the app should still be running):</li>
+</ul>
+<p>a) Choose <strong>Settings &gt; Apps &gt; Phone Calling Sample &gt; Permissions</strong> on the device or emulator.</p>
+<p>b) Turn off the Phone permission for the app.</p>
+<ul>
+<li>Go back to the app and try to make a call. The request dialog should appear again. This time, Click <strong>Deny</strong> to deny permission to make a phone call. The app should display a toast message showing the failure to gain permission, and the <strong>Retry</strong> button. The phone icon should disappear.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Task 4: Monitor the phone state" duration="0">
+        <p>You can monitor the phone state with <a href="https://developer.android.com/reference/android/telephony/PhoneStateListener.html" target="_blank">PhoneStateListener</a>, which monitors changes in specific telephony states. You can then show the user the state in a toast message, so that the user can see if the phone is idle or off the hook.</p>
+<p>When the phone call finishes and the phone switches to the idle state, your app&#39;s activity resumes if the app is running on KitKat (version 19) or newer versions. However, if the app is running on a version of Android older than KitKat (version 19), the Phone app remains active. You can check the phone state and restart the activity if the state is idle.</p>
+<p>To use PhoneStateListener, you need to register a listener object using the <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a> class, which provides access to information about the telephony services on the device. Create a new class that extends PhoneStateListener to perform actions depending on the phone state. You can then register the listener object in the <code>onCreate()</code> method of the activity, using the TelephonyManager class.</p>
+<h2 is-upgraded>4.1 Set the permission and logging tag</h2>
+<ol type="1" start="1">
+<li>Open the Android Studio project for the <strong>PhoneCallingSample</strong> app, if it isn&#39;t already open.</li>
+<li>Add the following <code>READ_PHONE_STATE</code> permission to the <code>AndroidManifest.xml</code> file after after the <code>CALL_PHONE</code> permission, and before the <code><application></code> section:</li>
+</ol>
+<pre><code>  &lt;uses-permission android:name=&#34;android.permission.CALL_PHONE&#34; /&gt;
+  &lt;uses-permission android:name=&#34;android.permission.READ_PHONE_STATE&#34; /&gt;</code></pre>
+<ol type="1" start="3">
+<li>Monitoring the state of a phone call is permission-protected. This permission is in addition to the <code>CALL_PHONE</code> permission.</li>
+</ol>
+<h2 is-upgraded>4.2 Create a class that extends PhoneStateListener</h2>
+<ol type="1" start="1">
+<li>To create a listener object and listen to the phone state, create a private inner class called <code>MyPhoneCallListener</code> in <code>MainActivity</code> that extends <code>PhoneStateListener</code>.</li>
+</ol>
+<pre><code>private class MyPhoneCallListener extends PhoneStateListener {
+...
+}</code></pre>
+<ol type="1" start="2">
+<li>Within this class, implement the <a href="https://developer.android.com/reference/android/telephony/PhoneStateListener.html#onCallStateChanged(int,%20java.lang.String)" target="_blank"><code>onCallStateChanged()</code></a> method of <code>PhoneStateListener</code> to take actions based on the phone state. The code below uses a <code>switch</code> statement with constants of the <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a> class to determine which of three states the phone is in: <code>CALL_STATE_RINGING</code>, <code>CALL_STATE_OFFHOOK</code>, and <code>CALL_STATE_IDLE</code>:</li>
+</ol>
+<pre><code>@Override
+public void onCallStateChanged(int state, String incomingNumber) {
+  switch (state) {
+      case TelephonyManager.CALL_STATE_RINGING:
+          // Incoming call is ringing (not used for outgoing call).
+          break;
+      case TelephonyManager.CALL_STATE_OFFHOOK:
+          // Phone call is active -- off the hook.
+          break;
+      case TelephonyManager.CALL_STATE_IDLE:
+          // Phone is idle before and after phone call.
+          break;
+      default:
+          // Must be an error. Raise an exception or just log it.
+          break;
+  }
+}</code></pre>
+<ol type="1" start="3">
+<li>Just above the <code>switch (state)</code> line, create a <code>String</code> called <code>message</code> to use in a toast as a prefix for the phone state:</li>
+</ol>
+<pre><code>...
+// Define a string for the message to use in a toast.
+String message = &#34;Phone Status: &#34;;
+switch (state) { ...</code></pre>
+<ol type="1" start="4">
+<li>Extract the string <code>"Phone Status: "</code> to the string resource <code>phone_status</code>.</li>
+<li>For the <code>CALL_STATE_RINGING</code> state, assemble a message for logging and displaying a toast with the incoming phone number:</li>
+</ol>
+<pre><code>...
+switch (state) {
+  case TelephonyManager.CALL_STATE_RINGING:
+       // Incoming call is ringing (not used for outgoing call).
+       message = message + &#34;RINGING, number: &#34; + incomingNumber;
+       Toast.makeText(MainActivity.this, message,
+                         Toast.LENGTH_SHORT).show();
+       Log.i(TAG, message);
+       break;
+  ...</code></pre>
+<ol type="1" start="6">
+<li>Extract <code>"RINGING, number: "</code> to the string resource <code>ringing</code>.</li>
+<li>Add a boolean <code>returningFromOffHook</code>, set to <code>false</code>, at the top of the <code>MyPhoneCallListener</code> declaration, in order to use it with the the <code>CALL_STATE_OFFHOOK</code> state:</li>
+</ol>
+<pre><code>private class MyPhoneCallListener extends PhoneStateListener {
+   private boolean returningFromOffHook = false;
+   ...
+}</code></pre>
+<p><strong>Tip</strong>: An app running on Android versions prior to KitKat (version 19) doesn&#39;t resume when the phone state returns to <code>CALL_STATE_IDLE</code> from <code>CALL_STATE_OFFHOOK</code> at the end of a call. The boolean <code>returningFromOffHook</code> is used as a flag, and set to true when the state is <code>CALL_STATE_OFFHOOK</code>, so that when the state is back to <code>CALL_STATE_IDLE</code>, the flag designates an end-of-call in order to restart the app&#39;s activity.</p>
+<ol type="1" start="8">
+<li>For the <code>CALL_STATE_OFFHOOK</code> state, assemble a message for logging and displaying a toast, and set the <code>returningFromOffHook</code> boolean to <code>true</code>.</li>
+</ol>
+<pre><code>...
+switch (state) {
+     case TelephonyManager.CALL_STATE_OFFHOOK:
+               // Phone call is active -- off the hook.
+               message = message + &#34;OFFHOOK&#34;;
+               Toast.makeText(MainActivity.this, message,
+                                    Toast.LENGTH_SHORT).show();
+               Log.i(TAG, message);
+               returningFromOffHook = true;
+               break;
+     ...</code></pre>
+<ol type="1" start="9">
+<li>Extract <code>"OFFHOOK"</code> to the string resource <code>offhook</code>.</li>
+<li>For the <code>CALL_STATE_IDLE</code> state, log and display a toast, and check if <code>returningFromOffHook</code> is <code>true</code>; if so, restart the activity if the version of Android is earlier than KitKat.</li>
+</ol>
+<pre><code>...
+switch (state) {
+        case TelephonyManager.CALL_STATE_IDLE:
+           // Phone is idle before and after phone call.
+           // If running on version older than 19 (KitKat),
+           // restart activity when phone call ends.
+           message = message + &#34;IDLE&#34;;
+           Toast.makeText(MainActivity.this, message,
+                              Toast.LENGTH_SHORT).show();
+           Log.i(TAG, message);
+           if (returningFromOffHook) {
+               // No need to do anything if &gt;= version KitKat.
+               if (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.KITKAT) {
+                   Log.i(TAG, &#34;Restarting app&#34;);
+                   // Restart the app.
+                   Intent intent = getPackageManager()
+                       .getLaunchIntentForPackage(
+                       .getPackageName());
+                    intent.addFlags
+                       (Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+               }
+            }
+            break;
+          ...</code></pre>
+<p>If the app is running on KitKat (version 19) or newer versions, there is no need to restart the activity after the phone call ends. But if the app is running on a version of Android older than KitKat (version 19), the code must restart the current activity so that the user can return to the app after the call ends.<br><strong>Tip</strong>: The code also sets <a href="https://developer.android.com/reference/android/content/Intent.html#FLAG_ACTIVITY_CLEAR_TOP" target="_blank"><code>FLAG_ACTIVITY_CLEAR_TOP</code></a> so that instead of launching a new instance of the current activity, any other activities on top of the current activity are closed and an intent is delivered to the (now on top) current activity. This flag helps you manage a stack of activities in an app.</p>
+<ol type="1" start="11">
+<li>Extract <code>"IDLE"</code> to the string resource <code>idle</code>, and extract &#34;Restarting app&#34; to the string resource <code>restarting_app</code>.</li>
+</ol>
+<p>The code below shows the entire <code>onCallStateChanged()</code> method:</p>
+<pre><code>...
+@Override
+public void onCallStateChanged(int state, String incomingNumber) {
+    // Define a string for the message to use in a toast.
+    String message = getString(R.string.phone_status);
+    switch (state) {
+        case TelephonyManager.CALL_STATE_RINGING:
+            // Incoming call is ringing (not used for outgoing call).
+            message = message +
+                            getString(R.string.ringing) + incomingNumber;
+            Toast.makeText(MainActivity.this, message,
+                            Toast.LENGTH_SHORT).show();
+            Log.i(TAG, message);
+            break;
+        case TelephonyManager.CALL_STATE_OFFHOOK:
+            // Phone call is active -- off the hook.
+            message = message + getString(R.string.offhook);
+            Toast.makeText(MainActivity.this, message,
+                            Toast.LENGTH_SHORT).show();
+            Log.i(TAG, message);
+            returningFromOffHook = true;
+            break;
+        case TelephonyManager.CALL_STATE_IDLE:
+            // Phone is idle before and after phone call.
+            // If running on version older than 19 (KitKat),
+            // restart activity when phone call ends.
+            message = message + getString(R.string.idle);
+            Toast.makeText(MainActivity.this, message,
+                            Toast.LENGTH_SHORT).show();
+            Log.i(TAG, message);
+            if (returningFromOffHook) {
+                // No need to do anything if &gt;= version KitKat.
+                if (Build.VERSION.SDK_INT &lt; Build.VERSION_CODES.KITKAT) {
+                    Log.i(TAG, getString(R.string.restarting_app));
+                    // Restart the app.
+                    Intent intent = getPackageManager()
+                                    .getLaunchIntentForPackage(
+                                    .getPackageName());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }
+            break;
+        default:
+            message = message + &#34;Phone off&#34;;
+            Toast.makeText(MainActivity.this, message,
+                                    Toast.LENGTH_SHORT).show();
+            Log.i(TAG, message);
+            break;
+    }
+}
+...</code></pre>
+<h2 is-upgraded>4.3 Register the PhoneStateListener</h2>
+<ol type="1" start="1">
+<li>At the top of MainActivity below the class definition, define a variable for the <a href="https://developer.android.com/reference/android/telephony/PhoneStateListener.html" target="_blank">PhoneStateListener</a>:<br></li>
+</ol>
+<pre><code>private MyPhoneCallListener mListener;</code></pre>
+<ol type="1" start="2">
+<li>In the <code>onCreate()</code> method, add the following code after checking for telephony and permission:</li>
+</ol>
+<pre><code>...
+if (isTelephonyEnabled()) {
+   ...
+   checkForPhonePermission();
+   // Register the PhoneStateListener to monitor phone activity.
+   mListener = new MyPhoneCallListener();
+   telephonyManager.listen(mListener,
+                PhoneStateListener.LISTEN_CALL_STATE);
+} else { ...</code></pre>
+<ol type="1" start="3">
+<li>You must also unregister the listener in the activity&#39;s <a href="https://developer.android.com/reference/android/app/Activity.html#onDestroy()" target="_blank"><code>onDestroy()</code></a> method. Override the <code>onDestroy()</code> method by adding the following code:</li>
+</ol>
+<pre><code>@Override
+protected void onDestroy() {
+   super.onDestroy();
+   if (isTelephonyEnabled()) {
+       telephonyManager.listen(mListener,
+                            PhoneStateListener.LISTEN_NONE);
+   }
+}</code></pre>
+<h2 is-upgraded>4.4 Run the app</h2>
+<ol type="1" start="1">
+<li>Run the app. If the user changes the Phone permission for the app while the app is running, the request dialog appears again for the user to <strong>Allow</strong> or <strong>Deny</strong> the permission. Click <strong>Allow</strong> to test the app&#39;s ability to make a phone call.</li>
+<li>After entering a phone number and clicking the call button, the emulator or device shows the phone call starting up, as shown in the figure below. A toast message appears showing the phone number (left side of figure), and the toast message changes to show a new status of <code>"OFFHOOK"</code> (right side of figure) after the call has started.</li>
+</ol>
+<p class="image-container"><img alt="Starting a call (left) and showing the phone status (right)" title="Starting a call (left) and showing the phone status (right)" style="width: 353.00px" src="img/1aea534d21d2a28b.png"></p>
+<ol type="1" start="3">
+<li>The other emulator instance or device should now be receiving the call, as shown in the figure below. Click <strong>Answer</strong> or <strong>Dismiss</strong> on the device or emulator receiving the call.</li>
+</ol>
+<p class="image-container"><img alt="Receiving a call on the emulator" title="Receiving a call on the emulator" style="width: 292.32px" src="img/4d708a7e458b2859.png"></p>
+<ol type="1" start="4">
+<li>If you click <strong>Answer</strong>, be sure to also click the red <strong>Hang-up</strong> button to finish the call, as shown in the figure below.</li>
+</ol>
+<p class="image-container"><img alt="Click the red hang-up button to finish the call" title="Click the red hang-up button to finish the call" style="width: 327.19px" src="img/3bec28793720ee7.png"></p>
+<p>After you hang up, the app should reappear with a toast message showing that the phone is now in the idle state, as shown in the figure below.</p>
+<p class="image-container"><img alt="After hanging up the phone state is " title="After hanging up the phone state is " style="width: 287.35px" src="img/e641810b8cfc878c.png"></p>
+<h2 is-upgraded>Solution code</h2>
+<p>Android Studio project: <a href="https://github.com/khammami/android-fundamentals-phone-sms/tree/master/PhoneCallingSample" target="_blank">PhoneCallingSample</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Coding challenge" duration="0">
+        <p>Note: All coding challenges are optional and are not prerequisites for later lessons.</p>
+<h2 is-upgraded>Challenge</h2>
+<ol type="1" start="1">
+<li>Use the <a href="https://developer.android.com/reference/android/telephony/PhoneNumberUtils.html#normalizeNumber(java.lang.String)" target="_blank">normalizeNumber()</a> method in the <a href="https://developer.android.com/reference/android/telephony/PhoneNumberUtils.html" target="_blank">PhoneNumberUtils</a> class to remove characters other than digits from the phone number after the user has entered it. This method was added to API level 21. If you need your app to run on older versions, include a check for the version that uses the <a href="https://developer.android.com/reference/android/telephony/PhoneNumberUtils.html#normalizeNumber(java.lang.String)" target="_blank">normalizeNumber()</a> method only if the version is older than Lollipop. Your app already uses a log statement to show the phone number as dialed, so if the user enters &#34;1-415-555-1212&#34; the log message should show that the number was normalized:</li>
+</ol>
+<pre>D/MainActivity: Phone Status: DIALING: tel: 14155551212</pre>
+<ol type="1" start="2">
+<li>Add an invisible <code>TextView</code> to the <strong>PhoneCallingSample</strong> app. This <code>TextView</code> should appear below the invisible <strong>Retry</strong> button, but only when the phone is ringing (indicating an incoming call), and it should show the phone number of the caller.</li>
+</ol>
+<p>If you have both emulators open as described previously, install the app on both emulators. You can then test an incoming call by using the app on one emulator to call the other emulator.</p>
+<p><strong>Tip</strong>: You can also emulate receiving a call by clicking the ... (More) icon at the bottom of the emulator&#39;s toolbar on the right side. Click <strong>Phone</strong> in the left column to see the extended phone controls, and click <strong>Call Device</strong> to call the emulator.</p>
+<p>Android Studio project: <a href="https://github.com/khammami/android-fundamentals-phone-sms/tree/master/PhoneCallingSampleChallenge" target="_blank">PhoneCallingSampleChallenge</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Summary" duration="0">
+        <ul>
+<li>To send an intent to the Phone app with a phone number, your app needs to prepare a URI for the phone number as a string prefixed by &#34;tel:&#34; (for example tel:14155551212).</li>
+<li>To dial a phone number, create an implicit intent with <code>ACTION_DIAL</code>, and set the phone number URI as the data for the intent with <code>setData()</code>:</li>
+</ul>
+<pre><code>Intent callIntent = new Intent(Intent.ACTION_DIAL);
+callIntent.setData(Uri.parse(phoneNumber));</code></pre>
+<ul>
+<li>For phone permission, add the following to the <code>AndroidManifest.xml</code> file:</li>
+</ul>
+<pre><code>&lt;uses-permission android:name=&#34;android.permission.CALL_PHONE&#34; /&gt;</code></pre>
+<ul>
+<li>To make a phone call, create an implicit intent with <code>ACTION_CALL</code>, and set the phone number URI as the data for the intent with <code>setData()</code>:</li>
+</ul>
+<pre><code>Intent callIntent = new Intent(Intent.ACTION_CALL);
+callIntent.setData(Uri.parse(phoneNumber));</code></pre>
+<ul>
+<li>To check if telephony is enabled, use the string constant <a href="https://developer.android.com/reference/android/content/Context.html#TELEPHONY_SERVICE" target="_blank"><code>TELEPHONY_SERVICE</code></a> with <a href="https://developer.android.com/reference/android/content/Context.html#getSystemService(java.lang.String)" target="_blank"><code>getSystemService()</code></a> to retrieve a <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a>, which gives you access to telephony features.</li>
+<li>Use <a href="https://developer.android.com/reference/android/support/v4/content/ContextCompat.html#checkSelfPermission(android.content.Context,%20java.lang.String)" target="_blank"><code>checkSelfPermission()</code></a> to determine whether your app has been granted a particular permission by the user. If permission has not been granted, use the <a href="https://developer.android.com/reference/android/support/v4/app/ActivityCompat.html#requestPermissions(android.app.Activity,%20java.lang.String[],%20int)" target="_blank"><code>requestPermissions()</code></a> method to display a standard dialog for the user to grant permission.</li>
+<li>To monitor the phone state with <a href="https://developer.android.com/reference/android/telephony/PhoneStateListener.html" target="_blank">PhoneStateListener</a>, register a listener object using the <a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a> class.</li>
+<li>For phone monitoring permission, add the following to the <code>AndroidManifest.xml</code> file:</li>
+</ul>
+<pre><code>&lt;uses-permission android:name=&#34;android.permission.READ_PHONE_STATE&#34; /&gt;</code></pre>
+<ul>
+<li>To monitor phone states, create a private class that extends <a href="https://developer.android.com/reference/android/telephony/PhoneStateListener.html" target="_blank">PhoneStateListener</a>, and override the <a href="https://developer.android.com/reference/android/telephony/PhoneStateListener.html#onCallStateChanged(int,%20java.lang.String)" target="_blank"><code>onCallStateChanged()</code></a> method of PhoneStateListener to take different actions based on the phone state: <code>CALL_STATE_RINGING</code>, <code>CALL_STATE_OFFHOOK</code>, or <code>CALL_STATE_IDLE</code>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Learn more" duration="0">
+        <p>Android developer documentation:</p>
+<ul>
+<li><a href="https://developer.android.com/guide/components/intents-common.html" target="_blank">Common Intents</a></li>
+<li><a href="https://developer.android.com/reference/android/telephony/TelephonyManager.html" target="_blank">TelephonyManager</a></li>
+<li><a href="https://developer.android.com/reference/android/telephony/PhoneStateListener.html" target="_blank">PhoneStateListener</a></li>
+<li><a href="https://developer.android.com/training/permissions/requesting.html" target="_blank">Requesting Permissions at Run Time</a></li>
+<li><a href="https://developer.android.com/reference/android/support/v4/content/ContextCompat.html#checkSelfPermission(android.content.Context,%20java.lang.String)" target="_blank">checkSelfPermission</a></li>
+<li><a href="https://developer.android.com/studio/run/emulator.html" target="_blank">Run Apps on the Android Emulator</a></li>
+<li><a href="http://developer.android.com/guide/components/intents-filters.html" target="_blank">Intents and Intent Filters</a></li>
+<li><a href="http://developer.android.com/reference/android/content/Intent.html" target="_blank">Intent</a></li>
+</ul>
+<p>Stack Overflow:</p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/6106859/how-to-format-a-phone-number-using-phonenumberutils" target="_blank">How to format a phone number using PhoneNumberUtils?</a></li>
+<li><a href="http://stackoverflow.com/questions/4275678/how-to-make-phone-call-using-intent-in-android" target="_blank">How to make phone call using intent in android?</a></li>
+<li><a href="http://stackoverflow.com/questions/2577785/ringing-myself-using-android-emulator" target="_blank">Ringing myself using android emulator</a></li>
+<li><a href="http://stackoverflow.com/questions/4964703/fake-incoming-call-android" target="_blank">Fake Incoming Call Android</a></li>
+<li><a href="http://stackoverflow.com/questions/27638462/simulating-incoming-call-or-sms-in-android-studio" target="_blank">Simulating incoming call or sms in Android Studio</a></li>
+</ul>
+<p>Other:</p>
+<ul>
+<li>User (beginner) tutorial: <a href="http://www.beginandroid.com/phonecall.shtml" target="_blank">How to Make Phone Calls with Android</a></li>
+<li>Developer Video: <a href="https://youtu.be/3PHDcQOGFtg" target="_blank">How to Make a Phone Call</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

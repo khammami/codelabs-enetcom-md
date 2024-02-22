@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-3295395-7",
+  "updated": "2024-02-22T17:18:10Z",
+  "id": "making-phone-calls",
+  "duration": 0,
+  "title": "P 03.1: Making Phone Calls",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "1OykVd1bIl0MIh-gXLP_bxoXqVsWWC7HOr0T1cQNMKGE",
+  "theme": "android",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcommp",
+    "enetcommpie",
+    "kiosk",
+    "web"
+  ],
+  "url": "making-phone-calls"
+}

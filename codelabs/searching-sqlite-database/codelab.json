@@ -3,16 +3,16 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-22T08:23:58Z",
-  "id": "activities-et-intents",
+  "updated": "2024-02-22T17:16:52Z",
+  "id": "searching-sqlite-database",
   "duration": 0,
-  "title": "TP 02.1: Activités et \"intents\"",
+  "title": "TP 04.1B: Searching a SQLite Database",
   "authors": "Khalil Hammami",
   "summary": "",
-  "source": "1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I",
+  "source": "1HhNTjH9DpYzR2Vjf4LRIKQvbxNvNgn7RNcthDiiZotE",
   "theme": "android",
   "status": [
-    "hidden"
+    "published"
   ],
   "category": [
     "android"
@@ -23,7 +23,5 @@
     "kiosk",
     "web"
   ],
-  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
-  "ga": "UA-3295395-7",
-  "url": "activities-et-intents"
+  "url": "searching-sqlite-database"
 }
