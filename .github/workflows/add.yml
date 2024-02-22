@@ -17,7 +17,7 @@ jobs:
 
       - name: Add a new codelab
         run: |
-          jq -r 'keys[]' ${{ github.event.client_payload }})"
+          jq -r 'keys[]' ${{ github.event.client_payload }}
           if [[ -z "${{ env.CODELAB_SOURCE }}" ]]; then
               echo "Error: Source value cannot be empty!"
               exit 1
