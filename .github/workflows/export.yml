@@ -41,7 +41,7 @@ jobs:
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
       - name: claat export all documents in codelabs.json
-        if: github.event.action != 'gdocs_export'
+        if: ${{ github.event.action != 'gdocs_export' && github.event.action != 'gdocs_add' }}
         uses: ./actions/claat
         with:
           auth: ${{ steps.auth.outputs.access_token }}

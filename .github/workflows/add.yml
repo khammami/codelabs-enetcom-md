@@ -26,8 +26,8 @@ jobs:
           if [ ! -f "${{ env.CODELABS_JSON }}" ]; then
               touch ${{ env.CODELABS_JSON }}
           fi
-          if jq '.[] | select(.id == "${{ env.CODELAB_ID }}" or .source == "${{ env.CODELAB_SOURCE }}")' codelabs.json >/dev/null 2>&1; then
-              echo "Entry with id: $id or source: ${{ env.CODELAB_SOURCE }} already exists!"
+          if jq '.[] | select(.source == "${{ env.CODELAB_SOURCE }}")' codelabs.json >/dev/null 2>&1; then
+              echo "Entry with source: ${{ env.CODELAB_SOURCE }} already exists!"
           else
               new_entry="{\"id\": \"${{ env.CODELAB_ID }}\", \"source\": \"${{ env.CODELAB_SOURCE }}\"}"
               jq -r ". += [$new_entry]" ${{ env.CODELABS_JSON }} > temp.json && mv temp.json ${{ env.CODELABS_JSON }}
