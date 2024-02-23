@@ -11,8 +11,8 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     env:
-      CODELAB_ID: ${{ github.event.client_payload.documentId }}
-      CODELAB_SOURCE: ${{ github.event.client_payload.codelabId }}
+      CODELAB_ID: ${{ github.event.client_payload.codelabId }}
+      CODELAB_SOURCE: ${{ github.event.client_payload.documentId }}
       CODELABS_JSON: codelabs.json
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
           if [ ! -f "${{ env.CODELABS_JSON }}" ]; then
               touch ${{ env.CODELABS_JSON }}
           fi
-          if jq '.[] | select(.source == "${{ env.CODELAB_SOURCE }}")' codelabs.json >/dev/null 2>&1; then
+          if jq -e '.[] | select(.source == "${{ env.CODELAB_SOURCE }}")' ${{ env.CODELABS_JSON }} > /dev/null 2>&1; then
               echo "Entry with source: ${{ env.CODELAB_SOURCE }} already exists!"
           else
               new_entry="{\"id\": \"${{ env.CODELAB_ID }}\", \"source\": \"${{ env.CODELAB_SOURCE }}\"}"
