@@ -9,7 +9,7 @@ on:
       - "codelabs.json"
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -25,6 +25,11 @@ jobs:
       HTML_PATH: codelabs
       MD_PATH: codelabs-md
     steps:
+      - run: |
+          echo ${{github.event_name}}
+          echo ${{github.event.action}}
+          echo ${{github.action_repository}}
+
       - uses: actions/checkout@v4
 
       - name: Generate Oauth2 token
