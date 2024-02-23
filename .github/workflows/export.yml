@@ -3,7 +3,7 @@ name: Export gdocs
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [gdocs_export_all]
+    types: [gdocs_export,gdocs_export_all]
   push:
     paths:
       - "codelabs.json"
