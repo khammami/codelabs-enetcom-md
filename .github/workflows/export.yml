@@ -28,7 +28,6 @@ jobs:
       - run: |
           echo ${{github.event_name}}
           echo ${{github.event.action}}
-          echo ${{github.action_repository}}
 
       - uses: actions/checkout@v4
 
@@ -41,12 +40,22 @@ jobs:
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
       - name: claat export all documents in codelabs.json
+        if: github.event.action != 'gdocs_export'
         uses: ./actions/claat
         with:
           auth: ${{ steps.auth.outputs.access_token }}
-          document-id: 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
+          document-id: "ignored if codelabs-json is set"
           codelabs-path: ${{ env.HTML_PATH }}
           codelabs-json: codelabs.json
+          format: all
+
+      - name: claat export dispatched document
+        if: github.event.action == 'gdocs_export'
+        uses: ./actions/claat
+        with:
+          auth: ${{ steps.auth.outputs.access_token }}
+          document-id: ${{ github.event.client_payload.documentId }}
+          codelabs-path: ${{ env.HTML_PATH }}
           format: all
 
       - name: Check for worktree changes
