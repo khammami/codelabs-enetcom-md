@@ -2,7 +2,7 @@
 
 ## Workflows
 
-![A diagra than explain the workflows and how they're dispated between repositories and Google document](assets/enectcom-codelabs_workflows_v1.svg)
+![A diagra than explain the workflows and how they're dispated between repositories and Google document](assets/enectcom-codelabs_workflows_v1.png)
 
 >[!important]
 >
