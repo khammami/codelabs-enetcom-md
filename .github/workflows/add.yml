@@ -1,6 +1,7 @@
 name: Add new codelab
 
 on:
+  workflow_call:
   repository_dispatch:
     types: [gdocs_add]
 
@@ -12,25 +13,24 @@ jobs:
     env:
       CODELAB_ID: ${{ github.event.client_payload.documentId }}
       CODELAB_SOURCE: ${{ github.event.client_payload.codelabId }}
+      CODELABS_JSON: codelabs.json
     steps:
       - uses: actions/checkout@v4
 
       - name: Add a new codelab
         run: |
-          if [[ -z "${{ env.CODELAB_SOURCE }}" ]]; then
-              echo "Error: Source value cannot be empty!"
+          if [[ -z "${{ env.CODELAB_SOURCE }}" || -z "${{ env.CODELAB_ID }}" ]]; then
+              echo "Error: Source and ID values are mandatory."
               exit 1
           fi
-          if [[ -z "${{ env.CODELAB_ID }}" ]]; then
-              echo "Error: ID value cannot be empty!"
-              exit 1
+          if [ ! -f "${{ env.CODELABS_JSON }}" ]; then
+              touch ${{ env.CODELABS_JSON }}
           fi
-          if jq '.[] | select(.source == "${{ env.CODELAB_SOURCE }}")' codelabs.json >/dev/null 2>&1; then
-              echo "Error: Entry with source '${{ env.CODELAB_SOURCE }}' already exists!"
-              exit 1
+          if jq '.[] | select(.id == "${{ env.CODELAB_ID }}" or .source == "${{ env.CODELAB_SOURCE }}")' codelabs.json >/dev/null 2>&1; then
+              echo "Entry with id: $id or source: ${{ env.CODELAB_SOURCE }} already exists!"
           else
               new_entry="{\"id\": \"${{ env.CODELAB_ID }}\", \"source\": \"${{ env.CODELAB_SOURCE }}\"}"
-              jq ". += $new_entry" codelabs.json > temp.json && mv temp.json codelabs.json
+              jq -r ". += [$new_entry]" ${{ env.CODELABS_JSON }} > temp.json && mv temp.json ${{ env.CODELABS_JSON }}
               echo "Successfully added entry with id: $id and source: ${{ env.CODELAB_SOURCE }}"
           fi
 

@@ -3,7 +3,7 @@ name: Export gdocs
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [gdocs_export,gdocs_export_all]
+    types: [gdocs_export,gdocs_add,gdocs_export_all]
   push:
     paths:
       - "codelabs.json"
@@ -28,6 +28,7 @@ jobs:
       - run: |
           echo ${{github.event_name}}
           echo ${{github.event.action}}
+          echo ${{github.triggering_actor}}
 
       - uses: actions/checkout@v4
 
@@ -50,7 +51,7 @@ jobs:
           format: all
 
       - name: claat export dispatched document
-        if: github.event.action == 'gdocs_export'
+        if:  ${{ github.event.action == 'gdocs_export' || github.event.action == 'gdocs_add' }}
         uses: ./actions/claat
         with:
           auth: ${{ steps.auth.outputs.access_token }}
