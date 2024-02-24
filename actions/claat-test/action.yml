@@ -1,0 +1,167 @@
+name: "Claat export"
+
+description: "Export Google documents using claat as a codelab in html/md format"
+
+inputs:
+  claat-version:
+    description: "claat version. By default 'latest' or 'vx.x.x'"
+    required: false
+    default: "latest"
+  document-id:
+    description: "Google document ID. (if codelabs-json is set, document-id will be ignored)"
+    required: true
+  auth:
+    description: "Google OAuth2.0 token to access Google document. (not required when you export .md file to html)"
+    required: false
+    default: ""
+  codelabs-path:
+    description: "Path where will you export the codelab"
+    required: false
+    default: "codelabs"
+  gaid:
+    description: "Google Analytics ID"
+    required: false
+    default: "UA-3295395-7"
+  ga4id:
+    description: "Google Analytics v4 ID"
+    required: false
+    default: "G-E0H6JSF2N3"
+  codelabs-json:
+    description: "Path of codelabs.json that contain a list of Google duments id "
+    required: false
+    default: ""
+  format:
+    description: "Codelab export format (html, md or all)."
+    required: false
+    default: "html"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Export Go bin to all steps
+      id: go-env
+      shell: bash
+      run: |
+        echo "::group::Export Go bin to all steps"
+        go version
+        echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
+        echo "go-bin-path=$(go env GOPATH)/bin" >> "$GITHUB_OUTPUT"
+        echo "go bin exported."
+        echo "::endgroup::"
+
+    # Save/Restore claat
+    - name: claat cache
+      uses: actions/cache@v4
+      id: claat-cache
+      with:
+        path: |
+          ${{ steps.go-env.outputs.go-bin-path }}/*
+        key: go-claat
+
+    - name: Setup claat (latest)
+      if: steps.claat-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        echo "::group::Setup claat (latest)"
+        mkdir -p $(go env GOPATH)/bin
+        go install github.com/googlecodelabs/tools/claat@${{ inputs.claat-version }}
+        claat version
+        echo "::endgroup::"
+
+    - name: Check codelabs directory
+      shell: bash
+      run: |
+        echo "::group::Check codelabs directory"
+        if [ ! -d ${{ inputs.codelabs-path }} ]; then
+            mkdir ${{ inputs.codelabs-path }}
+            echo "${{ inputs.codelabs-path }} has been created."
+        fi
+        echo "::endgroup::"
+
+    - name: Create codelabs directory for md format
+      if: inputs.format == 'all'
+      shell: bash
+      run: |
+        echo "::group::Create codelabs directory for md format"
+        if [ ! -d ${{ inputs.codelabs-path }}-md ]; then
+            mkdir ${{ inputs.codelabs-path }}-md
+            echo "${{ inputs.codelabs-path }}-md has been created."
+        fi
+        echo "::endgroup::"
+
+    - name: Get source(s)
+      id: data
+      shell: bash
+      run: |
+        echo "::group::Get source(s)"
+        sources="${{ inputs.document-id }}"
+        if [[ -n "${{ inputs.codelabs-json }}" ]]; then
+          sources=$(cat codelabs.json | grep "source" | sed 's/.*": "\(.*\)"/\1/')
+        fi
+        echo "sources=$sources" >> "$GITHUB_OUTPUT"
+        echo "::endgroup::"
+
+    - name: Command builder
+      id: builder
+      shell: bash
+      run: |
+        echo "::group::Build command"
+        command="${claat export}"
+        [[ -n "${{ inputs.gaid }}" ]] && command+=" -ga ${{ inputs.gaid }}"
+        [[ -n "${{ inputs.auth }}" ]] && command+=" -auth ${{ inputs.auth }}"
+        [[ "${{ inputs.format }}" == "md" ]] && command+=" -f ${{ inputs.format }}"
+        echo "command=$command" >> "$GITHUB_OUTPUT"
+        echo "::endgroup::"
+
+    - name: Export codelab(s)
+      shell: bash
+      run: |
+        echo "::group::Export codelab(s)"
+        sources="${{ steps.data.outputs.sources }}"
+        claat_command="${{ steps.builder.outputs.command }}"
+        echo -e "exporting\n$sources"
+        IFS=$'\n'
+        for source in $sources; do
+          claat_command_default = "$claat_command"+" -o '${{ inputs.codelabs-path }}/' '$source'"
+          if [[ "${{ inputs.format }}" == "all" ]]; then
+            claat_command_md = "$claat_command"+" -o '${{ inputs.codelabs-path }}-md/' -f 'md' '$source'"
+            eval "$claat_command_default $@"
+            eval "$claat_command_md $@"
+          else
+            eval "$claat_command_default $@"
+          fi
+        done
+        echo "::endgroup::"
+
+    # - name: Export codelab(s)
+    #   shell: bash
+    #   run: |
+    #     echo "::group::Export codelab(s)"
+    #     sources="${{ inputs.document-id }}"
+    #     if [[ -n "${{ inputs.codelabs-json }}" ]]; then
+    #       sources=$(cat codelabs.json | grep "source" | sed 's/.*": "\(.*\)"/\1/')
+    #     fi
+    #     echo "exporting $sources"
+    #     IFS=$'\n'
+    #     for source in $sources; do
+    #       if [[ "${{ inputs.format }}" == "all" ]]; then
+    #         claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -auth "${{ inputs.auth }}" "$source"
+    #         claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}-md/" -f "md" -auth "${{ inputs.auth }}" "$source"
+    #       else
+    #         claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ inputs.auth }}" "$source"
+    #       fi
+    #     done
+    #     echo "::endgroup::"
+
+    # ga4id parser has been added to md parser but not yet in gdocs parser
+    - name: Fix missing ga4id
+      shell: bash
+      if: inputs.format != 'md'
+      working-directory: ${{ inputs.codelabs-path }}
+      run: |
+        echo "::group::Fix missing ga4id"
+        find . -type f -name "index.html" -print0 | while IFS= read -r -d '' file; do
+          sed -i 's/ga4id=""/ga4id="${{ inputs.ga4id }}"/g; s/codelab-ga4id=""/codelab-ga4id="${{ inputs.ga4id }}"/g' "$file"
+        done
+        echo "Missing ga4id in html format has been added."
+        echo "::endgroup::"
