@@ -99,7 +99,7 @@ runs:
     - name: Export codelab(s)
       shell: bash
       env: 
-        SOURCES: ${{ if eq (length ${{ inputs.codelabs-json }}) 0 then inputs.source else steps.data.outputs.sources }}
+        SOURCES: ${{ inputs.codelabs-json == '' && inputs.source || steps.data.outputs.sources }}
       run: |
         echo "::group::Export codelab(s)"
         mkdir -p ${{ inputs.codelabs-path }}
