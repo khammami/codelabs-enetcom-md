@@ -7,8 +7,8 @@ inputs:
     description: "claat version. By default 'latest' or 'vx.x.x'"
     required: false
     default: "latest"
-  document-id:
-    description: "Google document ID. (if codelabs-json is set, document-id will be ignored)"
+  source:
+    description: "Google document ID or md file. (if codelabs-json is set, source will be ignored)"
     required: true
   auth:
     description: "Google OAuth2.0 token to access Google document. (not required when you export .md file to html)"
@@ -68,67 +68,41 @@ runs:
         claat version
         echo "::endgroup::"
 
-    - name: Check/Create codelabs directory
-      shell: bash
-      run: |
-        echo "::group::Check codelabs directory"
-        if [ ! -d ${{ inputs.codelabs-path }} ]; then
-            mkdir ${{ inputs.codelabs-path }}
-            echo "${{ inputs.codelabs-path }} has been created."
-        fi
-        echo "::endgroup::"
-
-    - name: Check/Create codelabs directory for md format
-      if: inputs.format == 'all'
-      shell: bash
-      run: |
-        echo "::group::Create codelabs directory for md format"
-        if [ ! -d ${{ inputs.codelabs-path }}-md ]; then
-            mkdir ${{ inputs.codelabs-path }}-md
-            echo "${{ inputs.codelabs-path }}-md has been created."
-        fi
-        echo "::endgroup::"
-
     - name: Get source(s)
-      id: data
+      if: "${{ inputs.codelabs-json != '' }}"
       shell: bash
       run: |
         echo "::group::Get source(s)"
-        sources="${{ inputs.document-id }}"
-        if [[ -n "${{ inputs.codelabs-json }}" ]]; then
-          sources=$(cat codelabs.json | grep "source" | sed 's/.*": "\(.*\)"/\1/')
-        fi
-        echo "sources=$sources" >> "$GITHUB_OUTPUT"
+        INPUT_SOURCE=$(cat ${{ inputs.codelabs-json }} | grep "source" | sed 's/.*": "\(.*\)"/\1/')
         echo "::endgroup::"
 
     - name: Command builder
-      id: builder
       shell: bash
       run: |
         echo "::group::Build command"
-        command="claat export"
-        [[ -n "${{ inputs.gaid }}" ]] && command+=" -ga \"${{ inputs.gaid }}\""  
-        [[ "${{ inputs.format }}" == "md" ]] && command+=" -f \"${{ inputs.format }}\""
-        [[ -n "${{ inputs.auth }}" ]] && command+=" -auth \"${{ inputs.auth }}\""
-        echo "command=$command" >> "$GITHUB_OUTPUT"
+        claat_command="claat export"
+        [[ -n "${{ inputs.gaid }}" ]] && CLAAT_COMMAND+=" -ga \"${{ inputs.gaid }}\""  
+        [[ "${{ inputs.format }}" == "md" ]] && CLAAT_COMMAND+=" -f \"${{ inputs.format }}\""
+        [[ -n "${{ inputs.auth }}" ]] && CLAAT_COMMAND+=" -auth \"${{ inputs.auth }}\""
+        echo "CLAAT_COMMAND=$claat_command" >> $GITHUB_ENV 
         echo "::endgroup::"
 
     - name: Export codelab(s)
       shell: bash
       run: |
         echo "::group::Export codelab(s)"
-        sources="${{ steps.data.outputs.sources }}"
-        claat_command="${{ steps.builder.outputs.command }}"
-        echo -e "exporting\n$sources"
+        mkdir -p ${{ inputs.codelabs-path }}
+        echo -e "exporting\n$INPUT_SOURCE"
         IFS=$'\n'
-        for source in $sources; do
-          claat_command_default="${claat_command} -o \"${{ inputs.codelabs-path }}/\" $source"
+        for source in $INPUT_SOURCE; do
+          command_default="${CLAAT_COMMAND} -o \"${{ inputs.codelabs-path }}/\" $source"
           if [[ "${{ inputs.format }}" == "all" ]]; then
-            claat_command_md="${claat_command} -o \"${{ inputs.codelabs-path }}-md/\" -f \"md\" $source"
-            eval "$claat_command_default $@"
-            eval "$claat_command_md $@"
+            mkdir -p ${{ inputs.codelabs-path }}-md
+            command_md="${CLAAT_COMMAND} -o \"${{ inputs.codelabs-path }}-md/\" -f \"md\" $source"
+            eval "$command_default $@"
+            eval "$command_md $@"
           else
-            eval "$claat_command_default $@"
+            eval "$command_default $@"
           fi
         done
         echo "::endgroup::"
