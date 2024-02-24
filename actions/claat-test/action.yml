@@ -68,7 +68,7 @@ runs:
         claat version
         echo "::endgroup::"
 
-    - name: Check codelabs directory
+    - name: Check/Create codelabs directory
       shell: bash
       run: |
         echo "::group::Check codelabs directory"
@@ -78,7 +78,7 @@ runs:
         fi
         echo "::endgroup::"
 
-    - name: Create codelabs directory for md format
+    - name: Check/Create codelabs directory for md format
       if: inputs.format == 'all'
       shell: bash
       run: |
@@ -106,10 +106,10 @@ runs:
       shell: bash
       run: |
         echo "::group::Build command"
-        command="${claat export}"
-        [[ -n "${{ inputs.gaid }}" ]] && command+=" -ga ${{ inputs.gaid }}"
-        [[ -n "${{ inputs.auth }}" ]] && command+=" -auth ${{ inputs.auth }}"
-        [[ "${{ inputs.format }}" == "md" ]] && command+=" -f ${{ inputs.format }}"
+        command="claat export"
+        [[ -n "${{ inputs.gaid }}" ]] && command+=" -ga \"${{ inputs.gaid }}\""  
+        [[ "${{ inputs.format }}" == "md" ]] && command+=" -f \"${{ inputs.format }}\""
+        [[ -n "${{ inputs.auth }}" ]] && command+=" -auth \"${{ inputs.auth }}\""
         echo "command=$command" >> "$GITHUB_OUTPUT"
         echo "::endgroup::"
 
@@ -122,9 +122,9 @@ runs:
         echo -e "exporting\n$sources"
         IFS=$'\n'
         for source in $sources; do
-          claat_command_default = "$claat_command"+" -o '${{ inputs.codelabs-path }}/' '$source'"
+          claat_command_default="${claat_command} -o \"${{ inputs.codelabs-path }}/\" $source"
           if [[ "${{ inputs.format }}" == "all" ]]; then
-            claat_command_md = "$claat_command"+" -o '${{ inputs.codelabs-path }}-md/' -f 'md' '$source'"
+            claat_command_md="${claat_command} -o \"${{ inputs.codelabs-path }}-md/\" -f \"md\" $source"
             eval "$claat_command_default $@"
             eval "$claat_command_md $@"
           else
@@ -132,26 +132,6 @@ runs:
           fi
         done
         echo "::endgroup::"
-
-    # - name: Export codelab(s)
-    #   shell: bash
-    #   run: |
-    #     echo "::group::Export codelab(s)"
-    #     sources="${{ inputs.document-id }}"
-    #     if [[ -n "${{ inputs.codelabs-json }}" ]]; then
-    #       sources=$(cat codelabs.json | grep "source" | sed 's/.*": "\(.*\)"/\1/')
-    #     fi
-    #     echo "exporting $sources"
-    #     IFS=$'\n'
-    #     for source in $sources; do
-    #       if [[ "${{ inputs.format }}" == "all" ]]; then
-    #         claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -auth "${{ inputs.auth }}" "$source"
-    #         claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}-md/" -f "md" -auth "${{ inputs.auth }}" "$source"
-    #       else
-    #         claat export -ga ${{ inputs.gaid }} -o "${{ inputs.codelabs-path }}/" -f "${{ inputs.format }}" -auth "${{ inputs.auth }}" "$source"
-    #       fi
-    #     done
-    #     echo "::endgroup::"
 
     # ga4id parser has been added to md parser but not yet in gdocs parser
     - name: Fix missing ga4id
