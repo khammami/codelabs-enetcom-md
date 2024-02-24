@@ -90,9 +90,9 @@ runs:
       run: |
         echo "::group::Build command"
         claat_command="claat export"
-        [[ -n "${{ inputs.gaid }}" ]] && CLAAT_COMMAND+=" -ga \"${{ inputs.gaid }}\""  
-        [[ "${{ inputs.format }}" == "md" ]] && CLAAT_COMMAND+=" -f \"${{ inputs.format }}\""
-        [[ -n "${{ inputs.auth }}" ]] && CLAAT_COMMAND+=" -auth \"${{ inputs.auth }}\""
+        [[ -n "${{ inputs.gaid }}" ]] && claat_command+=" -ga \"${{ inputs.gaid }}\""  
+        [[ "${{ inputs.format }}" == "md" ]] && claat_command+=" -f \"${{ inputs.format }}\""
+        [[ -n "${{ inputs.auth }}" ]] && claat_command+=" -auth \"${{ inputs.auth }}\""
         echo "CLAAT_COMMAND=$claat_command" >> $GITHUB_ENV 
         echo "::endgroup::"
 
