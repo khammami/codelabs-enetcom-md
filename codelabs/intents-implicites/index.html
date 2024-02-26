@@ -1,0 +1,757 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 02.3: Les &#34;Intents&#34; implicites</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-3295395-7" ga4id="$GA4ID"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-3295395-7"
+                  codelab-ga4id="$GA4ID"
+                  id="intents-implicites"
+                  title="TP 02.3: Les &#34;Intents&#34; implicites"
+                  environment="web"
+                  feedback-link="https://github.com/khammami/codelabs-enetcom/issues">
+    
+      <google-codelab-step label="Bienvenue" duration="0">
+        <p>Ces travaux pratiques sont basés sur le cours de base pour les développeurs Android fourni par Google, qui prépare les participants au test de certification <a href="https://developers.google.com/training/certification/associate-android-developer/" target="_blank">Associate Android Developer</a>. Pour tirer le meilleur parti de ce TP, il est recommandé de travailler successivement dans les codelabs.</p>
+<h2 is-upgraded>Introduction</h2>
+<p>Dans une section précédente, vous avez découvert les intentions explicites. Dans une intention explicite, vous effectuez une activité dans votre application, ou dans une application différente, en envoyant une intention avec le nom de classe complet de l&#39;activité. Dans cette section, vous en apprendrez plus sur les intentions implicites et sur la façon de les utiliser pour mener à bien des activités.</p>
+<p>Avec une intention implicite, vous démarrez une activité sans savoir quelle application ou activité gérera la tâche. Par exemple, si vous souhaitez que votre application prenne une photo, envoie un courrier électronique ou affiche un emplacement sur une carte, vous ne vous souciez généralement pas de l&#39;application ou de l&#39;activité qui effectue la tâche.</p>
+<p>Inversement, votre activité peut déclarer un ou plusieurs filtres d&#39;intention dans le fichier <code>AndroidManifest.xml</code> pour annoncer qu&#39;elle peut accepter des intentions implicites et définir les types d&#39;intentions acceptées par l&#39;activité.</p>
+<p>Pour faire correspondre votre demande à une application installée sur le périphérique, le système Android associe votre intention implicite à une activité dont les filtres d&#39;intention indiquent qu&#39;ils peuvent effectuer l&#39;action. Si plusieurs applications correspondent, un sélecteur d&#39;applications est présenté à l&#39;utilisateur qui lui permet de sélectionner l&#39;application qu&#39;il souhaite utiliser pour gérer l&#39;intention.</p>
+<p>Dans cette pratique, vous construisez une application qui envoie une intention implicite d&#39;exécuter chacune des tâches suivantes:</p>
+<ul>
+<li>Ouvrez une URL dans un navigateur Web.</li>
+<li>Ouvrir un emplacement sur une carte.</li>
+<li>Partager du texte.</li>
+</ul>
+<p>Le partage - envoi d&#39;une information à d&#39;autres personnes par courrier électronique ou via les médias sociaux - est une fonctionnalité répandue dans de nombreuses applications. Pour l&#39;action de partage, vous utilisez la classe <code>ShareCompat.IntentBuilder</code>, ce qui facilite la création d&#39;une intention implicite pour le partage de données.</p>
+<p>Enfin, vous créez un simple récepteur qui accepte une intention implicite pour une action spécifique.</p>
+<h2 is-upgraded>What you should already know</h2>
+<p>Vous devriez être familier avec:</p>
+<ul>
+<li>Utilisez l&#39;éditeur de disposition (layout) pour modifier une disposition (layout).</li>
+<li>Éditez le code XML d&#39;une mise en page (layout).</li>
+<li>Ajoutez un bouton et un gestionnaire de clics.</li>
+<li>Créez et utilisez une activité.</li>
+<li>Créez et envoyez une intention (<code>Intent</code>) entre une activité et une autre.</li>
+</ul>
+<h2 class="checklist" is-upgraded>What you&#39;ll learn</h2>
+<ul class="checklist">
+<li>Comment créer une intention (<code>Intent</code>) implicite et utiliser ses actions et ses catégories.</li>
+<li>Comment utiliser la classe d&#39;assistance <code>ShareCompat.IntentBuilder</code> pour créer une intention (<code>Intent</code>) implicite de partage de données.</li>
+<li>Comment annoncer que votre application peut accepter une intention (<code>Intent</code>) implicite en déclarant des filtres d&#39;intention dans le fichier <code>AndroidManifest.xml</code>.</li>
+</ul>
+<h2 is-upgraded>What you&#39;ll do</h2>
+<ul>
+<li>Créez une nouvelle application pour expérimenter une intention (<code>Intent</code>) implicite.</li>
+<li>Implémentez une intention (<code>Intent</code>) implicite qui ouvre une page Web et une autre qui ouvre un emplacement sur une carte.</li>
+<li>Implémentez une action pour partager un extrait de texte.</li>
+<li>Créez une nouvelle application pouvant accepter une intention (<code>Intent</code>) implicite d&#39;ouvrir une page Web.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Aperçu de l&#39;application" duration="0">
+        <p>Dans cette section, vous créez une nouvelle application avec une activité et trois options pour les actions: ouvrir un site Web, ouvrir un emplacement sur une carte et partager un extrait de texte. Tous les champs de texte sont modifiables (<code>EditText</code>), mais contiennent des valeurs par défaut.</p>
+<p class="image-container"><img style="width: 269.28px" src="img/f5d42d30cb2daed1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 1: Créer le projet et la mise en page (layout)" duration="0">
+        <p>Pour cet exercice, vous créez un nouveau projet et une application appelés Intentions implicites, avec une nouvelle présentation (layout).</p>
+<aside class="warning"><p>Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:</p>
+<ul>
+<li>à partir de la fenêtre &#34;Welcome to Android Studio&#34;:<br><strong>Customize &gt; All settings</strong></li>
+<li>à partir de la fenêtre du projet ouvert:<br><strong>File &gt; Settings</strong></li>
+</ul>
+<p class="image-container"><img style="width: 610.00px" src="img/3918482f0c611fa1.png"></p>
+<p>Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d&#39;outils séparée, cochez les deux paramètres suivants :</p>
+<ul>
+<li><strong>Enable new UI</strong></li>
+<li><strong>Show main menu in separate toolbar</strong></li>
+</ul>
+<p>Une fois ces paramètres cochés, vous devez redémarrer Android Studio pour que les changements soient appliqués.</p>
+</aside>
+<h2 is-upgraded>1.1 Créer le projet</h2>
+<ol type="1" start="1">
+<li>Démarrez Android Studio et créez un nouveau projet Android Studio. Nommez l&#39;application sous <strong>Implicit Intents</strong>.</li>
+<li>Choisissez <strong>Empty Views Activity</strong> pour le modèle de projet. Cliquez sur <strong>Next</strong>.</li>
+<li>Assurez-vous que la langue du projet est Java. Cliquez sur <strong>Finish</strong>.</li>
+</ol>
+<h2 is-upgraded>1.2 Créer la mise en page (layout)</h2>
+<p>Dans cette tâche, créez la mise en page (layout) de l&#39;application. Utilisez un <code>LinearLayout</code>, trois éléments <code>Button</code> et trois éléments <code>EditText</code>, comme ceci:</p>
+<p class="image-container"><img style="width: 535.16px" src="img/468656a1981927e5.png"></p>
+<ol type="1" start="1">
+<li>Ouvrez <strong>app &gt; res &gt; values &gt; strings.xml</strong> dans le volet <strong>Project &gt; Android</strong>, puis ajoutez les ressources de chaîne suivantes:</li>
+</ol>
+<pre><code>&lt;string name=&#34;edittext_uri&#34;&gt;http://developer.android.com&lt;/string&gt;
+&lt;string name=&#34;button_uri&#34;&gt;Open Website&lt;/string&gt;
+
+&lt;string name=&#34;edittext_loc&#34;&gt;Golden Gate Bridge&lt;/string&gt;
+&lt;string name=&#34;button_loc&#34;&gt;Open Location&lt;/string&gt;
+
+&lt;string name=&#34;edittext_share&#34;&gt;\&#39;Twas brillig and the slithy toves&lt;/string&gt;
+&lt;string name=&#34;button_share&#34;&gt;Share This Text&lt;/string&gt;</code></pre>
+<ol type="1" start="2">
+<li>Ouvrez <strong>res &gt; layout &gt; activity_main.xml</strong> dans le volet <strong>Project &gt; Android</strong>. Sélectionnez le mode de vue <strong>Code</strong> pour passer au code XML.</li>
+<li>Changez <code>androidx.constraintlayout.widget.ConstraintLayout</code> en <code>LinearLayout</code>.</li>
+<li>Ajoutez l&#39;attribut <code>android:orientation</code> avec la valeur <code>"vertical"</code>. Ajoutez l&#39;attribut <code>android:padding</code> avec la valeur <code>"16dp"</code>.</li>
+</ol>
+<pre><code>&lt;LinearLayout xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;
+    xmlns:app=&#34;http://schemas.android.com/apk/res-auto&#34;
+    xmlns:tools=&#34;http://schemas.android.com/tools&#34;
+    android:layout_width=&#34;match_parent&#34;
+    android:layout_height=&#34;match_parent&#34;
+    android:orientation=&#34;vertical&#34;
+    android:padding=&#34;16dp&#34;
+    tools:context=&#34;com.example.android.implicitintents.MainActivity&#34;&gt;</code></pre>
+<ol type="1" start="5">
+<li>Supprimez le <code>TextView</code> qui affiche &#34;Hello World&#34;.</li>
+<li>Ajoutez un ensemble d&#39;éléments d&#39;interface utilisateur (UI) à la présentation (layout) pour le bouton <strong>Open Website</strong>. Vous avez besoin d&#39;un élément <code>EditText</code> et d&#39;un élément <code>Button</code>. Utilisez ces valeurs d&#39;attribut:</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>attributs d&#39;EditText </strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/website_edittext&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_width</p>
+</td><td colspan="1" rowspan="1"><p>&#34;match_parent&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_height</p>
+</td><td colspan="1" rowspan="1"><p>&#34;wrap_content&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@string/edittext_uri&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Attributs de Button</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/open_website_button&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_width</p>
+</td><td colspan="1" rowspan="1"><p>&#34;wrap_content&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_height</p>
+</td><td colspan="1" rowspan="1"><p>&#34;wrap_content&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:layout_marginBottom</p>
+</td><td colspan="1" rowspan="1"><p>&#34;24dp&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@string/button_uri&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:onClick</p>
+</td><td colspan="1" rowspan="1"><p>&#34;openWebsite&#34;</p>
+</td></tr>
+</table>
+<p>La valeur de l&#39;attribut <code>android:onClick</code> reste soulignée en rouge jusqu&#39;à ce que vous définissiez la méthode de rappel dans une tâche ultérieure.</p>
+<ol type="1" start="7">
+<li>Ajoutez un ensemble d&#39;éléments d&#39;interface utilisateur (<code>EditText</code> et <code>Button</code>) à la présentation (layout) pour le bouton <strong>Open Location</strong>. Utilisez les mêmes attributs que dans l&#39;étape précédente, mais modifiez-les comme indiqué ci-dessous. (Vous pouvez copier les valeurs à partir du bouton <strong>Open Website</strong> et les modifier.)</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Attributs d&#39; EditText</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/location_edittext&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@string/edittext_loc&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Attributs de Button</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/open_location_button&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@string/button_loc&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:onClick</p>
+</td><td colspan="1" rowspan="1"><p>&#34;openLocation&#34;</p>
+</td></tr>
+</table>
+<p>La valeur de l&#39;attribut <code>android:onClick</code> reste soulignée en rouge jusqu&#39;à ce que vous définissiez la méthode de rappel dans une tâche ultérieure.</p>
+<ol type="1" start="8">
+<li>Ajoutez un ensemble d&#39;éléments d&#39;interface utilisateur (<code>EditText</code> et <code>Button</code>) à la présentation (layout) pour le bouton <strong>Share This</strong>. Utilisez les attributs indiqués ci-dessous. (Vous pouvez copier les valeurs à partir du bouton <strong>Open Website </strong>et les modifier.)</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Attributs d&#39; EditText</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/share_edittext&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@string/edittext_share&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Attributs de Button</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/share_text_button&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:text</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@string/button_share&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:onClick</p>
+</td><td colspan="1" rowspan="1"><p>&#34;shareText&#34;</p>
+</td></tr>
+</table>
+<p>En fonction de votre version d&#39;Android Studio, votre code <code>activity_main.xml</code> devrait ressembler à ce qui suit. Les valeurs des attributs <code>android:onClick</code> resteront soulignées en rouge jusqu&#39;à ce que vous définissiez les méthodes de rappel dans une tâche ultérieure.</p>
+<pre><code>&lt;LinearLayout xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;
+    xmlns:app=&#34;http://schemas.android.com/apk/res-auto&#34;
+    xmlns:tools=&#34;http://schemas.android.com/tools&#34;
+    android:layout_width=&#34;match_parent&#34;
+    android:layout_height=&#34;match_parent&#34;
+    android:orientation=&#34;vertical&#34;
+    android:padding=&#34;16dp&#34;
+    tools:context=&#34;com.example.android.implicitintents.MainActivity&#34;&gt;
+
+    &lt;EditText
+        android:id=&#34;@+id/website_edittext&#34;
+        android:layout_width=&#34;match_parent&#34;
+        android:layout_height=&#34;wrap_content&#34;
+         android:text=&#34;@string/edittext_uri&#34;/&gt;
+
+    &lt;Button
+        android:id=&#34;@+id/open_website_button&#34;
+        android:layout_width=&#34;wrap_content&#34;
+        android:layout_height=&#34;wrap_content&#34;
+         android:layout_marginBottom=&#34;24dp&#34;
+        android:text=&#34;@string/button_uri&#34;
+        android:onClick=&#34;openWebsite&#34;/&gt;
+
+    &lt;EditText
+        android:id=&#34;@+id/location_edittext&#34;
+        android:layout_width=&#34;match_parent&#34;
+        android:layout_height=&#34;wrap_content&#34;
+        android:text=&#34;@string/edittext_uri&#34;/&gt;
+
+    &lt;Button
+        android:id=&#34;@+id/open_location_button&#34;
+        android:layout_width=&#34;wrap_content&#34;
+        android:layout_height=&#34;wrap_content&#34;
+        android:layout_marginBottom=&#34;24dp&#34;
+        android:text=&#34;@string/button_loc&#34;
+        android:onClick=&#34;openLocation&#34;/&gt;
+
+    &lt;EditText
+        android:id=&#34;@+id/share_edittext&#34;
+        android:layout_width=&#34;match_parent&#34;
+        android:layout_height=&#34;wrap_content&#34;
+        android:text=&#34;@string/edittext_share&#34;/&gt;
+
+    &lt;Button
+        android:id=&#34;@+id/share_text_button&#34;
+        android:layout_width=&#34;wrap_content&#34;
+        android:layout_height=&#34;wrap_content&#34;
+        android:layout_marginBottom=&#34;24dp&#34;
+        android:text=&#34;@string/button_share&#34;
+        android:onClick=&#34;shareText&#34;/&gt;
+
+&lt;/LinearLayout&gt;</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 2: Implémenter le bouton Open Website" duration="0">
+        <p>Dans cette tâche, vous implémentez la méthode du gestionnaire sur clic pour le premier bouton de la présentation (layout), Open Website. Cette action utilise une intention (<code>Intent</code>) implicite pour envoyer l&#39;URI donné à une activité pouvant gérer cette intention implicite (telle qu&#39;un navigateur Web).</p>
+<h2 is-upgraded>2.1 Définir openWebsite()</h2>
+<ol type="1" start="1">
+<li>Cliquez sur <code>"openWebsite"</code> dans le code XML <code>activity_main.xml</code>.</li>
+<li>Appuyez sur <strong>Alt + Entrée</strong> et sélectionnez <strong>Create &#39;openWebsite(View)&#39; in &#39;MainActivity&#39;</strong>.</li>
+</ol>
+<p>Le fichier <code>MainActivity</code> s&#39;ouvre et Android Studio génère une méthode squelette pour le gestionnaire <code>openWebsite()</code>.</p>
+<pre><code>public void openWebsite(View view) {
+}</code></pre>
+<ol type="1" start="3">
+<li>Dans MainActivity, ajoutez une variable privée en haut de la classe pour contenir l&#39;objet <code>EditText</code> de l&#39;URI du site Web.</li>
+</ol>
+<pre><code>private EditText mWebsiteEditText;</code></pre>
+<ol type="1" start="4">
+<li>Dans la méthode <code>onCreate()</code> pour <code>MainActivity</code>, utilisez <code>findViewById()</code> pour obtenir une référence à l&#39;instance <code>EditText</code> et l&#39;affecter à cette variable privée:</li>
+</ol>
+<pre><code>mWebsiteEditText = findViewById(R.id.website_edittext);</code></pre>
+<h2 is-upgraded>2.2 Ajouter du code à openWebsite()</h2>
+<ol type="1" start="1">
+<li>Ajoutez une instruction à la nouvelle méthode <code>openWebsite()</code> qui obtient la valeur de chaîne de <code>EditText</code>:</li>
+</ol>
+<pre><code>String url = mWebsiteEditText.getText().toString();</code></pre>
+<ol type="1" start="2">
+<li>Encoder et analyser (parse) cette chaîne dans un objet Uri:</li>
+</ol>
+<pre><code>Uri webpage = Uri.parse(url);</code></pre>
+<ol type="1" start="3">
+<li>Créez une nouvelle intention avec <code>Intent.ACTION_VIEW</code> en tant qu&#39;action et l&#39;URI en tant que données:</li>
+</ol>
+<pre><code>Intent intent = new Intent(Intent.ACTION_VIEW, webpage);</code></pre>
+<p>Ce constructeur d&#39;intention (<code>Intent</code>) est différent de celui que vous avez utilisé pour créer une intention explicite. Dans le constructeur précédent, vous avez spécifié le contexte actuel et un composant spécifique (classe d&#39;activité) auquel envoyer l&#39;intention. Dans ce constructeur, vous spécifiez une action et les données pour cette action. Les actions sont définies par la classe d&#39;intention et peuvent inclure <code>ACTION_VIEW</code> (pour afficher les données fournies), <code>ACTION_EDIT</code> (pour modifier les données fournies) ou <code>ACTION_DIAL</code> (pour composer un numéro de téléphone). Dans ce cas, l&#39;action est <code>ACTION_VIEW</code> car vous souhaitez afficher la page Web spécifiée par l&#39;URI dans la variable de page Web.</p>
+<ol type="1" start="4">
+<li>Utilisez la méthode <code>resolveActivity()</code> et le gestionnaire de package Android pour trouver une activité qui peut gérer votre intention implicite. Assurez-vous que la demande a été résolue avec succès.</li>
+</ol>
+<pre><code>if (intent.resolveActivity(getPackageManager()) != null) {
+}</code></pre>
+<p>Cette demande correspond à votre action et à vos données d&#39;intention (<code>Intent</code>) avec les filtres d&#39;intention pour les applications installées sur le périphérique. Vous l&#39;utilisez pour vous assurer qu&#39;il existe au moins une activité capable de traiter vos demandes.</p>
+<ol type="1" start="5">
+<li>Dans l&#39;instruction <code>if</code>, appelez <code>startActivity()</code> pour envoyer l&#39;intention (<code>Intent</code>).</li>
+</ol>
+<pre><code>startActivity(intent);</code></pre>
+<ol type="1" start="6">
+<li>Ajoutez un bloc <code>else</code> pour imprimer un message du journal si l&#39;intention n&#39;a pas pu être résolue.</li>
+</ol>
+<pre><code>} else {
+   Log.d(&#34;ImplicitIntents&#34;, &#34;Can&#39;t handle this!&#34;);
+}</code></pre>
+<p>La méthode <code>openWebsite()</code> devrait maintenant ressembler à ceci. (Commentaires ajoutés pour plus de clarté.)</p>
+<pre><code>public void openWebsite(View view) {
+   // Get the URL text.
+   String url = mWebsiteEditText.getText().toString();
+
+   // Parse the URI and create the intent.
+   Uri webpage = Uri.parse(url);
+   Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+
+   // Find an activity to handle the intent and start that activity.
+   if (intent.resolveActivity(getPackageManager()) != null) {
+       startActivity(intent);
+   } else {
+       Log.d(&#34;ImplicitIntents&#34;, &#34;Can&#39;t handle this intent!&#34;);
+   }
+}</code></pre>
+<p>Pour Android 11 (API niveau 30) et les versions supérieures d&#39;Android, cette démarche ne suffit pas. En effet, Android 11 introduit des modifications liées à <a href="https://developer.android.com/about/versions/11/privacy/package-visibility" target="_blank">la visibilité des packages</a>. Ces modifications n&#39;affectent les applications que si elles sont conçues pour Android 11.</p>
+<p>Sur les appareils Android 11 (API niveau 30) ou supérieurs, le système filtre par défaut les informations sur les autres applications installées. Cela signifie que votre application ne peut pas détecter toutes les applications installées sur un appareil, ce qui permet de minimiser l&#39;accès aux informations potentiellement sensibles dont votre application n&#39;a pas besoin pour fonctionner.</p>
+<p>Pour les scénarios les plus courants, y compris les intents implicites démarrés avec <code>startActivity()</code>, vous n&#39;aurez rien à changer. Pour d&#39;autres scénarios, comme l&#39;ouverture d&#39;une application tierce spécifique directement à partir de votre interface utilisateur, les développeurs devront explicitement répertorier les noms de package d&#39;application ou <a href="https://developer.android.com/training/package-visibility/use-cases#open-urls" target="_blank">les signatures de filtre d&#39;intention</a> comme suit :</p>
+<pre><code>&lt;manifest xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;
+    package=&#34;com.example.android.implicitintents&#34;&gt;
+
+    &lt;queries&gt;
+        &lt;intent&gt;
+            &lt;action android:name=&#34;android.intent.action.VIEW&#34; /&gt;
+            &lt;category android:name=&#34;android.intent.category.BROWSABLE&#34; /&gt;
+            &lt;data android:scheme=&#34;https&#34; /&gt;
+        &lt;/intent&gt;
+    &lt;/queries&gt;</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 3: Implémenter le bouton Open Location" duration="0">
+        <p>Dans cette tâche, vous implémentez la méthode du gestionnaire de clic pour le deuxième bouton de l&#39;interface utilisateur, <strong>Open Location</strong>. Cette méthode est presque identique à la méthode <code>openWebsite()</code>. La différence est l&#39;utilisation d&#39;un URI géographique pour indiquer un emplacement sur la carte. Vous pouvez utiliser un URI géographique avec la latitude et la longitude, ou utiliser une chaîne de requête pour un emplacement général. Dans cet exemple, nous avons utilisé ce dernier.</p>
+<h2 is-upgraded>3.1 Définir openLocation()</h2>
+<ol type="1" start="1">
+<li>Cliquez sur <code>"openLocation"</code> dans le code XML <code>activity_main.xml</code>.</li>
+<li>Appuyez sur <strong>Alt + Entrée</strong> et sélectionnez <strong>Create &#39;openLocation(View)&#39; in MainActivity&#39;</strong>.</li>
+</ol>
+<p>Android Studio génère une méthode squelette dans <code>MainActivity</code> pour le gestionnaire <code>openLocation()</code>.</p>
+<pre><code>public void openLocation(View view) {
+}</code></pre>
+<ol type="1" start="3">
+<li>Ajoutez une variable privée en haut de <code>MainActivity</code> pour contenir l&#39;objet <code>EditText</code> de l&#39;URI d&#39;emplacement.</li>
+</ol>
+<pre><code>private EditText mLocationEditText;</code></pre>
+<ol type="1" start="4">
+<li>Dans la méthode <code>onCreate()</code>, utilisez <code>findViewByID()</code> pour obtenir une référence à l&#39;instance <code>EditText</code> et l&#39;affecter à cette variable privée:</li>
+</ol>
+<pre><code>mLocationEditText = findViewById(R.id.location_edittext);</code></pre>
+<h2 is-upgraded>3.2 Ajouter du code à openLocation()</h2>
+<ol type="1" start="1">
+<li>Dans la nouvelle méthode <code>openLocation()</code>, ajoutez une instruction pour obtenir la valeur de chaîne de <code>mLocationEditText</code> de <code>EditText</code>.</li>
+</ol>
+<pre><code>String loc = mLocationEditText.getText().toString();</code></pre>
+<ol type="1" start="2">
+<li>Analyser (parse) cette chaîne dans un objet Uri avec une requête de recherche géographique:</li>
+</ol>
+<pre><code>Uri addressUri = Uri.parse(&#34;geo:0,0?q=&#34; + loc);</code></pre>
+<ol type="1" start="3">
+<li>Créez une nouvelle intention (<code>Intent</code>) avec <code>Intent.ACTION_VIEW</code> en tant qu&#39;action et loc en tant que données.</li>
+</ol>
+<pre><code>Intent intent = new Intent(Intent.ACTION_VIEW, addressUri);</code></pre>
+<ol type="1" start="4">
+<li>Résolvez l&#39;intention (<code>Intent</code>) et vérifiez que l&#39;intention est résolue avec succès. Si oui, <code>startActivity()</code>, connectez-vous sinon un message d&#39;erreur.</li>
+</ol>
+<pre><code>if (intent.resolveActivity(getPackageManager()) != null) {
+   startActivity(intent);
+} else {
+   Log.d(&#34;ImplicitIntents&#34;, &#34;Can&#39;t handle this intent!&#34;);
+}</code></pre>
+<p>La méthode <code>openLocation()</code> devrait maintenant ressembler à ceci (des commentaires ont été ajoutés pour plus de clarté):</p>
+<pre><code>public void openLocation(View view) {
+   // Get the string indicating a location. Input is not validated; it is
+   // passed to the location handler intact.
+   String loc = mLocationEditText.getText().toString();
+
+   // Parse the location and create the intent.
+   Uri addressUri = Uri.parse(&#34;geo:0,0?q=&#34; + loc);
+   Intent intent = new Intent(Intent.ACTION_VIEW, addressUri);
+
+   // Find an activity to handle the intent, and start that activity.
+   if (intent.resolveActivity(getPackageManager()) != null) {
+       startActivity(intent);
+   } else {
+       Log.d(&#34;ImplicitIntents&#34;, &#34;Can&#39;t handle this intent!&#34;);
+   }
+}</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 4: Implémenter le bouton &#34;Share This Text&#34;" duration="0">
+        <p>Une action de partage est un moyen simple pour les utilisateurs de partager des éléments de votre application avec des réseaux sociaux et d&#39;autres applications. Bien que vous puissiez créer une action de partage dans votre propre application à l&#39;aide d&#39;une intention implicite, Android fournit la classe d&#39;assistance <code>ShareCompat.IntentBuilder</code> pour faciliter la mise en œuvre du partage. Vous pouvez utiliser <code>ShareCompat.IntentBuilder</code> pour créer une intention et lancer un sélecteur pour permettre à l&#39;utilisateur de choisir l&#39;application de destination à partager.</p>
+<p>Dans cette tâche, vous implémentez le partage d&#39;un peu de texte dans une édition de texte, à l&#39;aide de la classe <code>ShareCompat.IntentBuilder</code>.</p>
+<h2 is-upgraded>4.1 Définir shareText()</h2>
+<ol type="1" start="1">
+<li>Cliquez sur <code>"shareText"</code> dans le code XML <code>activity_main.xml</code>.</li>
+<li>Appuyez sur <strong>Alt + Entrée</strong> et sélectionnez <strong>Create &#39;shareText(View)&#39; dans MainActivity</strong>.</li>
+</ol>
+<p>Android Studio génère une méthode squelette dans <code>MainActivity</code> pour le gestionnaire <code>shareText()</code>.</p>
+<pre><code>public void shareText(View view) {
+}</code></pre>
+<ol type="1" start="3">
+<li>Ajoutez une variable privée en haut de <code>MainActivity</code> pour contenir le <code>EditText</code>.</li>
+</ol>
+<pre><code>private EditText mShareTextEditText;</code></pre>
+<ol type="1" start="4">
+<li>Dans <code>onCreate()</code>, utilisez <code>findViewById()</code> pour obtenir une référence à l&#39;instance <code>EditText</code> et l&#39;affecter à cette variable privée:</li>
+</ol>
+<pre><code>mShareTextEditText = findViewById(R.id.share_edittext);</code></pre>
+<h2 is-upgraded>4.2 Ajouter du code à shareText()</h2>
+<ol type="1" start="1">
+<li>Dans la nouvelle méthode <code>shareText()</code>, ajoutez une instruction pour obtenir la valeur de chaîne de <code>mShareTextEditText</code> d&#39; <code>EditText</code>.</li>
+</ol>
+<pre><code>String txt = mShareTextEditText.getText().toString();</code></pre>
+<ol type="1" start="2">
+<li>Définissez le type mime du texte à partager:</li>
+</ol>
+<pre><code>String mimeType = &#34;text/plain&#34;;</code></pre>
+<ol type="1" start="3">
+<li>Appelez <code>ShareCompat.IntentBuilder</code> avec ces méthodes:</li>
+</ol>
+<pre><code>ShareCompat.IntentBuilder shareIntent = new ShareCompat.IntentBuilder(this);
+shareIntent.setType(mimeType)
+           .setChooserTitle(&#34;Share this text with: &#34;)
+           .setText(txt)
+           .startChooser();</code></pre>
+<ol type="1" start="4">
+<li>Extrayez la valeur de <code>.setChoosterTitle</code> dans une ressource de chaîne.</li>
+</ol>
+<p>L&#39;appel à <code>ShareCompat.IntentBuilder</code> utilise ces méthodes:</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Méthode</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Description</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>from()</p>
+</td><td colspan="1" rowspan="1"><p>L&#39;activité qui lance cette intention de partage (this).</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>setType()</p>
+</td><td colspan="1" rowspan="1"><p>Le type MIME de l&#39;élément à partager.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>setChooserTitle()</p>
+</td><td colspan="1" rowspan="1"><p>Le titre apparaît dans le sélecteur d&#39;applications du système.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>setText()</p>
+</td><td colspan="1" rowspan="1"><p>Le texte à partager</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>startChooser()</p>
+</td><td colspan="1" rowspan="1"><p>Afficher le sélecteur d&#39;applications système et envoyer l&#39;intention.</p>
+</td></tr>
+</table>
+<p>Ce format, avec toutes les méthodes de définition du générateur réunies dans une seule instruction, constitue un moyen simple de créer et de lancer l&#39;intention (<code>Intent</code>). Vous pouvez ajouter n&#39;importe quelle méthode supplémentaire à cette liste.</p>
+<p>La méthode <code>shareText()</code> devrait maintenant ressembler à ceci:</p>
+<pre><code>public void shareText(View view) {
+        String txt = mShareTextEditText.getText().toString();
+        String mimeType = &#34;text/plain&#34;;
+        ShareCompat.IntentBuilder
+                        .from(this)
+                        .setType(mimeType)
+                        .setChooserTitle(R.string.share_text_with)
+                        .setText(txt)
+                        .startChooser();
+}</code></pre>
+<h2 is-upgraded>4.3 Exécutez l&#39;application</h2>
+<ol type="1" start="1">
+<li>Exécutez l&#39;application.</li>
+<li>Cliquez sur le bouton <strong>Open Website</strong> pour lancer un navigateur avec l&#39;URL du site Web dans l&#39; <code>EditText</code> situé au-dessus du bouton. Le navigateur et le site Web doivent apparaître comme indiqué ci-dessous.</li>
+</ol>
+<p class="image-container"><img style="width: 610.57px" src="img/cd1b6bb8c7442117.png"></p>
+<ol type="1" start="3">
+<li>Cliquez sur le bouton <strong>Open Location </strong>pour lancer la carte avec l&#39;emplacement dans l&#39; <code>EditText</code> situé au-dessus du bouton. La carte avec l&#39;emplacement devrait apparaître comme indiqué ci-dessous.</li>
+</ol>
+<p class="image-container"><img style="width: 610.80px" src="img/2073d20db9c78d26.png"></p>
+<ol type="1" start="4">
+<li>Cliquez sur le bouton <strong>Share This Text</strong> pour lancer une boîte de dialogue avec des choix de partage du texte. Le dialogue avec les choix devrait apparaître comme indiqué ci-dessous.</li>
+</ol>
+<p class="image-container"><img style="width: 610.57px" src="img/7fab2a3a04711c70.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tâche 5: Recevoir une intention implicite" duration="0">
+        <p>Jusqu&#39;à présent, vous avez créé une application qui utilise une intention implicite afin de lancer l&#39;activité d&#39;une autre application. Dans cette tâche, vous examinez le problème sous un autre angle: permettre à une activité de votre application de répondre à une intention implicite envoyée par une autre application.</p>
+<p>Une activité dans votre application peut toujours être activée de l&#39;intérieur ou de l&#39;extérieur de votre application avec une intention explicite. Pour permettre à une activité de recevoir une intention implicite, définissez un filtre d&#39;intention dans le fichier <code>AndroidManifest.xml</code> de votre application pour indiquer les types d&#39;intention implicite que votre activité souhaite gérer.</p>
+<p>Pour correspondre à votre demande avec une application spécifique installée sur l&#39;appareil, le système Android associe votre intention implicite à une activité dont les filtres d&#39;intention indiquent qu&#39;ils peuvent effectuer cette action. Si plusieurs applications installées correspondent, l&#39;utilisateur dispose d&#39;un sélecteur d&#39;applications qui lui permet de sélectionner l&#39;application qu&#39;il souhaite utiliser pour gérer cette intention.</p>
+<p>Lorsqu&#39;une application de l&#39;appareil envoie une intention implicite, le système Android fait correspondre l&#39;action et les données de cette intention à toute activité disponible incluant les filtres d&#39;intention appropriés. Lorsque les filtres d&#39;intention pour une activité correspondent à l&#39;intention:</p>
+<ul>
+<li>S&#39;il existe une seule activité correspondante, Android permet à l&#39;activité de gérer l&#39;intention elle-même.</li>
+<li>S&#39;il existe plusieurs correspondances, Android affiche un sélecteur d&#39;application permettant à l&#39;utilisateur de choisir quelle application il souhaite exécuter.</li>
+</ul>
+<p>Dans cette tâche, vous créez une application très simple qui reçoit une intention implicite d&#39;ouvrir l&#39;URI d&#39;une page Web. Lorsqu&#39;elle est activée par une intention implicite, cette application affiche l&#39;URI demandé sous forme de chaîne dans un <code>TextView</code>.</p>
+<h2 is-upgraded>5.1 Créer le projet et la mise en page (layout)</h2>
+<ol type="1" start="1">
+<li>Créez un nouveau projet Android Studio avec le nom de l&#39;application <strong>Implicit Intents Receiver</strong> et choisissez <strong>Empty Views Activity</strong> pour le modèle de projet.</li>
+<li>Ouvrez <strong><code>activity_main.xml</code></strong>.</li>
+<li>Dans le <code>TextView</code> existant (&#34;Hello World&#34;), supprimez l&#39;attribut <code>android:text</code>. Il n&#39;y a pas de texte dans cette <code>TextView</code> par défaut, mais vous allez ajouter l&#39;URI de l&#39;intention dans <code>onCreate()</code>.</li>
+<li>Laissez les attributs <code>layout_constraint</code> seuls, mais ajoutez les attributs suivants:</li>
+</ol>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Attribut</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:id</p>
+</td><td colspan="1" rowspan="1"><p>&#34;@+id/text_uri_message&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:textSize</p>
+</td><td colspan="1" rowspan="1"><p>&#34;18sp&#34;</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>android:textStyle</p>
+</td><td colspan="1" rowspan="1"><p>&#34;bold&#34;</p>
+</td></tr>
+</table>
+<h2 is-upgraded>5.2 Modifier le fichier AndroidManifest.xml pour ajouter un filtre d&#39;intention (Intent)</h2>
+<ol type="1" start="1">
+<li>Ouvrez le fichier <code>AndroidManifest.xml</code>.</li>
+<li>Notez que <code>MainActivity</code> a déjà ce filtre d&#39;intention:</li>
+</ol>
+<pre><code>&lt;intent-filter&gt;
+   &lt;action android:name=&#34;android.intent.action.MAIN&#34; /&gt;
+   &lt;category android:name=&#34;android.intent.category.LAUNCHER&#34; /&gt;
+&lt;/intent-filter&gt;</code></pre>
+<p>Ce filtre d&#39;intention, qui fait partie du manifeste de projet par défaut, indique que cette activité est le point d&#39;entrée principal de votre application (elle comporte une action d&#39;intention <code>"android.intent.action.MAIN"</code>) et que cette activité doit apparaître sous la forme suivante: un élément de niveau supérieur dans le lanceur (sa catégorie est <code>"android.intent.category.LAUNCHER"</code>).</p>
+<ol type="1" start="3">
+<li>Ajoutez une deuxième balise <code><intent-filter></code> dans <code><activity></code> et incluez ces éléments:</li>
+</ol>
+<pre><code>&lt;action android:name=&#34;android.intent.action.VIEW&#34; /&gt;
+&lt;category android:name=&#34;android.intent.category.DEFAULT&#34; /&gt;
+&lt;category android:name=&#34;android.intent.category.BROWSABLE&#34; /&gt;
+&lt;data android:scheme=&#34;http&#34; android:host=&#34;developer.android.com&#34; /&gt;</code></pre>
+<p>Ces lignes définissent un filtre d&#39;intention pour l&#39;activité, c&#39;est-à-dire le type d&#39;intention que l&#39;activité peut gérer. Ce filtre d&#39;intention déclare ces éléments:</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Type de filtre</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Correspond à</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>action</p>
+</td><td colspan="1" rowspan="1"><p>&#34;android.intent.action.VIEW&#34;</p>
+</td><td colspan="1" rowspan="1"><p>Toute intention avec des actions de vue.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>category</p>
+</td><td colspan="1" rowspan="1"><p>&#34;android.intent.category.DEFAULT&#34;</p>
+</td><td colspan="1" rowspan="1"><p><strong>Toute</strong> intention implicite. Cette catégorie doit être incluse pour que votre activité reçoive une intention implicite.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>category</p>
+</td><td colspan="1" rowspan="1"><p>&#34;android.intent.category.BROWSABLE&#34;</p>
+</td><td colspan="1" rowspan="1"><p>Demande de liens de navigation sur des pages Web, des courriels ou d&#39;autres sources.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>data</p>
+</td><td colspan="1" rowspan="1"><p>android:scheme=&#34;http&#34;</p>
+<p>android:host=&#34;developer.android.com&#34;</p>
+</td><td colspan="1" rowspan="1"><p>Les URI contenant un schéma http et un nom d&#39;hôte developer.android.com.</p>
+</td></tr>
+</table>
+<p>Notez que le filtre de données (<a href="https://developer.android.com/guide/topics/manifest/data-element.html" target="_blank">data</a>) a une restriction à la fois sur le type de liens qu&#39;il acceptera et sur le nom d&#39;hôte de ces URI. Si vous préférez que votre récepteur puisse accepter n&#39;importe quel lien, vous pouvez omettre l&#39;élément <code><data></code>.</p>
+<p>La section d&#39;<code>application</code> de <code>AndroidManifest.xml</code> devrait maintenant ressembler à ceci:</p>
+<pre><code>&lt;application
+    android:allowBackup=&#34;true&#34;
+    android:icon=&#34;@mipmap/ic_launcher&#34;
+    android:label=&#34;@string/app_name&#34;
+    android:roundIcon=&#34;@mipmap/ic_launcher_round&#34;
+    android:supportsRtl=&#34;true&#34;
+    android:theme=&#34;@style/AppTheme&#34;&gt;
+    &lt;activity android:name=&#34;.MainActivity&#34;&gt;
+        &lt;intent-filter&gt;
+            &lt;action android:name=&#34;android.intent.action.MAIN&#34; /&gt;
+            &lt;category android:name=&#34;android.intent.category.LAUNCHER&#34; /&gt;
+        &lt;/intent-filter&gt;
+
+        &lt;intent-filter&gt;
+            &lt;action android:name=&#34;android.intent.action.VIEW&#34; /&gt;
+            &lt;category android:name=&#34;android.intent.category.DEFAULT&#34; /&gt;
+            &lt;category android:name=&#34;android.intent.category.BROWSABLE&#34; /&gt;
+            &lt;data android:scheme=&#34;http&#34; 
+                                android:host=&#34;developer.android.com&#34; /&gt;
+        &lt;/intent-filter&gt;
+    &lt;/activity&gt;
+&lt;/application&gt;</code></pre>
+<h2 is-upgraded>5.3 Traiter l&#39;intention (Intent)</h2>
+<p>Dans la méthode <code>onCreate()</code> de votre activité, traitez l&#39;intention entrante pour toutes les données ou extras qu&#39;elle inclut. Dans ce cas, l&#39;intention implicite entrant à l&#39;URI stocké dans les données d&#39;intention.</p>
+<ol type="1" start="1">
+<li>Ouvrez <strong>MainActivity</strong>.</li>
+<li>Dans la méthode <code>onCreate()</code>, obtenez l&#39;intention entrante utilisée pour activer l&#39;activité:</li>
+</ol>
+<pre><code>Intent intent = getIntent();</code></pre>
+<ol type="1" start="3">
+<li>Obtenez les données d&#39;intention (<code>Intent</code>). Les données d&#39;intention sont toujours un objet URI:</li>
+</ol>
+<pre><code>Uri uri = intent.getData();</code></pre>
+<ol type="1" start="4">
+<li>Vérifiez que la variable <code>uri</code> n&#39;est pas nulle. Si cette vérification est réussie, créez une chaîne à partir de cet objet URI:</li>
+</ol>
+<pre><code>if (uri != null) {
+   String uri_string = &#34;URI: &#34; + uri.toString();
+}</code></pre>
+<ol type="1" start="5">
+<li>Extrayez la partie <code>"URI:"</code> ci-dessus dans une ressource chaîne (<code>uri_label</code>).</li>
+<li>Dans ce même <code>if</code> bloc, obtenez le <code>TextView</code> pour le message:</li>
+</ol>
+<pre><code>TextView textView = findViewById(R.id.text_uri_message);</code></pre>
+<ol type="1" start="7">
+<li>Également à l&#39;intérieur du bloc <code>if</code>, définissez le texte de cette <code>TextView</code> sur l&#39;URI:</li>
+</ol>
+<pre><code>textView.setText(uri_string);</code></pre>
+<p>La méthode <code>onCreate()</code> pour <code>MainActivity</code> devrait maintenant ressembler à ceci:</p>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        Uri uri = intent.getData();
+        if (uri != null) {
+            String uri_string = getString(R.string.uri_label)
+                   + uri.toString();
+            TextView textView = findViewById(R.id.text_uri_message);
+            textView.setText(uri_string);
+        }
+}</code></pre>
+<h2 is-upgraded>5.4 Exécuter les deux applications</h2>
+<p>Pour afficher le résultat de la réception d&#39;une intention implicite, vous allez exécuter à la fois les applications <strong>Implicit Intents Receiver</strong> et <strong>Implicit Intents</strong> sur l&#39;émulateur ou votre appareil.</p>
+<ol type="1" start="1">
+<li>Exécutez l&#39;application <strong>Implicit Intents Receiver</strong>.</li>
+</ol>
+<p>L&#39;exécution de l&#39;application seule montre une activité vide sans texte. En effet, l&#39;activité a été activée à partir du lanceur du système et non avec une intention d&#39;une autre application.</p>
+<ol type="1" start="2">
+<li>Exécutez l&#39;application <strong>Implicit Intents</strong>, puis cliquez sur <strong>Open Website</strong> avec l&#39;URI par défaut..</li>
+</ol>
+<p>Un sélecteur d&#39;application apparaît vous demandant si vous souhaitez utiliser le navigateur par défaut (Chrome dans la figure ci-dessous) ou l&#39;application <strong>Implicit Intents Receiver</strong>. Sélectionnez <strong>Implicit Intents Receiver</strong>, puis cliquez sur Une seule fois. L&#39;application <strong>Implicit Intents Receiver</strong> est lancée et le message indique l&#39;URI de la demande d&#39;origine.</p>
+<p>An app chooser appears asking if you want to use the default browser (Chrome in the figure below) or the Implicit Intents Receiver app. Select Implicit Intents Receiver, and click <strong>Just Once</strong>. The Implicit Intents Receiver app launches and the message shows the URI from the original request.</p>
+<p class="image-container"><img style="width: 288.09px" src="img/3dc4f187ef0e88bf.png"></p>
+<ol type="1" start="3">
+<li>Appuyez sur le bouton Retour (Back) et entrez un autre URI. Cliquez sur <strong>Open Website</strong>.</li>
+</ol>
+<p>L&#39;application du destinataire dispose d&#39;un filtre d&#39;intention très restrictif qui correspond uniquement au protocole URI exact (<code>http</code>) et à l&#39;hôte (<code>developer.android.com</code>). Tout autre URI s&#39;ouvre dans le navigateur Web par défaut.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Résumé" duration="0">
+        <ul>
+<li>Une intention implicite vous permet d&#39;activer une activité si vous connaissez l&#39;action, mais pas l&#39;application ou l&#39;activité spécifique qui gérera cette action.</li>
+<li>Une activité pouvant recevoir une intention implicite doit définir des filtres d&#39;intention dans le fichier <code>AndroidManifest.xml</code> qui correspondent à une ou plusieurs actions et catégories d&#39;intention.</li>
+<li>Le système Android correspond au contenu d&#39;une intention implicite et aux filtres d&#39;intention de toute activité disponible pour déterminer quelle activité activer. S&#39;il y a plus d&#39;une activité disponible, le système fournit un sélecteur afin que l&#39;utilisateur puisse en choisir une.</li>
+<li>La classe <code>ShareCompat.IntentBuilder</code> facilite la création d&#39;une intention implicite de partage de données sur un média social ou par courrier électronique.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Apprendre encore plus" duration="0">
+        <p>Documentation développeur Android:</p>
+<ul>
+<li><a href="http://developer.android.com/guide/components/fundamentals.html" target="_blank">Application Fundamentals</a></li>
+<li><a href="http://developer.android.com/guide/components/activities.html" target="_blank">Activities</a></li>
+<li><a href="https://developer.android.com/guide/components/activities/activity-lifecycle" target="_blank">Understand the Activity Lifecycle</a></li>
+<li><a href="http://developer.android.com/guide/components/intents-filters.html" target="_blank">Intents and Intent Filters</a></li>
+<li><a href="https://developer.android.com/training/basics/intents/filters.html" target="_blank">Allowing Other Apps to Start Your Activity</a></li>
+<li><a href="https://developers.google.com/maps/documentation/urls/android-intents" target="_blank">Google Maps Intents for Android</a></li>
+<li><a href="http://developer.android.com/reference/android/app/Activity.html" target="_blank"><code>Activity</code></a></li>
+<li><a href="http://developer.android.com/reference/android/content/Intent.html" target="_blank"><code>Intent</code></a></li>
+<li><a href="https://developer.android.com/guide/topics/manifest/intent-filter-element.html" target="_blank"><code><intent-filter></code></a></li>
+<li><a href="https://developer.android.com/guide/topics/manifest/activity-element.html" target="_blank"><code><activity></code></a></li>
+<li><a href="http://developer.android.com/reference/android/net/Uri.html" target="_blank"><code>Uri</code></a></li>
+<li><a href="http://developer.android.com/reference/android/support/v4/app/ShareCompat.IntentBuilder.html" target="_blank"><code>ShareCompat.IntentBuilder</code></a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Travail à faire (Compte Rendu)" duration="0">
+        <aside class="warning"><p>Pour soumettre votre compte rendu, veuillez suivre ce codelab : </p>
+<p><a href="https://codelabs-enetcom.khammami.tn/codelabs/soumettre-compte-rendu/" target="_blank">Comment soumettre votre compte rendu</a></p>
+</aside>
+<h2 is-upgraded>Créer et exécuter une application</h2>
+<p>Ouvrez l&#39;application <a href="https://github.com/khammami/android-fundamentals-apps-v2/tree/master/ImplicitIntents" target="_blank">ImplicitIntents</a> que vous avez créée.</p>
+<ol type="1" start="1">
+<li>Ajoutez un autre bouton au bas de l&#39;écran.</li>
+<li>Lorsque le bouton est cliqué, lancez une application appareil photo pour prendre une photo. (Vous n&#39;avez pas besoin de retourner la photo à l&#39;application d&#39;origine.)</li>
+</ol>
+<aside class="special"><p>Note:</p>
+<p>Si vous utilisez l&#39;émulateur Android pour tester la caméra, ouvrez la configuration de l&#39;émulateur dans le gestionnaire AVD Android, choisissez<strong> Advanced Settings</strong>, puis choisissez <strong>Emulated</strong> pour les caméras avant et arrière. Redémarrez votre émulateur si nécessaire.</p>
+</aside>
+<p class="image-container"><img style="width: 235.25px" src="img/841a9a8afbb857bb.png"></p>
+<h2 is-upgraded>Répondre à ces questions</h2>
+<h3 is-upgraded>Question 1</h3>
+<p>Quelle méthode de constructeur utilisez-vous pour créer une intention implicite de lancer une application de caméra?</p>
+<ul>
+<li><code>new Intent()</code></li>
+<li><code>new Intent(Context context, Class<?> class)</code></li>
+<li><code>new Intent(String action, Uri uri)</code></li>
+<li><code>new Intent(String action)</code></li>
+</ul>
+<h3 is-upgraded>Question 2</h3>
+<p>Lorsque vous créez un objet Intention implicite, lequel des énoncés suivants est vrai?</p>
+<ul>
+<li>Ne spécifiez pas l&#39;activité ou autre composant spécifique à lancer.</li>
+<li>Ajoutez une action d&#39;intention ou une catégorie d&#39;intention (ou les deux).</li>
+<li>Résolvez l&#39;intention avec le système avant d&#39;appeler <code>startActivity()</code> ou <code>startActivityforResult()</code>.</li>
+</ul>
+<h3 is-upgraded>Question 3</h3>
+<p>Quelle action Intention utilisez-vous pour prendre une photo avec une application appareil photo?</p>
+<ul>
+<li><code>Intent takePicture = new Intent(Intent.ACTION_VIEW);</code></li>
+<li><code>Intent takePicture = new Intent(Intent.ACTION_MAIN);</code></li>
+<li><code>Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);</code></li>
+<li><code>Intent takePicture = new Intent(Intent.ACTION_GET_CONTENT);</code></li>
+</ul>
+<h2 is-upgraded>Soumettez votre application pour la notation</h2>
+<p>Vérifiez que l&#39;application dispose des éléments suivants:</p>
+<ul>
+<li>Il affiche un bouton <strong>Take a Picture</strong> en bas de l&#39;application.</li>
+<li>Lorsque vous cliquez dessus, le bouton lance une application de caméra sur le périphérique.</li>
+<li>Avant d&#39;envoyer l&#39;intention, la méthode <code>onClick()</code> du bouton <strong>Take a Picture</strong> garantit qu&#39;une application est disponible sur le périphérique, à l&#39;aide des méthodes <code>resolActivity()</code> et <code>getPackageManager()</code>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
