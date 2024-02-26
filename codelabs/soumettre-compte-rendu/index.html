@@ -1,0 +1,234 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Soumission de compte rendu</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-3295395-7" ga4id="$GA4ID"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-3295395-7"
+                  codelab-ga4id="$GA4ID"
+                  id="soumettre-compte-rendu"
+                  title="Soumission de compte rendu"
+                  environment="web"
+                  feedback-link="https://github.com/khammami/codelabs-enetcom/issues">
+    
+      <google-codelab-step label="Bienvenue" duration="0">
+        <p class="image-container"><img style="width: 624.00px" src="img/ded7640c5b2d875c.png"></p>
+<p>Afin de pouvoir gérer les versions de vos projets et de les héberger en ligne, nous utiliserons <a href="https://git-scm.com/" target="_blank">Git</a> et <a href="https://github.com/" target="_blank">GitHub</a>. Pour ce faire, vous devez installer <a href="https://git-scm.com/" target="_blank">git</a> sur vos machines et créer un compte <a href="https://github.com/" target="_blank">GitHub</a> (<a href="https://github.com/join" target="_blank">https://github.com/join</a>).</p>
+<p>Je vous invite à profiter de l&#39;opportunité que notre université fait partie du programme d&#39;<a href="https://education.github.com/" target="_blank">éducation de GitHub</a>. Ce programme offre aux étudiants des outils et des ressources gratuites pour développer leurs compétences en développement logiciel.</p>
+<p>Je vous encourage à vous inscrire au pack &#34;Student Developer&#34; dès aujourd&#39;hui. C&#39;est une excellente opportunité de développer vos compétences en développement logiciel et de vous préparer à une carrière dans l&#39;industrie informatique.</p>
+<p class="image-container"><img style="width: 366.36px" src="img/83dd95cb39bb473f.png"></p>
+<p>Pour bénéficier de ces avantages, vous n&#39;avez pas besoin de créer un nouveau compte GitHub. Il vous suffit d&#39;ajouter l&#39;adresse e-mail de votre institut à votre compte personnel. Vous pouvez le faire en vous rendant dans la section &#34;Settings&#34; de votre compte GitHub et en ajoutant l&#39;adresse e-mail de votre institut dans le champ &#34;Emails&#34;.</p>
+<p>Une fois que vous avez ajouté l&#39;adresse e-mail de votre institut, vous pouvez vous inscrire au pack étudiant GitHub. Pour ce faire, rendez-vous sur <a href="https://education.github.com/pack" target="_blank">la page d&#39;inscription du pack étudiant</a> et suivez les instructions.</p>
+<p>Pour vérifier que vous êtes étudiant, vous devrez fournir une photo de votre carte d&#39;étudiant. Vous pouvez télécharger la photo de votre carte d&#39;étudiant lors de votre inscription au pack étudiant.</p>
+<p><br>L&#39;outil de contrôle de version git peut être géré par la ligne de commande (<a href="https://bit.ly/3Sma31d" target="_blank">https://bit.ly/3Sma31d</a>) ou bien par des clients graphiques (GUI), tels que :</p>
+<ul>
+<li>Gitkraken (<a href="https://www.gitkraken.com/download" target="_blank">https://www.gitkraken.com/download</a>)</li>
+<li>SmartGit (<a href="https://www.syntevo.com/smartgit/download/" target="_blank">https://www.syntevo.com/smartgit/download/</a>)</li>
+<li>GitHub Desktop (<a href="https://desktop.github.com/" target="_blank">https://desktop.github.com/</a>)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 1: Préparation de votre environnement de développement" duration="0">
+        <p>Dans cette étape, vous allez préparer vos espaces de travail pour utiliser Git dans vos projets et les publier sur GitHub.</p>
+<h2 is-upgraded>1. Installer l&#39;outil Git</h2>
+<h3 is-upgraded>Installer Git sur Windows</h3>
+<ol type="1" start="1">
+<li>Téléchargez le dernier <a href="https://git-scm.com/download/win" target="_blank">installateur Git pour Windows</a>.</li>
+<li>Lorsque vous avez démarré le programme d&#39;installation avec succès, vous devriez voir l&#39;écran de l&#39;assistant de configuration de Git. Suivez les invites Suivant et Terminer pour terminer l&#39;installation. Les options par défaut sont assez sensibles pour la plupart des utilisateurs.</li>
+<li>Ouvrez une invite de commande (ou Git Bash si, lors de l&#39;installation, vous avez choisi de ne pas utiliser Git à partir de l&#39;invite de commande Windows).</li>
+<li>Exécutez les commandes suivantes pour configurer votre nom d&#39;utilisateur et votre adresse e-mail Gît à l&#39;aide des commandes suivantes, en remplaçant le nom de Khalil par le vôtre. Ces détails seront associés à tous les commits que vous créez :</li>
+</ol>
+<pre><code>$ git config --global user.name &#34;Khalil Hammami&#34; 
+$ git config --global user.email &#34;khalil.hammami@enetcom.usf.tn&#34;</code></pre>
+<h3 is-upgraded>Installer Git sur Linux</h3>
+<h4 is-upgraded>Debian / Ubuntu (apt-get)</h4>
+<p>Les packages Git sont disponibles via <a href="https://wiki.debian.org/Apt" target="_blank">apt</a> :</p>
+<ol type="1" start="1">
+<li>Depuis votre shell, installez Git en utilisant <code>apt-get</code> :</li>
+</ol>
+<pre><code>$ sudo apt-get update
+$ sudo apt-get install git</code></pre>
+<ol type="1" start="2">
+<li>Vérifiez que l&#39;installation a réussi en tapant <code>git --version</code> :</li>
+</ol>
+<pre><code>$ git --version</code></pre>
+<pre>git version 2.38.0</pre>
+<ol type="1" start="3">
+<li>Configurez votre nom d&#39;utilisateur et votre adresse e-mail Git à l&#39;aide des commandes suivantes, en remplaçant le nom de Khalil par le vôtre. Ces détails seront associés à tous les commits que vous créez :</li>
+</ol>
+<pre><code>$ git config --global user.name &#34;Khalil Hammami&#34; 
+$ git config --global user.email &#34;khalil.hammami@enetcom.usf.tn&#34;</code></pre>
+<h2 is-upgraded>2. Connecter à/Créer un Compte Github</h2>
+<p>Pour pouvoir soumettre votre travail via Github Classroom, vous devez avoir un compte GitHub. pour créer un compte veuillez suivre ce lien: <a href="https://github.com/join" target="_blank">https://github.com/join</a> </p>
+<aside class="special"><p>Vous pouvez ajouter l&#39;adresse e-mail de votre institut à votre compte personnel GitHub: Icône de profile (en haut à droite) &gt; &#34;<strong>Settings</strong>&#34; &gt; &#34;<a href="https://github.com/settings/emails" target="_blank"><strong>Emails</strong></a>&#34; &gt; &#34;<strong>Add email address</strong>&#34;</p>
+</aside>
+<h2 is-upgraded>3. Se connecter à GitHub en SSH</h2>
+<h3 is-upgraded>3.1. À propos de SSH</h3>
+<p>En utilisant le protocole SSH, vous pouvez vous connecter et vous authentifier auprès de serveurs et services distants. Avec les clés SSH, vous pouvez vous connecter à GitHub sans fournir votre nom d&#39;utilisateur et votre jeton d&#39;accès personnel à chaque visite. Vous pouvez également utiliser une clé SSH pour signer des commits.</p>
+<p>Vous pouvez accéder et écrire des données dans des dépôts sur GitHub.com en utilisant SSH (Secure Shell Protocol). Lorsque vous vous connectez via SSH, vous vous authentifiez à l&#39;aide d&#39;un fichier de clé privée sur votre ordinateur local.</p>
+<aside class="special"><p>Pour plus d&#39;informations sur SSH, consultez <a href="https://en.wikipedia.org/wiki/Secure_Shell" target="_blank">Secure Shell</a> sur Wikipédia.</p>
+</aside>
+<p>Lorsque vous configurez SSH, vous devrez générer une nouvelle clé SSH privée et l&#39;ajouter à l&#39;agent SSH. Vous devez également ajouter la clé SSH publique à votre compte sur GitHub avant d&#39;utiliser la clé pour vous authentifier ou signer des commits.</p>
+<h3 is-upgraded>3.2. Générer une nouvelle clé SSH</h3>
+<p>Pour activer l&#39;authentification pour les opérations Git via SSH, vous devez générer une nouvelle clé SSH sur votre ordinateur local et l&#39;ajouter à votre compte sur GitHub.</p>
+<ol type="1" start="1">
+<li>Sous Linux: Ouvrez le terminal.<br>Sous Windows: Ouvrez Git Bash</li>
+<li>Collez le texte ci-dessous, en le remplaçant par votre adresse e-mail GitHub.</li>
+</ol>
+<pre><code>$ ssh-keygen -t ed25519 -C &#34;your_email@example.com&#34;</code></pre>
+<aside class="warning"><p>Remarque : Si vous utilisez un ancien système qui ne prend pas en charge l&#39;algorithme Ed25519, utilisez :</p>
+<p><code>$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"</code></p>
+</aside>
+<p>Cela crée une nouvelle clé SSH, en utilisant l&#39;e-mail fourni comme étiquette.</p>
+<pre>&gt; Generating public/private ALGORITHM key pair.</pre>
+<ol type="1" start="3">
+<li>Lorsque vous êtes invité à &#34;Enter a file in which to save the key&#34;, appuyez sur Entrée. Ceci accepte l&#39;emplacement de fichier par défaut.<br></li>
+</ol>
+<pre>&gt; Enter a file in which to save the key (/home/YOU/.ssh/ALGORITHM):[Press enter]</pre>
+<ol type="1" start="4">
+<li>À l&#39;invite, saisissez une phrase de passe sécurisée. (une sorte de mot de passe pour sécuriser votre clé, peut être vide)<br></li>
+</ol>
+<pre>&gt; Enter passphrase (empty for no passphrase): [Type a passphrase]
+&gt; Enter same passphrase again: [Type passphrase again]</pre>
+<h3 is-upgraded>3.3. Ajouter votre clé SSH à l&#39;agent ssh</h3>
+<p>Avant d&#39;ajouter une nouvelle clé SSH à l&#39;agent ssh pour gérer vos clés, vous devez avoir vérifié les clés SSH existantes et généré une nouvelle clé SSH.</p>
+<ol type="1" start="1">
+<li>Démarrez l&#39;agent ssh en arrière-plan.<br></li>
+</ol>
+<pre><code>$ eval &#34;$(ssh-agent -s)&#34;</code></pre>
+<pre>&gt; Agent pid 59566</pre>
+<ol type="1" start="2">
+<li>Ajoutez votre clé privée SSH au ssh-agent. Si vous avez créé votre clé avec un nom différent, ou si vous ajoutez une clé existante qui porte un nom différent, remplacez <strong>id_ed25519</strong> dans la commande par le nom de votre fichier de clé privée.<br></li>
+</ol>
+<pre><code>$ ssh-add ~/.ssh/id_ed25519</code></pre>
+<ol type="1" start="3">
+<li>Ajoutez la clé SSH à votre compte sur GitHub.<br><br></li>
+</ol>
+<h3 is-upgraded>3.4. Ajouter la nouvelle clé SSH à votre compte GitHub</h3>
+<ol type="1" start="1">
+<li>Copiez la clé publique SSH dans votre presse-papiers.<br>Si le nom de votre fichier de clé publique SSH est différent de celui de l&#39;exemple de code, modifiez-le pour qu&#39;il corresponde à votre configuration actuelle. Lors de la copie de votre clé, veillez à ne pas ajouter de nouvelles lignes ou d&#39;espaces.<br></li>
+</ol>
+<pre><code>$ cat ~/.ssh/id_ed25519.pub
+  # Sélectionnez ensuite et copiez le contenu du fichier id_ed25519.pub
+  # affiché dans le terminal dans votre presse-papiers</code></pre>
+<aside class="special"><p><strong>Conseil</strong> : Pour copier le contenu de votre clé SSH dans votre presse-papiers, vous pouvez également localiser le dossier <code>.ssh</code> caché, ouvrir le fichier <code>id_rsa</code> dans votre éditeur de texte préféré et le copier.</p>
+</aside>
+<ol type="1" start="2">
+<li>Pour accéder aux paramètres de votre compte GitHub, cliquez sur votre photo de profil dans le coin supérieur droit de n&#39;importe quelle page de GitHub, puis &#34;<strong>Settings</strong>&#34;.</li>
+<li>Dans la section &#34;<strong>Access</strong>&#34; de la barre latérale, cliquez sur  &#34;<strong>SSH and GPG keys</strong>&#34;.</li>
+<li>Cliquez sur <strong>New SSH key</strong> ou sur <strong>Add SSH key</strong>.</li>
+<li>Dans le champ « <strong>Title</strong> », ajoutez un nom descriptif pour la nouvelle clé. Par exemple, si vous utilisez un ordinateur portable personnel, vous pouvez l&#39;appeler &#34;Mon PC&#34;.</li>
+<li>Sélectionnez &#34;<strong>Authentication key</strong>&#34; comme type de clé.</li>
+<li>Collez votre clé dans le champ &#34;<strong>Key</strong>&#34;.<br><img style="width: 624.00px" src="img/a19f09eea8afd047.png"></li>
+<li>Finalement, Cliquez sur <strong>Add SSH key</strong>.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Etape 2: Acceptation la tâche demandé" duration="0">
+        <p>Pour compléter le travail à faire de chaque TP, vous allez recevoir par mail, via la plateforme de l&#39;école, un lien vers la tâche qui vous a été affectée, ressemblant à ceci : </p>
+<p><a href="https://classroom.github.com/a/wVf4TcEf" target="_blank">https://classroom.github.com/a/wVf4TcEf</a></p>
+<aside class="warning"><p>Ce lien est uniquement à titre d&#39;exemple. Vous recevrez un lien pour chaque compte rendu sur la plateforme de votre institut.</p>
+</aside>
+<ol type="1" start="1">
+<li>Ouvrez le lien que vous avez reçu.</li>
+<li>Autorisez l&#39;application GitHub Classroom à accéder à votre compte GitHub.<br><img style="width: 348.97px" src="img/7a8b75f630211c3d.png"><br><br></li>
+<li>Pour continuer, sélectionnez votre nom dans la liste. Si votre nom n&#39;est pas dans la liste, cliquez sur &#34;<strong>Skip to the next step</strong>&#34;.<br><img style="width: 624.00px" src="img/102b4b3134b36a7d.png"><br><br></li>
+<li>Acceptez la tâche.<br><img style="width: 624.00px" src="img/6ea7ab38f634b097.png"><br><br></li>
+<li>Un dépôt sera créé automatiquement pour vous sous le nom indiqué dans la capture d&#39;écran précédente (surligné en bleu). Le nom du dépôt sera généré de la manière suivante :<br><code>[nom de la tâche]+[votre nom utilisateur de GitHub]<br></code><img style="width: 624.00px" src="img/7647f172b32dac11.png"><br><br><br>Si la page n&#39;affiche pas le lien de votre dépôt GitHub, veuillez la recharger (F5).<br><img style="width: 624.00px" src="img/2520bfae06339e21.png"><br><br></li>
+<li>Vous avez maintenant votre dépôt distant, où vous pourrez publier votre travail.</li>
+</ol>
+<aside class="special"><p><strong>Remarque</strong> : les étapes 2 et 3 ne s&#39;afficheront que la première fois que vous utiliserez GitHub Classroom.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Étape 3: Soumission de votre travail" duration="0">
+        <p>Pour commencer à faire vos comptes rendus, vous devez cloner votre dépôt GitHub sur votre machine locale. Pour ce faire, vous pouvez utiliser la commande <code>git clone</code> en ligne de commande ou un client graphique git.</p>
+<ol type="1" start="1">
+<li>Pour cloner votre dépôt GitHub sur votre machine, utilisez la commande SSH suivante :<br><img style="width: 454.00px" src="img/d39c4b033cd2d9cd.png"><br>** N&#39;oubliez pas de remplacer le lien par le votre.<br></li>
+</ol>
+<pre>$ git clone git@github.com:ENET-Com-22/demo-compte-rendu-tp-11-khammami.git</pre>
+<ol type="1" start="2">
+<li>Avant de commencer, créez une nouvelle branche git nommée &#34;dev&#34; et basculez vers celle-ci pour travailler sur les modifications de développement.<br></li>
+</ol>
+<pre>$ cd demo-compte-rendu-tp-11-khammami
+
+$ git branch
+
+// si la branche &#34;dev&#34; n&#39;existe pas
+$ git checkout -b dev
+
+ou
+// si la branche &#34;dev&#34; existe
+$ git checkout dev
+
+
+# Pour vérifier la liste des branches et votre branche actuelle
+$ git branch</pre>
+<ol type="1" start="3">
+<li>Créez un dossier nommé &#34;<strong>application</strong>&#34; dans lequel vous allez placer votre application.<br></li>
+</ol>
+<pre>$ mkdir application</pre>
+<ol type="1" start="4">
+<li>Pour faire votre compte rendu, vous devez suivre l&#39;énoncé du fichier &#34;<strong>README.md</strong>&#34; (travail à faire). L&#39;application demandée doit être sous le dossier &#34;application&#34; (assurez-vous qu&#39;il n&#39;y a pas de dossier &#34;<strong>.git</strong>&#34; sous le dossier &#34;<strong>application</strong>&#34;). Vous pouvez utiliser Visual Studio Code pour modifier le fichier &#34;<strong>README.md</strong>&#34; et répondre aux questions en mettant &#34;x&#34; entre crochets.</li>
+</ol>
+<p class="image-container"><img style="width: 624.00px" src="img/7b3d142440d91b30.png"><br></p>
+<ol type="1" start="5">
+<li>Une fois que vous avez terminé de travailler sur votre projet, vous devez ajouter et enregistrer vos modifications dans votre dépôt local avec un commit. Répétez ces instructions après chaque modification ou changement dans votre dépôt Git local.<br><br></li>
+</ol>
+<aside class="warning"><p>Assurez-vous que les modifications ont été effectuées sur la branche <code>dev</code> avant de valider. Si vous avez apporté des modifications sur GitHub, récupérez ces modifications dans votre dépôt local avant de valider localement. Sinon, vous risquez d&#39;obtenir des conflits et de devoir les résoudre.<br><br><strong>Important</strong>: Ne faites pas de modifications sur la branche <code>main</code> ou <code>master</code>. Les modifications sur ces branches ne seront pas considérées comme travail soumis et peuvent influencer votre note.</p>
+</aside>
+<pre>$ git add --all
+ou
+$ git add .
+
+
+$ git commit -m &#39;A message to describe the changes&#39;</pre>
+<ol type="1" start="6">
+<li>Jusqu&#39;à présent, votre travail est uniquement stocké sur votre ordinateur. Pour le partager, vous devez pousser vos commits locaux vers votre dépôt distant. Pour ce faire, utilisez la commande <code>git push</code>.<br></li>
+</ol>
+<pre>$ git push -u origin dev</pre>
+<aside class="special"><p>Facultatif : vous pouvez créer une demande de fusion (pull request) sur GitHub pour fusionner la branche <code>dev</code> dans la branche principale sans la fusionner. Je répète <strong>sans la fusionner</strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="[Vidéo] Résumé des étapes 2 et 3" duration="0">
+        <iframe class="youtube-video" src="https://www.youtube.com/embed/LRq4uyYhf7o?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

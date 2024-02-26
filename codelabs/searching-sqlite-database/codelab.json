@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-3295395-7",
+  "updated": "2024-02-22T17:16:52Z",
+  "id": "searching-sqlite-database",
+  "duration": 0,
+  "title": "TP 04.1B: Searching a SQLite Database",
+  "authors": "Khalil Hammami",
+  "summary": "",
+  "source": "1HhNTjH9DpYzR2Vjf4LRIKQvbxNvNgn7RNcthDiiZotE",
+  "theme": "android",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "android"
+  ],
+  "tags": [
+    "enetcomtppem",
+    "enetcomtppm",
+    "kiosk",
+    "web"
+  ],
+  "url": "searching-sqlite-database"
+}
