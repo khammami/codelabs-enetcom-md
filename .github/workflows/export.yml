@@ -69,14 +69,14 @@ jobs:
             const branch = 'github-actions-auto-export'
             const head = `${owner}:${branch}`
             const title = 'build(codelabs): update codelab(s)'
-            const branchesResult = await github.repos.listBranches({ owner, repo })
+            const branchesResult = await github.rest.repos.listBranches({ owner, repo })
             if (branchesResult.status !== 200 || !branchesResult.data.find(({ name }) => name === branch)) {
               return
             }
-            const prsResult = await github.pulls.list({ owner, repo, head, state: 'open' })
+            const prsResult = await github.rest.pulls.list({ owner, repo, head, state: 'open' })
             if (prsResult.status === 200 && prsResult.data.length === 0) {
               try {
-                await github.pulls.create({ owner, repo, head, title, base: 'main' })
+                await github.rest.pulls.create({ owner, repo, head, title, base: 'main' })
               } catch (error) {
                 console.error(error)
               }
