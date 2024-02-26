@@ -1,9 +1,11 @@
 ---
 id: sending-receiving-sms-messages
-status: [published]
+status: [hidden]
 authors: Khalil Hammami
 categories: android
 tags: enetcommp,enetcommpie,kiosk,web
+feedback_link: https://github.com/khammami/codelabs-enetcom/issues
+analytics_account: UA-3295395-7
 source: 1AWD10r51pFL_cF_1k7qrHSW2g_y4nFXbbhHGgPExrvs
 duration: 0
 
@@ -11,7 +13,7 @@ duration: 0
 
 # P 03.2: Sending and Receiving SMS Messages
 
-
+[Codelab Feedback](https://github.com/khammami/codelabs-enetcom/issues)
 
 
 ## Welcome

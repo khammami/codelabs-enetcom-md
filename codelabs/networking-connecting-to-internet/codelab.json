@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-22T17:19:00Z",
+  "updated": "2024-02-26T18:43:16Z",
   "id": "networking-connecting-to-internet",
   "duration": 0,
   "title": "P 02.1: Networking - Connecting to the internet",
@@ -12,7 +12,7 @@
   "source": "12Qc2z9H9IPwCYRbr7u_hQUUKu-mrN4EIo10oK2z67EM",
   "theme": "android",
   "status": [
-    "published"
+    "hidden"
   ],
   "category": [
     "android"
@@ -23,5 +23,7 @@
     "kiosk",
     "web"
   ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
   "url": "networking-connecting-to-internet"
 }

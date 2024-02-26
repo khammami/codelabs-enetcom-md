@@ -1,9 +1,11 @@
 ---
 id: sqlite-database
-status: [published]
+status: [hidden]
 authors: Khalil Hammami
 categories: android
 tags: enetcomtppem,enetcomtppm,kiosk,web
+feedback_link: https://github.com/khammami/codelabs-enetcom/issues
+analytics_account: UA-3295395-7
 source: 1SAuplVcxUpPtcnwaTlNF9z9km7kSqkFtuk17e-dIUwg
 duration: 0
 
@@ -11,7 +13,7 @@ duration: 0
 
 # TP 04.1A: SQLite Database
 
-
+[Codelab Feedback](https://github.com/khammami/codelabs-enetcom/issues)
 
 
 ## Bienvenue

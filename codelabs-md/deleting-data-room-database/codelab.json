@@ -3,7 +3,7 @@
   "format": "md",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-19T15:58:54Z",
+  "updated": "2024-02-26T18:46:09Z",
   "id": "deleting-data-room-database",
   "duration": 0,
   "title": "TP 04.2B: Suppression de données d'une base de données Room",
@@ -24,5 +24,6 @@
     "web"
   ],
   "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
   "url": "deleting-data-room-database"
 }

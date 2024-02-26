@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-22T17:18:29Z",
+  "updated": "2024-02-26T18:43:44Z",
   "id": "sending-receiving-sms-messages",
   "duration": 0,
   "title": "P 03.2: Sending and Receiving SMS Messages",
@@ -12,7 +12,7 @@
   "source": "1AWD10r51pFL_cF_1k7qrHSW2g_y4nFXbbhHGgPExrvs",
   "theme": "android",
   "status": [
-    "published"
+    "hidden"
   ],
   "category": [
     "android"
@@ -23,5 +23,7 @@
     "kiosk",
     "web"
   ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
   "url": "sending-receiving-sms-messages"
 }

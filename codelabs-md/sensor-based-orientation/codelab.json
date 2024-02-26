@@ -3,7 +3,7 @@
   "format": "md",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-22T17:17:32Z",
+  "updated": "2024-02-26T18:44:50Z",
   "id": "sensor-based-orientation",
   "duration": 0,
   "title": "P 04.2: Sensor-based orientation",
@@ -12,7 +12,7 @@
   "source": "1541Udjn2jmIzjEwbaOEqMKXhXu9YbHIyMyRXzLQhG4o",
   "theme": "android",
   "status": [
-    "published"
+    "hidden"
   ],
   "category": [
     "android"
@@ -23,5 +23,7 @@
     "kiosk",
     "web"
   ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
   "url": "sensor-based-orientation"
 }

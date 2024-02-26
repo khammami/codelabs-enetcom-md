@@ -1,9 +1,11 @@
 ---
 id: making-phone-calls
-status: [published]
+status: [hidden]
 authors: Khalil Hammami
 categories: android
 tags: enetcommp,enetcommpie,kiosk,web
+feedback_link: https://github.com/khammami/codelabs-enetcom/issues
+analytics_account: UA-3295395-7
 source: 1OykVd1bIl0MIh-gXLP_bxoXqVsWWC7HOr0T1cQNMKGE
 duration: 0
 
@@ -11,7 +13,7 @@ duration: 0
 
 # P 03.1: Making Phone Calls
 
-
+[Codelab Feedback](https://github.com/khammami/codelabs-enetcom/issues)
 
 
 ## Welcome

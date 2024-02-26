@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-19T15:58:36Z",
+  "updated": "2024-02-26T18:47:07Z",
   "id": "room-livedata-viewmodel",
   "duration": 0,
   "title": "TP 04.2A: Room, LiveData et ViewModel",
@@ -24,5 +24,6 @@
     "web"
   ],
   "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
   "url": "room-livedata-viewmodel"
 }
