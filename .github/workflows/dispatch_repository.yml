@@ -2,8 +2,11 @@ name: Dispatch build on main repo
 
 # only trigger on pull request closed events
 on:
-  pull_request:
-    types: [closed]
+  pull_request_target:
+    types:
+      - closed
+    paths:
+        - "codelabs/*"
 
 jobs:
   dispatch_build:
