@@ -1,0 +1,34 @@
+name: Dispatch build on main repo
+
+# only trigger on pull request closed events
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  dispatch_build:
+    permissions:
+      contents: write
+    # this job will only run if the PR has been merged
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo PR #${{ github.event.number }} has been merged
+
+      - name: Dispatch build on main repo
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.CE_MAIN_REPO_ACCESS_TOKEN }}
+          script: |
+            const owner = 'khammami'
+            const repo = 'codelabs-enetcom'
+
+            github.rest.repos.createDispatchEvent({
+                owner,
+                repo,
+                event_type: 'dispatch_build',
+                client_payload: {
+                    message: 'Triggering build from codelabs workflow!'
+                }
+            })
