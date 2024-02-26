@@ -3,7 +3,7 @@ name: Export gdocs
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [gdocs_export,gdocs_add,gdocs_export_all]
+    types: [gdocs_export, gdocs_add, gdocs_export_all]
   push:
     paths:
       - "codelabs.json"
@@ -19,16 +19,15 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     env:
-      CLAAT_VERSION: "v2.2.6"
-      GA_ID: "UA-3295395-7"
-      GA_ID_V4: "G-E0H6JSF2N3"
       HTML_PATH: codelabs
       MD_PATH: codelabs-md
+      CODELABS_JSON_PATH: codelabs.json
     steps:
       - run: |
           echo ${{github.event_name}}
           echo ${{github.event.action}}
           echo ${{github.triggering_actor}}
+          echo ${{ (contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name) || github.event.action == 'gdocs_export_all') && 'codelabs.json' || github.event.client_payload.documentId }}
 
       - uses: actions/checkout@v4
 
@@ -40,23 +39,13 @@ jobs:
           access_token_scopes: "https://www.googleapis.com/auth/drive.readonly"
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
-      - name: claat export all documents in codelabs.json
-        if: ${{ github.event.action != 'gdocs_export' && github.event.action != 'gdocs_add' }}
+      - name: claat export dispatched document(s)
         uses: ./actions/claat
         with:
           auth: ${{ steps.auth.outputs.access_token }}
-          document-id: "ignored if codelabs-json is set"
+          source: ${{ github.event.client_payload.documentId }}
           codelabs-path: ${{ env.HTML_PATH }}
-          codelabs-json: codelabs.json
-          format: all
-
-      - name: claat export dispatched document
-        if:  ${{ github.event.action == 'gdocs_export' || github.event.action == 'gdocs_add' }}
-        uses: ./actions/claat
-        with:
-          auth: ${{ steps.auth.outputs.access_token }}
-          document-id: ${{ github.event.client_payload.documentId }}
-          codelabs-path: ${{ env.HTML_PATH }}
+          codelabs-json: ${{ (contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name) || github.event.action == 'gdocs_export_all') && 'codelabs.json' || '' }}
           format: all
 
       - name: Check for worktree changes
