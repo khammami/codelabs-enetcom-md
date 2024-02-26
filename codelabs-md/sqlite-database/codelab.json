@@ -3,7 +3,7 @@
   "format": "md",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-22T17:16:33Z",
+  "updated": "2024-02-26T18:45:25Z",
   "id": "sqlite-database",
   "duration": 0,
   "title": "TP 04.1A: SQLite Database",
@@ -12,7 +12,7 @@
   "source": "1SAuplVcxUpPtcnwaTlNF9z9km7kSqkFtuk17e-dIUwg",
   "theme": "android",
   "status": [
-    "published"
+    "hidden"
   ],
   "category": [
     "android"
@@ -23,5 +23,7 @@
     "kiosk",
     "web"
   ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
   "url": "sqlite-database"
 }

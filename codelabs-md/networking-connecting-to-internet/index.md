@@ -1,9 +1,11 @@
 ---
 id: networking-connecting-to-internet
-status: [published]
+status: [hidden]
 authors: Khalil Hammami
 categories: android
 tags: enetcommp,enetcommpie,kiosk,web
+feedback_link: https://github.com/khammami/codelabs-enetcom/issues
+analytics_account: UA-3295395-7
 source: 12Qc2z9H9IPwCYRbr7u_hQUUKu-mrN4EIo10oK2z67EM
 duration: 0
 
@@ -11,7 +13,7 @@ duration: 0
 
 # P 02.1: Networking - Connecting to the internet
 
-
+[Codelab Feedback](https://github.com/khammami/codelabs-enetcom/issues)
 
 
 ## GitHub Repo Search Code

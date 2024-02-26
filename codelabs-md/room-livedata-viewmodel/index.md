@@ -5,6 +5,7 @@ authors: Khalil Hammami
 categories: android
 tags: enetcomtppem,enetcomtppm,kiosk,web
 feedback_link: https://github.com/khammami/codelabs-enetcom/issues
+analytics_account: UA-3295395-7
 source: 1J-2_tW_UrBvR60rEwL3H1wCCYOyAGIMLShXbaWm7A0M
 duration: 0
 

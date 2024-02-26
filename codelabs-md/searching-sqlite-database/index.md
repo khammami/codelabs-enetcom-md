@@ -1,9 +1,11 @@
 ---
 id: searching-sqlite-database
-status: [published]
+status: [hidden]
 authors: Khalil Hammami
 categories: android
 tags: enetcomtppem,enetcomtppm,kiosk,web
+feedback_link: https://github.com/khammami/codelabs-enetcom/issues
+analytics_account: UA-3295395-7
 source: 1HhNTjH9DpYzR2Vjf4LRIKQvbxNvNgn7RNcthDiiZotE
 duration: 0
 
@@ -11,7 +13,7 @@ duration: 0
 
 # TP 04.1B: Searching a SQLite Database
 
-
+[Codelab Feedback](https://github.com/khammami/codelabs-enetcom/issues)
 
 
 ## Bienvenue

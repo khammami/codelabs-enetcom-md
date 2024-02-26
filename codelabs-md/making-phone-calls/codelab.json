@@ -3,7 +3,7 @@
   "format": "md",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-22T17:18:10Z",
+  "updated": "2024-02-26T18:44:21Z",
   "id": "making-phone-calls",
   "duration": 0,
   "title": "P 03.1: Making Phone Calls",
@@ -12,7 +12,7 @@
   "source": "1OykVd1bIl0MIh-gXLP_bxoXqVsWWC7HOr0T1cQNMKGE",
   "theme": "android",
   "status": [
-    "published"
+    "hidden"
   ],
   "category": [
     "android"
@@ -23,5 +23,7 @@
     "kiosk",
     "web"
   ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
   "url": "making-phone-calls"
 }

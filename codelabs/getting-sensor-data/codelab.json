@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
-  "updated": "2024-02-22T17:17:53Z",
+  "updated": "2024-02-26T18:44:35Z",
   "id": "getting-sensor-data",
   "duration": 0,
   "title": "P 04.1: Getting sensor data",
@@ -12,7 +12,7 @@
   "source": "16-TUHciMAwnOFPHhJVBdjMa8IPXfhh7JVXyVGPbxW8I",
   "theme": "android",
   "status": [
-    "published"
+    "hidden"
   ],
   "category": [
     "android"
@@ -23,5 +23,7 @@
     "kiosk",
     "web"
   ],
+  "feedback": "https://github.com/khammami/codelabs-enetcom/issues",
+  "ga": "UA-3295395-7",
   "url": "getting-sensor-data"
 }

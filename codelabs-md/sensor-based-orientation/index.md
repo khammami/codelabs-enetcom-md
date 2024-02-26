@@ -1,9 +1,11 @@
 ---
 id: sensor-based-orientation
-status: [published]
+status: [hidden]
 authors: Khalil Hammami
 categories: android
 tags: enetcommp,enetcommpie,kiosk,web
+feedback_link: https://github.com/khammami/codelabs-enetcom/issues
+analytics_account: UA-3295395-7
 source: 1541Udjn2jmIzjEwbaOEqMKXhXu9YbHIyMyRXzLQhG4o
 duration: 0
 
@@ -11,7 +13,7 @@ duration: 0
 
 # P 04.2: Sensor-based orientation
 
-
+[Codelab Feedback](https://github.com/khammami/codelabs-enetcom/issues)
 
 
 ## Welcome

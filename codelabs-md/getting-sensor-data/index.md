@@ -1,9 +1,11 @@
 ---
 id: getting-sensor-data
-status: [published]
+status: [hidden]
 authors: Khalil Hammami
 categories: android
 tags: enetcommp,enetcommpie,kiosk,web
+feedback_link: https://github.com/khammami/codelabs-enetcom/issues
+analytics_account: UA-3295395-7
 source: 16-TUHciMAwnOFPHhJVBdjMa8IPXfhh7JVXyVGPbxW8I
 duration: 0
 
@@ -11,7 +13,7 @@ duration: 0
 
 # P 04.1: Getting sensor data
 
-
+[Codelab Feedback](https://github.com/khammami/codelabs-enetcom/issues)
 
 
 ## Welcome
