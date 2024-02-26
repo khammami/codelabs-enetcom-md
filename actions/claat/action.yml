@@ -1,7 +1,8 @@
 name: "Claat export"
 
 description: |
-  Exporting Google Sheets using claat as a codelab in HTML, Markdown, or offline format
+  Exporting Google documents using claat as a codelab in HTML, Markdown, or offline format.
+  Also .md file to a codelab in HTML.
 
 inputs:
   claat-version:
