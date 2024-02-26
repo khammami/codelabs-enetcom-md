@@ -51,7 +51,7 @@ inputs:
       Choose export format (html, md or all).
       Default is html
     required: false
-    default: "html"
+    default: 'html'
 
 runs:
   using: "composite"
@@ -81,7 +81,7 @@ runs:
       with:
         path: |
           ${{ steps.go-env.outputs.go-bin-path }}/*
-        key: go-claat
+        key: go-claat-${{ inputs.claat-version }}
 
     - name: Setup claat (latest)
       if: steps.claat-cache.outputs.cache-hit != 'true'
