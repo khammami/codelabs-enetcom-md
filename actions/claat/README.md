@@ -33,13 +33,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Export codelab
-      uses: ./actions/claat@main
+      uses: "khammami/codelabs-enetcom-md/actions/claat@v0"
       with:
         source: '1234567890abcdef'
         format: 'html'
 ```
 
-This example exports multiple Google documents listed in a JSON file named `codelabs.json` to both HTML and Markdown formats:
+This example exports multiple Google documents listed in a JSON file named `codelabs.json` to both HTML and Markdown formats, including an optional `id` property for each codelab:
 
 ```yaml
 name: Export multiple codelabs from JSON
@@ -53,13 +53,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Export codelabs
-      uses: ./actions/claat@main
+      uses: "khammami/codelabs-enetcom-md/actions/claat@v0"
       with:
         codelabs-json: 'codelabs.json'
         format: 'all'
 ```
 
-This example exports multiple Google documents listed in a JSON file named `codelabs.json` to both HTML and Markdown formats, including an optional `id` property for each codelab:
+`codelabs.json`:
 
 ```json
 [
