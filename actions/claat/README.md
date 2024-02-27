@@ -74,6 +74,6 @@ This example exports multiple Google documents listed in a JSON file named `code
 ]
 ```
 
->[!notice]
+>[!NOTE]
 >
 > Remember to replace the example Google document ID and JSON file path with your actual values. You can also adjust the `auth`, `codelabs-path`, `gaid`, and `ga4id` inputs as needed
