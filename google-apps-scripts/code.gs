@@ -5,6 +5,9 @@
 GITHUB_TOKEN =
   PropertiesService.getScriptProperties().getProperty("github_token");
 
+/**
+ * 
+ */
 function onOpen() {
   DocumentApp.getUi()
     .createMenu("GitHub")
@@ -14,6 +17,14 @@ function onOpen() {
     .addToUi();
 }
 
+/**
+ * Triggers the 'gdocs_export' event in the connected GitHub repository to export the current document.
+ * 
+ * Optionally, a custom payload can be provided to override the default behavior of the export function.
+ * This payload should be an object containing any additional data needed for the export process.
+ * 
+ * @param {String} payload (optional) - Custom data (JSON string) to include in the event trigger.
+ */
 function exportFunction(payload) {
   // Get document ID
   const documentId = DocumentApp.getActiveDocument().getId();
@@ -51,6 +62,15 @@ function exportFunction(payload) {
   }
 }
 
+/**
+ * Adds the current document to the GitHub repository's "codelabs.json" file
+ * and triggers a "gdocs_add" event for export.
+ *
+ * This function facilitates adding the current document to the list of codelabs
+ * managed by the GitHub repository. It achieves this by:
+ * 1. Updating the "codelabs.json" file with the document information.
+ * 2. Dispatching a "gdocs_add" event, likely to trigger an export process.
+ */
 function addAndExportFunction() {
   // Get document UI
   var ui = DocumentApp.getUi();
@@ -89,6 +109,10 @@ function addAndExportFunction() {
   }
 }
 
+/**
+ * Triggers the export of all codelabs in 'codelabs.json' to a GitHub repository.
+ * This function dispatches the 'gdocs_export_all' event to the repository.
+ */
 function exportAllFunction() {
   const documentId = DocumentApp.getActiveDocument().getId();
 
