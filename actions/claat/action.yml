@@ -1,4 +1,4 @@
-name: "Claat export"
+name: "CLaaT (Codelabs as a Thing) export"
 
 description: |
   Exporting Google documents using claat as a codelab in HTML, Markdown, or offline format.
@@ -154,4 +154,4 @@ runs:
 # Ref: https://haya14busa.github.io/github-action-brandings/
 branding:
   icon: "upload"
-  color: "white"
+  color: "green"
