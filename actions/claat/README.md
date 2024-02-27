@@ -4,6 +4,22 @@
 
 This composite action exports Google documents using [CLaaT](https://github.com/googlecodelabs/tools) as a codelab in HTML, Markdown, or offline format. It can also convert a Markdown file (.md) to a codelab in HTML.
 
+> [!NOTE]
+>
+> To check `claat` CLI ,use the Go module installer to get the latest version of CLaaT with support for Google Analytics v4.
+
+To install `claat` on your machine:
+
+```bash
+go install github.com/googlecodelabs/tools/claat@latest`
+```
+
+To check available commands and flags of `claat`:
+
+```bash
+claat help
+```
+
 ## Inputs
 
 | **Input** | **Description** | **Default** | **Required** |
