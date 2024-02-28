@@ -1,6 +1,6 @@
 # Output of "claat help"
 
-```bash
+```console
 claat help
 Usage: claat <cmd> [options] src [src ...]
 

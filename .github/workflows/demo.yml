@@ -27,14 +27,14 @@ jobs:
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
       - name: claat
-        uses: "khammami/codelabs-enetcom-md/actions/claat@v0"
+        uses: khammami/claat-action@v0
         with:
           auth: ${{ steps.auth.outputs.access_token }}
           source: 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I
           codelabs-path: demo
 
       - name: claat
-        uses: ./actions/claat
+        uses: khammami/claat-action@v0
         with:
           auth: ${{ steps.auth.outputs.access_token }}
           source: 1al07Cg0AUmvb4FXd35KCQT1VvdRU7cGlrEEMdKqgo1I

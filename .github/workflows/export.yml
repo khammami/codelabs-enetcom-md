@@ -35,7 +35,7 @@ jobs:
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
       - name: claat export dispatched document(s)
-        uses: ./actions/claat
+        uses: khammami/claat-action@v0
         with:
           auth: ${{ steps.auth.outputs.access_token }}
           source: ${{ github.event.client_payload.documentId }}
