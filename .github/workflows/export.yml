@@ -23,6 +23,8 @@ jobs:
       HTML_PATH: codelabs
       MD_PATH: codelabs-md
       CODELABS_JSON_PATH: codelabs.json
+      GA_ID: "UA-3295395-7"
+      GA4_ID: "G-E0H6JSF2N3"
     steps:
       - uses: actions/checkout@v4
 
@@ -34,14 +36,19 @@ jobs:
           access_token_scopes: "https://www.googleapis.com/auth/drive.readonly"
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
+      - name: Setup claat
+        uses: khammami/claat-action/setup@v1
+
       - name: claat export dispatched document(s)
-        uses: khammami/claat-action@v0
+        uses: khammami/claat-action@v1
         with:
           auth: ${{ steps.auth.outputs.access_token }}
           source: ${{ github.event.client_payload.documentId }}
           codelabs-path: ${{ env.HTML_PATH }}
           codelabs-json: ${{ (contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name) || github.event.action == 'gdocs_export_all') && 'codelabs.json' || '' }}
           format: all
+          gaid: ${{env.GA_ID}}
+          ga4id: ${{env.GA4_ID}}
 
       - name: Check for worktree changes
         id: git-changes
