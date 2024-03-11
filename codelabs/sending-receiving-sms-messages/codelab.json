@@ -1,6 +1,6 @@
 {
   "environment": "web",
-  "format": "html",
+  "format": "md",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-3295395-7",
   "updated": "2024-02-26T18:43:44Z",
