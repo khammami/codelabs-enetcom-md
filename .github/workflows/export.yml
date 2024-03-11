@@ -37,10 +37,10 @@ jobs:
           credentials_json: "${{ secrets.SERVICE_ACCOUNT_CREDS }}"
 
       - name: Setup claat
-        uses: khammami/claat-action/setup@v1
+        uses: khammami/claat-action/setup@v1.0.1
 
       - name: claat export dispatched document(s)
-        uses: khammami/claat-action@v1
+        uses: khammami/claat-action@v1.0.1
         with:
           auth: ${{ steps.auth.outputs.access_token }}
           source: ${{ github.event.client_payload.documentId }}
