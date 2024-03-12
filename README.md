@@ -22,9 +22,9 @@ This repository contains codelabs ready for deployment. These codelabs have been
 
 | Workflow                | Description                                                                                                        | Trigger(s)                                                           | event_type (`repository_dispatch`)          |
 |-------------------------|--------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------|-------------------------------------------|
-| `export.yml`              | Export Google document(s) and create a pull request (PR) with the changes in the codelabs.                                             | `workflow_dispatch` (manual), `repository_dispatch`, `push`(`codelabs.json`) | `gdocs_export`, `gdocs_add`, `gdocs_export_all` |
-| `add.yml`                 | Add the Google document that dispatched the workflow to `codelabs.json`                                               | `workflow_call`( other workflow), `repository_dispatch`                  | `gdocs_add`                                 |
-| `dispatch_repository.yml` | Once a pull request (PR) containing codelabs changes is merged into the main branch, it will trigger a build workflow in the main repository. | `pull_request`                                                         | `closed` (merged)                           |
+| [`export.yml`](.github/workflows/export.yml)              | Export Google document(s) and create a pull request (PR) with the changes in the codelabs.                                             | `workflow_dispatch` (manual), `repository_dispatch`, `push`([`codelabs.json`](codelabs.json)) | `gdocs_export`, `gdocs_add`, `gdocs_export_all` |
+| [`add.yml`](.github/workflows/add.yml)                 | Add the Google document that dispatched the workflow to [`codelabs.json`](codelabs.json)                                               | `workflow_call`( other workflow), `repository_dispatch`                  | `gdocs_add`                                 |
+| [`dispatch_repository.yml`](.github/workflows/dispatch_repository.yml) | Once a pull request (PR) containing codelabs changes is merged into the main branch, it will trigger a build workflow in the main repository. | `pull_request`                                                         | `closed` (merged)                           |
 
 ## How does this work and how can it be achieved?
 
@@ -54,7 +54,7 @@ This repository contains codelabs ready for deployment. These codelabs have been
     * The generated authentication token is passed to the claat action to access the document and export the codelab.
     * After the codelab is generated, the workflow checks for any changes in the repository and creates a pull request with those changes.
 6. **Pull Request Handling:**
-    * Once the pull request is merged, a dispatch_repo event is sent to the main repository containing the site for deployment.
+    * Once the pull request is merged, a `repository_dispatch` event is sent to the main repository containing the site for deployment.
     * This repository only contains codelabs.
 
 ## License
