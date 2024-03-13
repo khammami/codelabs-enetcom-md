@@ -46,7 +46,7 @@ This repository contains codelabs ready for deployment. These codelabs have been
     * Add an Apps Script for the Google Doc (code available [here](google-apps-scripts/code.gs)).
     * This script requires a GitHub token to operate. ([The personal access token (classic)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) need the `repo` scope  and `contents:write` for [fine-grained access tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token))
     * Add your Github token as [a script proprety](https://developers.google.com/apps-script/guides/properties#manage_script_properties_manually) in Google Apps Script under the name `github_token`
-    * Reload your Google documents and authorize your script once prompted.
+    * Reload your Google document and authorize your script once prompted.
     * The script provides a menu to export the current document, triggering a workflow in the GitHub repo to export the document.
 
     ![Apps Script menu](assets/gdocs_export_menu.png "Github menu after instaiing the apps script")
@@ -86,7 +86,7 @@ To export multiple documents simultaneously, I created a JSON file named [`codel
 1. `id`: This attribute is optional and primarily used for reference purposes. (same `id` you've defined in the document)
 2. `source`: This attribute is required, it specifies the source file that needs to be exported. (Google document ID or markdown file path)
 
-I wrote [a script](scripts/aggregate_codelabs.sh) that creates a file named `codelabs.json` if you've already exported your codelabs. Each exported codelab likely contains a file named "codelab.json". The script extracts a specific attribute (likely named "need") from these individual files and uses the extracted information to create a list within the main `codelabs.json` file. This `codelabs.json` file is intended to be used with a composite action [CLaaT export](https://github.com/marketplace/actions/claat-export).
+I wrote [a script](scripts/aggregate_codelabs.sh) that creates a file named `codelabs.json` if you've already exported your codelabs. Each exported codelab likely contains a file named `codelab.json`. The script extracts a specific attribute from these individual files and uses the extracted information to create a list within the main `codelabs.json` file. This `codelabs.json` file is intended to be used with a composite action [CLaaT export](https://github.com/marketplace/actions/claat-export).
 
 ## :balance_scale: License
 
