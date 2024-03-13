@@ -48,6 +48,15 @@ This repository contains codelabs ready for deployment. These codelabs have been
     * Add your Github token as [a script proprety](https://developers.google.com/apps-script/guides/properties#manage_script_properties_manually) in Google Apps Script under the name `github_token`
     * Reload your Google documents and authorize your script once prompted.
     * The script provides a menu to export the current document, triggering a workflow in the GitHub repo to export the document.
+
+    ![Apps Script menu](assets/gdocs_export_menu.png "Github menu after instaiing the apps script")
+
+    | Option       | Description                                         | event_type       |
+    |--------------|-----------------------------------------------------|------------------|
+    | Export       | Export current document                             | `gdocs_export`     |
+    | Add & Export | Add current document to `codelabs.json` and export it | `gdocs_add`        |
+    | Export All   | Export all documents in `codelabs.json`               | `gdocs_export_all` |  
+
 5. **GitHub Actions Workflow:**
     * When the export menu option is selected in Google Docs, it dispatches an event to start a workflow in the GitHub repository.
     * The workflow generates an OAuth token for the service account, which has already been granted access to the Google document.
@@ -56,6 +65,28 @@ This repository contains codelabs ready for deployment. These codelabs have been
 6. **Pull Request Handling:**
     * Once the pull request is merged, a `repository_dispatch` event is sent to the main repository containing the site for deployment.
     * This repository only contains codelabs.
+
+## Exporting multiple documents
+
+To export multiple documents simultaneously, I created a JSON file named [`codelabs.json`](codelabs.json). This JSON file serves as a structured data container that stores an array of objects, each representing a document. Every object within the array possesses two attributes:
+
+```json
+[
+  {
+    "id": "document-id",
+    "source": "google_doc_id"
+  },
+  {
+    "id": "document-id-md",
+    "source": "path/to/index.md"
+  }
+]
+```
+
+1. `id`: This attribute is optional and primarily used for reference purposes. (same `id` you've defined in the document)
+2. `source`: This attribute is required, it specifies the source file that needs to be exported. (Google document ID or markdown file path)
+
+I wrote [a script](scripts/aggregate_codelabs.sh) that creates a file named `codelabs.json` if you've already exported your codelabs. Each exported codelab likely contains a file named "codelab.json". The script extracts a specific attribute (likely named "need") from these individual files and uses the extracted information to create a list within the main `codelabs.json` file. This `codelabs.json` file is intended to be used with a composite action [CLaaT export](https://github.com/marketplace/actions/claat-export).
 
 ## License
 
