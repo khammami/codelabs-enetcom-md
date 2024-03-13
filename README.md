@@ -1,4 +1,4 @@
-# Codelabs for Enet'Com practicals
+# :gear: Codelabs for Enet'Com practicals
 
 >[!CAUTION]
 >
@@ -6,7 +6,7 @@
 
 This repository contains codelabs ready for deployment. These codelabs have been exported from Google documents using an automated workflow that utilizes the [claat tool](https://github.com/googlecodelabs/tools) to convert them from Google Doc format to Codelab format.
 
-## Tools used
+## :hammer_and_wrench: Essential Tools
 
 * [Google Docs](https://docs.google.com/)
 * [Google Cloud Project](https://developers.google.com/workspace/guides/create-project) ([Service Account](https://cloud.google.com/iam/docs/service-account-overview)): Houses the service account used for accessing the Google Drive API.
@@ -16,7 +16,7 @@ This repository contains codelabs ready for deployment. These codelabs have been
   * [CLaaT export](https://github.com/marketplace/actions/claat-export)
   * [Authenticate to Google Cloud](https://github.com/marketplace/actions/authenticate-to-google-cloud)
 
-## Workflows
+## :scroll: Workflows
 
 ![A diagra than explain the workflows and how they're dispated between repositories and Google document](assets/enetcom-codelabs_workflows_v1.png)
 
@@ -26,9 +26,9 @@ This repository contains codelabs ready for deployment. These codelabs have been
 | [`add.yml`](.github/workflows/add.yml)                 | Add the Google document that dispatched the workflow to [`codelabs.json`](codelabs.json)                                               | `workflow_call`( other workflow), `repository_dispatch`                  | `gdocs_add`                                 |
 | [`dispatch_repository.yml`](.github/workflows/dispatch_repository.yml) | Once a pull request (PR) containing codelabs changes is merged into the main branch, it will trigger a build workflow in the main repository. | `pull_request`                                                         | `closed` (merged)                           |
 
-## How does this work and how can it be achieved?
+## :thinking: How does this work and how can it be achieved?
 
-### Steps
+### :footprints: Steps
 
 1. **Google Document Creation:**
     * Start by creating a Google document from a formatted template. This document will serve as the basis for your codelab content. (check [Codelab formating guide](https://github.com/googlecodelabs/tools?tab=readme-ov-file#ok-how-do-i-use-it))
@@ -66,7 +66,7 @@ This repository contains codelabs ready for deployment. These codelabs have been
     * Once the pull request is merged, a `repository_dispatch` event is sent to the main repository containing the site for deployment.
     * This repository only contains codelabs.
 
-## Exporting multiple documents
+## :outbox_tray: Exporting multiple documents
 
 To export multiple documents simultaneously, I created a JSON file named [`codelabs.json`](codelabs.json). This JSON file serves as a structured data container that stores an array of objects, each representing a document. Every object within the array possesses two attributes:
 
@@ -88,10 +88,10 @@ To export multiple documents simultaneously, I created a JSON file named [`codel
 
 I wrote [a script](scripts/aggregate_codelabs.sh) that creates a file named `codelabs.json` if you've already exported your codelabs. Each exported codelab likely contains a file named "codelab.json". The script extracts a specific attribute (likely named "need") from these individual files and uses the extracted information to create a list within the main `codelabs.json` file. This `codelabs.json` file is intended to be used with a composite action [CLaaT export](https://github.com/marketplace/actions/claat-export).
 
-## License
+## :balance_scale: License
 
 The scripts and documentation in this project are released under the [Apache 2.0 License](LICENSE)
 
-## Code of Conduct
+## :handshake: Code of Conduct
 
 :wave: Be nice. See [our code of conduct](.github/CODE_OF_CONDUCT.md)
