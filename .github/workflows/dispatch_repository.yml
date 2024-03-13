@@ -3,6 +3,7 @@ name: Dispatch build on main repo
 # only trigger on pull request closed events
 on:
   pull_request:
+    branches: [main]
     types: [closed]
 
 jobs:
@@ -10,7 +11,7 @@ jobs:
     permissions:
       contents: write
     # this job will only run if the PR has been merged
-    if: github.event.pull_request.merged == true
+    if: ${{github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'github-actions-auto-export'}}
     runs-on: ubuntu-latest
     steps:
       - run: |
