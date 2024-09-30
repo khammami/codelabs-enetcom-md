@@ -37,7 +37,7 @@ Vous devriez pouvoir:
 
 * Un ordinateur sous Windows ou Linux ou un Mac sous MacOS. Voir  [la page de téléchargement Android Studio](https://developer.android.com/studio/index.html) pour connaître la configuration requise actualisée.
 * Accès Internet ou autre moyen de charger les dernières installations d'Android Studio et Java sur votre ordinateur.
-* Android Studio version Giraffe (2022.3.1 Patch 1).
+* Android Studio version Koala (2024.1.2).
 
 ### What you'll learn
 
@@ -67,7 +67,7 @@ Voici à quoi ressemblera l'application finie:
 <img src="img/85cb51ec0f3ecd7a.png" alt="85cb51ec0f3ecd7a.png"  width="374.70" />
 
 
-## Tâche 1: Installer Android Studio
+## Installer Android Studio
 Duration: 08:00
 
 
@@ -91,7 +91,7 @@ Pour être opérationnel avec Android Studio, commencez par vérifier  [la confi
 > Dépannage: Si vous rencontrez des problèmes avec votre installation, consultez  [les notes de publication d'Android Studio](https://developer.android.com/studio/releases/index.html) ou obtenez l'aide de vos enseignants.
 
 
-## Tâche 2: Créer l'application Hello World
+## Créer l'application Hello World
 Duration: 08:00
 
 
@@ -99,14 +99,14 @@ Dans cette tâche, vous allez créer une application simple qui affiche le messa
 
 > aside negative
 > 
-> Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:
+> Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Koala:
 > 
 > * à partir de la fenêtre "Welcome to Android Studio":
 > **Customize &gt; All settings**
 > * à partir de la fenêtre du projet ouvert:
 > **File &gt; Settings**
 > 
-> <img src="img/3918482f0c611fa1.png" alt="3918482f0c611fa1.png"  width="610.00" />
+> <img src="img/651ce641509ef009.png" alt="651ce641509ef009.png"  width="992.00" />
 > 
 > Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d'outils séparée, cochez les deux paramètres suivants :
 > 
@@ -120,12 +120,12 @@ Dans cette tâche, vous allez créer une application simple qui affiche le messa
 1. Ouvrez Android Studio s'il n'est pas déjà ouvert.
 2. Dans la fenêtre principale **Welcome to Android Studio**, cliquez sur **New Project**.
 3. Dans la fenêtre **New Project** sous l'onglet **Phone and Tablet**, sélectionner le modèle de projet **No Activity**. Puis appuyer sur **Next.**
-<img src="img/10f9ff869cee7b2e.png" alt="10f9ff869cee7b2e.png"  width="624.00" />
+<img src="img/9158b47fb6b07a18.png" alt="9158b47fb6b07a18.png"  width="900.00" />
 4. Dans la fenêtre **New Project,** entrez **Hello World** pour le nom de l'application.
 
-<img src="img/81c31e8a5f7f7f.png" alt="81c31e8a5f7f7f.png"  width="624.00" />
+<img src="img/3c40d1ae8cfe56c3.png" alt="3c40d1ae8cfe56c3.png"  width="900.00" />
 
-5. Acceptez **com.example.android.helloworld**  comme nom de paquet **Package Name** ou remplacez le par un domaine de société unique inversé.
+5. Acceptez **com.example.helloworld**  comme nom de paquet **Package Name** ou remplacez le par un domaine de société unique inversé.
 6. Vérifiez que **Save location** par défaut est l'emplacement où vous souhaitez stocker votre application Hello World et d'autres projets Android Studio, ou modifiez-le à votre répertoire préféré.
 7. Assurez que **Java** est défini comme langage de développement du projet.
 
@@ -133,7 +133,7 @@ Si vous ne prévoyez pas de publier votre application, vous pouvez accepter la v
 
 8. Assurez que l'**API 24: Android 7.0 (Nougat)** est défini comme SDK minimal; Si ce n'est pas le cas, utilisez le menu contextuel pour le définir.
 
-Au moment d'écrire ces lignes, ces paramètres rendent votre application Hello World compatible avec 95.4% des appareils Android actifs sur le Google Play Store.
+Au moment d'écrire ces lignes, ces paramètres rendent votre application Hello World compatible avec 97.4% des appareils Android actifs sur le Google Play Store.
 
 9. Cliquez sur **Finish**.
 
@@ -141,12 +141,12 @@ Android Studio crée un dossier pour votre projet et le construit avec  [Gradle]
 
 10. Par la suite, on va ajouter une activité ( [`Activity`](https://developer.android.com/reference/android/app/Activity.html)). Une  [`Activity`](https://developer.android.com/reference/android/app/Activity.html) est une tâche unique et ciblée que l'utilisateur peut faire. C'est un élément crucial de toute application Android. Une **Activity** est généralement associée à une présentation qui définit la manière dont les éléments de l'interface utilisateur apparaissent sur un écran. Android Studio fournit des modèles d'`Activity` pour vous aider à démarrer. Pour le projet Hello World, choisis le modèle **Empty Activity** comme indiqué ci-dessous: sélectionner le module **app** par le clique droit du souris puis **New &gt; Activity &gt; Empty Views Activity**.
 
-<img src="img/6719de97682a99ce.png" alt="6719de97682a99ce.png"  width="624.00" />
+<img src="img/cb22c972f627bd4e.png" alt="cb22c972f627bd4e.png"  width="829.00" />
 
 11. La fenêtre **New Android Activity** apparaît (selon le modèle que vous avez choisi à l'étape précédente). Par défaut, l'activité vide fournie par le modèle s'appelle `MainActivity`. Vous pouvez changer cela si vous voulez, mais cette leçon utilise `MainActivity`.
 12. Assurez-vous que **Launcher Activity** est coché. Cette activité sera l'activité principale de notre application android qui se lancera lors de l'ouverture de l'application.
 
-<img src="img/ced6382662d0a7ec.png" alt="ced6382662d0a7ec.png"  width="624.00" />
+<img src="img/12105ea26e440ccf.png" alt="12105ea26e440ccf.png"  width="900.00" />
 
 11. Assurez que **Generate a Layout File** est coché. Le nom de la présentation par défaut est `activity_main`. Vous pouvez changer cela si vous voulez, mais cette leçon utilise `activity_main`.
 12. Assurez que **Source Language** est défini sur **Java** et **Target Source Set** est sur **main**.
@@ -161,13 +161,13 @@ Vous pouvez également voir un message "Tip of the day" avec des raccourcis clav
 L'éditeur Android Studio apparaît. Suivez ces étapes:
 
 1. Cliquez sur l'onglet **activity_main.xml** pour afficher l'éditeur de "layout"..
-2. Sélectionnez le mode de vue **Design** de l'éditeur de présentation dans le menu déroulant  <img src="img/cf5ac3b407529400.png" alt="cf5ac3b407529400.png"  width="97.00" />, s'il n'est pas déjà sélectionné, pour afficher un rendu graphique de la présentation, comme indiqué ci-dessous.
+2. Sélectionnez le mode de vue **Design** de l'éditeur de présentation dans la barre d'outils en haut à droite pres de l'icone de notifications  <img src="img/44d3065381ea3afe.png" alt="44d3065381ea3afe.png"  width="170.00" />, s'il n'est pas déjà sélectionné, pour afficher un rendu graphique de la présentation, comme indiqué ci-dessous.
 
-<img src="img/240b739f4fbc3799.png" alt="240b739f4fbc3799.png"  width="624.00" />
+<img src="img/8372ac06d182ea92.png" alt="8372ac06d182ea92.png"  width="1284.00" />
 
 3. Cliquez sur l'onglet **MainActivity.java** pour afficher l'éditeur de code, comme indiqué ci-dessous.
 
-<img src="img/8561603929ba91e8.png" alt="8561603929ba91e8.png"  width="624.00" />
+<img src="img/df0be692be398360.png" alt="df0be692be398360.png"  width="1286.00" />
 
 ### 2.2 Explorer le volet "Project" &gt; "Android"
 
@@ -184,7 +184,7 @@ Le système de génération **Gradle** dans Android Studio facilite l'inclusion 
 
 Lorsque vous créez un projet pour la première fois, le volet **Projet&gt; Android** apparaît avec le dossier **Gradle Scripts** développé comme indiqué ci-dessous.
 
-<img src="img/b455b6c3d83ca2eb.png" alt="b455b6c3d83ca2eb.png"  width="368.00" />
+<img src="img/43055060261d4f54.png" alt="43055060261d4f54.png"  width="490.00" />
 
 Suivez ces étapes pour explorer le système Gradle:
 
@@ -199,7 +199,7 @@ Vous y trouverez les options de configuration communes à tous les modules compo
 ```
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-id 'com.android.application' version '8.1.1' apply false
+alias(libs.plugins.android.application) apply false
 }
 ```
 
@@ -213,47 +213,74 @@ Voici le fichier **build.gradle (Module: app)** de l'application HelloWorld:
 
 ```
 plugins {
-    id 'com.android.application'
+   alias(libs.plugins.android.application)
 }
 
 android {
-    namespace 'com.example.android.helloworld'
-    compileSdk 33
+   namespace 'com.example.helloworld'
+   compileSdk 34
 
-    defaultConfig {
-        applicationId "com.example.android.helloworld"
-        minSdk 24
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+   defaultConfig {
+       applicationId "com.example.helloworld"
+       minSdk 24
+       targetSdk 34
+       versionCode 1
+       versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
+       testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+   }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+   buildTypes {
+       release {
+           minifyEnabled false
+           proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+       }
+   }
+   compileOptions {
+       sourceCompatibility JavaVersion.VERSION_1_8
+       targetCompatibility JavaVersion.VERSION_1_8
+   }
 }
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+   implementation libs.appcompat
+   implementation libs.material
+   implementation libs.activity
+   implementation libs.constraintlayout
+   testImplementation libs.junit
+   androidTestImplementation libs.ext.junit
+   androidTestImplementation libs.espresso.core
 }
 ```
 
-4. Cliquez sur le triangle pour fermer **Gradle Scripts**.
+4. Afin de gérer les dépendances et leurs versions de manière centralisée et lisible, il est recommandé de les définir séparément dans un fichier **`libs.versions.toml`** sous forme d'alias. Ces alias pourront ensuite être appelés dans la section dependencies du script Gradle du module app, simplifiant ainsi la configuration du projet.
+
+```
+[versions]
+agp = "8.6.1"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.2"
+constraintlayout = "2.1.4"
+
+[libraries]
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+```
+
+5. Cliquez sur le triangle pour fermer **Gradle Scripts**.
 
 ### 2.4 Explorer les dossiers "app" et "res"
 
@@ -280,8 +307,37 @@ Le dossier `manifests` contient des fichiers qui fournissent des informations es
 
 Le fichier `AndroidManifest.xml` décrit tous les composants de votre application Android. Tous les composants d'une application, tels que chaque activité, doivent être déclarés dans ce fichier XML. Dans d'autres codelabs, vous modifierez ce fichier pour ajouter des fonctionnalités et des autorisations de fonctionnalités. Pour une introduction, voir  [App Manifest Overview](https://developer.android.com/guide/topics/manifest/manifest-intro.html).
 
+```
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:tools="http://schemas.android.com/tools">
 
-## Tâche 3: Utiliser un périphérique virtuel (émulateur)
+   <application
+       android:allowBackup="true"
+       android:dataExtractionRules="@xml/data_extraction_rules"
+       android:fullBackupContent="@xml/backup_rules"
+       android:icon="@mipmap/ic_launcher"
+       android:label="@string/app_name"
+       android:roundIcon="@mipmap/ic_launcher_round"
+       android:supportsRtl="true"
+       android:theme="@style/Theme.HelloWorld"
+       tools:targetApi="31">
+       <activity
+           android:name=".MainActivity"
+           android:exported="true">
+           <intent-filter>
+               <action android:name="android.intent.action.MAIN" />
+
+               <category android:name="android.intent.category.LAUNCHER" />
+           </intent-filter>
+       </activity>
+   </application>
+
+</manifest>
+```
+
+
+## Utiliser un périphérique virtuel (émulateur)
 Duration: 08:00
 
 
@@ -295,16 +351,16 @@ Pour exécuter un émulateur sur votre ordinateur, vous devez créer une configu
 
 1. Dans Android Studio, sélectionnez **Tools &gt; Android &gt; Device Manager** ou cliquez sur l'icône Device Manager  <img src="img/7b60bf8051842569.png" alt="7b60bf8051842569.png"  width="40.00" />dans la barre d'outils. Le volet **Device Manager** apparaît. Si vous avez déjà créé des périphériques virtuels, le volet les affiche (comme illustré dans la figure ci-dessous). sinon, vous voyez une liste vide.
 
-<img src="img/3722fec7fedc3cf2.png" alt="3722fec7fedc3cf2.png"  width="367.00" />
+<img src="img/ee96aee76c037e7a.png" alt="ee96aee76c037e7a.png"  width="490.00" />
 
-2. Cliquez sur le bouton **Create Device**. La fenêtre **Select Hardware** apparaît avec une liste de périphériques matériels pré-configurés. Pour chaque périphérique, le tableau fournit une colonne pour sa taille d'affichage diagonale (**Size**), sa résolution d'écran en pixels (**Resolution**) et sa densité de pixels (**Density**).
+2. Cliquez sur le bouton **Create Virtual Device**. La fenêtre **Select Hardware** apparaît avec une liste de périphériques matériels pré-configurés. Pour chaque périphérique, le tableau fournit une colonne pour sa taille d'affichage diagonale (**Size**), sa résolution d'écran en pixels (**Resolution**) et sa densité de pixels (**Density**).
 
-<img src="img/894c5e021875a8f8.png" alt="894c5e021875a8f8.png"  width="624.00" />
+<img src="img/1e8ed75399e98fcb.png" alt="1e8ed75399e98fcb.png"  width="1092.00" />
 
 3. Choisissez un appareil tel que **Nexus one** puis cliquez sur **Next**. L'écran Image système apparaît.
 4. Cliquez sur l'onglet **Recommended** s'il n'est pas déjà sélectionné et choisissez la version du système Android à exécuter sur le périphérique virtuel (telle que **Oreo**).
 
-<img src="img/78a15dcaf9fc6c5e.png" alt="78a15dcaf9fc6c5e.png"  width="624.00" />
+<img src="img/ae0a3f7689fd31e9.png" alt="ae0a3f7689fd31e9.png"  width="1092.00" />
 
 Il existe beaucoup plus de versions disponibles que celles indiquées dans l'onglet **Recommended**. Regardez les onglets **x86 images** et **Other Images** pour les voir.
 
@@ -312,15 +368,15 @@ Si un lien **Download** est visible à côté de l'image système que vous souha
 
 5. Après avoir choisi une image système, cliquez sur **Next**. La fenêtre **Android Virtual Device (AVD)** apparaît. Vous pouvez également changer le nom de l'AVD. Vérifiez votre configuration , décochez "**enable device frame**" et cliquez sur **Finish**.
 
-<img src="img/ada40cf266ad9b2.png" alt="ada40cf266ad9b2.png"  width="624.00" />
+<img src="img/cc51183385f587c.png" alt="cc51183385f587c.png"  width="1092.00" />
 
 ### 3.2 Exécuter l'application sur le périphérique virtuel
 
 Dans cette tâche, vous allez enfin lancer votre application Hello World.
 
 1. Dans le menu déroulant **Available Devices** (périphériques disponibles), sélectionnez le périphérique virtuel que vous venez de créer.
-<img src="img/871bcf2c501b40aa.png" alt="871bcf2c501b40aa.png"  width="459.00" />
-2. Dans Android Studio, choisissez "Run" &gt; "Run app" ou cliquez sur l'icône Run  <img src="img/f422b524a52e48e0.png" alt="f422b524a52e48e0.png"  width="35.00" /> dans la barre d'outils.
+<img src="img/875cbc9b16c3f572.png" alt="875cbc9b16c3f572.png"  width="386.00" />
+2. Dans Android Studio, choisissez "Run" &gt; "Run app" ou cliquez sur l'icône Run  <img src="img/f7aa4119b27baa73.png" alt="f7aa4119b27baa73.png"  width="42.00" />dans la barre d'outils.
 
 L'émulateur démarre et démarre comme un périphérique physique. Selon la vitesse de votre ordinateur, cela peut prendre un certain temps. Votre application est créée et une fois que l'émulateur est prêt, Android Studio la télécharge sur l'émulateur et l'exécute.
 
@@ -330,8 +386,14 @@ Vous devriez voir l'application Hello World comme indiqué dans la figure suivan
 
 **Conseil**: lors des tests sur un périphérique virtuel, il est recommandé de le démarrer une fois, au tout début de votre session. Vous ne devez pas la fermer avant d'avoir terminé de tester votre application, afin que celle-ci ne subisse plus le processus de démarrage de l'appareil. Pour fermer le périphérique virtuel, cliquez sur le bouton **X** en haut de l'émulateur, choisissez **Quit** dans le menu ou appuyez sur **Control-Q** sous Windows ou **Command-Q** sous macOS.
 
+> aside positive
+> 
+> Pour exécuter l'émulateur Android dans une fenêtre séparée : Accédez aux paramètres d'Android Studio (**File &gt; Settings &gt; Tools &gt; Emulator**), puis décochez l'option "**Launch in the Running Devices tool window**". Appliquez les modifications et redémarrez Android Studio.
+> 
+> <img src="img/11e9aad1f4b21692.png" alt="11e9aad1f4b21692.png"  width="992.00" />
 
-## Tâche 4: (facultatif) utilisez un périphérique physique
+
+## (facultatif) utilisez un périphérique physique
 Duration: 08:00
 
 
@@ -358,7 +420,7 @@ Sur Android 4.2 et supérieur, l'écran **Developer options** est masqué par d�
 Vous pouvez maintenant connecter votre appareil et exécuter l'application à partir d'Android Studio.
 
 1. Connectez votre appareil à votre ordinateur de développement avec un câble USB.
-2. Cliquez sur le bouton **Run**  <img src="img/f422b524a52e48e0.png" alt="f422b524a52e48e0.png"  width="35.00" />dans la barre d'outils.
+2. Cliquez sur le bouton **Run**  <img src="img/f7aa4119b27baa73.png" alt="f7aa4119b27baa73.png"  width="42.00" />dans la barre d'outils.
 
 Android Studio installe et exécute l'application sur votre appareil.
 
@@ -380,7 +442,7 @@ Si votre ordinateur ne trouve toujours pas le périphérique ou le déclare "una
 Vous devrez peut-être installer le pilote USB approprié pour votre périphérique. Consultez  [la documentation Utilisation de périphériques matériels](http://developer.android.com/tools/device.html).
 
 
-## Tâche 5: Modifier la configuration Gradle de l'application
+## Modifier la configuration Gradle de l'application
 Duration: 08:00
 
 
@@ -394,9 +456,9 @@ Suivez ces étapes:
 
 Le contenu du fichier apparaît dans l'éditeur de code.
 
-2. Au sein du bloc `DefaultConfig`, modifiez la valeur de `minSdkVersion` à `17` comme indiqué ci-dessous (il a été initialement fixé à `24`).
+2. Au sein du bloc `DefaultConfig`, modifiez la valeur de `minSdkVersion` à **`26`** comme indiqué ci-dessous (il a été initialement fixé à `24`).
 
-<img src="img/987e6a8c31472053.png" alt="987e6a8c31472053.png"  width="624.00" />
+<img src="img/e1c987893632e2b1.png" alt="e1c987893632e2b1.png"  width="1324.00" />
 
 L'éditeur de code affiche une barre de notification en haut avec le lien **Sync Now**.
 
@@ -411,7 +473,7 @@ Lorsque la synchronisation de Gradle est terminée, le message `Gradle build fin
 Pour en savoir plus sur Gradle, consultez la documentation sur  [Build System Overview](http://developer.android.com/sdk/installing/studio-build.html) et  [Configuring Gradle Builds](http://developer.android.com/tools/building/configuring-gradle.html).
 
 
-## Tâche 6: Ajouter des instructions de journal (log) à votre application
+## Ajouter des instructions de journal (log) à votre application
 Duration: 08:00
 
 
@@ -517,13 +579,11 @@ Autre:
 
 > aside negative
 > 
-> Pour soumettre votre compte rendu, veuillez suivre ce codelab : 
-> 
-> [Comment soumettre votre compte rendu](https://codelabs-enetcom.khammami.tn/codelabs/soumettre-compte-rendu/)
+> Pour soumettre votre compte rendu, veuillez suivre le guide détaillé de ce codelab intitulé ' [Comment soumettre votre compte rendu](https://codelabs-enetcom.khammami.tn/codelabs/soumettre-compte-rendu/)'. Vous y trouverez toutes les étapes à suivre.
 
 ### Créer et exécuter une application
 
-* Créer un nouveau projet Android à partir du modèle vide.
+* Créer un nouveau projet Android à partir du modèle vide (**Empty Views Activity**).
 * Ajouter des instructions de journalisation pour différents niveaux dans `onCreate()` dans l'activité principale.
 * Créer un émulateur pour un appareil, en ciblant la version d'Android de votre choix, puis exécuter l'application.
 * Utiliser le filtrage dans Logcat pour rechercher vos instructions de journal et ajuster les niveaux pour afficher uniquement les instructions de débogage ou d'erreurs.
@@ -553,7 +613,7 @@ Quel est le nom de la ressource chaîne qui spécifie le nom de l'application?
 Quel outil utilisez-vous pour créer un nouvel émulateur?
 
 * Android Device Monitor
-* AVD Manager
+* Device (AVD) Manager
 * SDK Manager
 * Theme Editor
 
