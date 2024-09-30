@@ -77,12 +77,11 @@ Voici à quoi ressemble l'application finie:
 <img src="img/18becb42f2ec7f38.png" alt="18becb42f2ec7f38.png"  width="318.00" />
 
 
-## Tâche 1: créer et explorer un nouveau projet
+## Créer et explorer un nouveau projet
 
 
 
 Dans cette pratique, vous concevez et implémentez un projet pour l'application HelloToast.
-
 
 > aside negative
 > 
@@ -93,7 +92,7 @@ Dans cette pratique, vous concevez et implémentez un projet pour l'application 
 > * à partir de la fenêtre du projet ouvert:
 > **File &gt; Settings**
 > 
-> <img src="img/3918482f0c611fa1.png" alt="3918482f0c611fa1.png"  width="610.00" />
+> <img src="img/651ce641509ef009.png" alt="651ce641509ef009.png"  width="610.00" />
 > 
 > Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d'outils séparée, cochez les deux paramètres suivants :
 > 
@@ -109,11 +108,11 @@ Dans cette pratique, vous concevez et implémentez un projet pour l'application 
 | Attribut | Valeur |
 | --- | --- |
 | Application Name | <strong>Hello Toast</strong> |
-| Package Name | <strong>com.example.enetcom.hellotoast</strong> |
-| Phone and Tablet Minimum SDK | <strong>API 16: Android 4.1 Jelly Bean</strong> |
+| Package Name | <strong>com.example.hellotoast</strong> |
+| Phone and Tablet Minimum SDK | <strong>API 24: Android 7.0 Nougat</strong> |
 | Template | <strong>Empty Views Activity</strong> |
 
-2. Sélectionnez **Run &gt; Run app** ou cliquez sur l'icône **Run**  <img src="img/f422b524a52e48e0.png" alt="f422b524a52e48e0.png"  width="35.00" />de la barre d'outils pour créer et exécuter l'application sur l'émulateur ou sur votre appareil.
+2. Sélectionnez **Run &gt; Run app** ou cliquez sur l'icône **Run**  <img src="img/f7aa4119b27baa73.png" alt="f7aa4119b27baa73.png"  width="42.00" />de la barre d'outils pour créer et exécuter l'application sur l'émulateur ou sur votre appareil.
 
 ### 1.2 Explorez l'éditeur de mise en page (layout)
 
@@ -122,7 +121,9 @@ Android Studio fournit l'éditeur de disposition (layout) pour construire rapide
 Explorez l'éditeur de layout et reportez-vous à la figure ci-dessous lorsque vous suivez les étapes numérotées:
 
 1. Dans le dossier **app &gt; res &gt; layout** du volet **Project &gt; Android**, double-cliquez sur le fichier **`activity_main.xml`** pour l'ouvrir, s'il ne l'est pas déjà.
-2. Sélectionnez le mode de vue **Design** s'il n'est pas déjà sélectionné. Vous utilisez le mode **Design** pour manipuler les éléments et le layout, et le mode **Code** pour modifier le code XML du layout.
+2. Sélectionnez le mode de vue **Design** s'il n'est pas déjà sélectionné. 
+<img src="img/44d3065381ea3afe.png" alt="44d3065381ea3afe.png"  width="170.00" />
+Vous utilisez le mode **Design** pour manipuler les éléments et le layout, et le mode **Code** pour modifier le code XML du layout.
 3. Le volet **Palettes** affiche les éléments d'interface utilisateur (UI) que vous pouvez utiliser dans le "layout" de votre application.
 4. Le volet de l'arborescence des composants (**Components tree**) affiche la hiérarchie des éléments de l'interface utilisateur (UI). Les éléments de vue sont organisés dans une arborescence de parents et d'enfants, dans laquelle un enfant hérite des attributs de son parent. Dans la figure ci-dessus, `TextView` est un enfant de `ConstraintLayout`. Vous en apprendrez plus sur ces éléments plus tard dans ce TP.
 5. Les panneaux de Design et de Blue print de l'éditeur de disposition (layout) affichant les éléments d'interface utilisateur (UI) de la disposition (layout). Dans la figure ci-dessus, le layout ne montre qu'un seul élément: un `TextView` qui affiche "Hello World".
@@ -133,7 +134,7 @@ Explorez l'éditeur de layout et reportez-vous à la figure ci-dessous lorsque v
 > **Conseil**: voir  [Building a UI with Layout Editor](https://developer.android.com/studio/write/layout-editor.html)  pour plus de détails sur l'utilisation de l'éditeur de mises en page, et  [Meet Android Studio](https://developer.android.com/studio/intro/index.html) pour la documentation complète sur Android Studio.
 
 
-## Tâche 2: Ajouter des éléments de vue dans l'éditeur de disposition (layout)
+## Ajouter des éléments de vue dans l'éditeur de disposition (layout)
 
 
 
@@ -146,10 +147,11 @@ Suivez ces étapes:
 1. Ouvrez `activity_main.xml` à partir du volet **Project &gt; Android** s'il n'est pas déjà ouvert. Si le mode de vue  **Design** n'est pas déjà sélectionné, cliquez dessus.
 
 S'il n'y a pas de modèle (blueprint), cliquez sur le bouton **Select Design Surface**  <img src="img/72dbd44b62bfe30c.png" alt="72dbd44b62bfe30c.png"  width="28.00" />dans la barre d'outils et choisissez **Design + Blueprint**.
-
 2. L'outil de connexion automatique (**Autoconnect**)  <img src="img/15294c424bc47399.png" alt="15294c424bc47399.png"  width="26.00" />est également situé dans la barre d'outils. Il est activé par défaut. Pour cette étape, assurez-vous que l'outil n'est pas désactivé.
 3. Cliquez sur le bouton de zoom in pour effectuer un zoom avant sur les volets de conception (design) et de plan (blueprint) détaillé.
+
 <img src="img/ca6d8484077137a5.png" alt="ca6d8484077137a5.png"  width="32.00" />
+
 4. Sélectionnez **`TextView`** dans le volet Component Tree. Le `TextView` "Hello World" est mis en surbrillance dans les volets Design and blueprint et les contraintes pour l'élément sont visibles.
 5. Reportez-vous à la figure animée ci-dessous pour cette étape. Cliquez sur la poignée circulaire située à droite de `TextView` pour supprimer la contrainte horizontale qui lie la vue au côté droit de la présentation (layout). `TextView` saute du côté gauche car il n'est plus contraint du côté droit. Pour rajouter la contrainte horizontale, cliquez sur la même poignée et faites glisser une ligne vers le côté droit de la présentation (layout).
 
@@ -187,8 +189,10 @@ Vous pouvez supprimer les contraintes d'un élément en le sélectionnant et en 
 
 Pour effacer toutes les contraintes de la mise en page (layout) complète, cliquez sur l'outil **Clear All Constraints** dans la barre d'outils. Cet outil est utile si vous souhaitez rétablir toutes les contraintes de votre mise en page (layout).
 
+<img src="img/47608d5548777e12.png" alt="47608d5548777e12.png"  width="207.00" />
 
-## Tâche 3: Modifier les attributs de l'élément d'interface utilisateur (UI)
+
+## Modifier les attributs de l'élément d'interface utilisateur (UI)
 
 
 
@@ -206,8 +210,8 @@ Utilisez plutôt le volet **Attributes** situé à droite de l'éditeur de prés
 
 Dans la figure ci-dessus:
 
-1. Contrôle de la hauteur (**Height control**). Ce contrôle spécifie l'attribut `layout_height` et apparaît en deux segments sur les côtés supérieur et inférieur du carré. Les angles indiquent que ce contrôle est défini sur `wrap_content`, ce qui signifie que la vue (`View`) se développera verticalement si nécessaire pour s'adapter à son contenu. Le "8" indique une marge standard définie à 8dp.
-2. Contrôle de la largeur (**Width control**). Ce contrôle spécifie `layout_width` et apparaît en deux segments à gauche et à droite du carré. Les angles indiquent que ce contrôle est défini sur wrap_content, ce qui signifie que la vue (`View`) s'agrandit horizontalement si nécessaire pour s'ajuster à son contenu, jusqu'à une marge de 8dp.
+1. Contrôle de la hauteur (**Height control**). Ce contrôle spécifie l'attribut `layout_height` et apparaît en deux segments sur les côtés supérieur et inférieur du carré. Les angles indiquent que ce contrôle est défini sur `wrap_content`, ce qui signifie que la vue (`View`) se développera verticalement si nécessaire pour s'adapter à son contenu. Le "**8**" indique une marge standard définie à **8dp**.
+2. Contrôle de la largeur (**Width control**). Ce contrôle spécifie `layout_width` et apparaît en deux segments à gauche et à droite du carré. Les angles indiquent que ce contrôle est défini sur wrap_content, ce qui signifie que la vue (`View`) s'agrandit horizontalement si nécessaire pour s'ajuster à son contenu, jusqu'à une marge de **8dp**.
 3. Bouton de fermeture du volet **Attributes**. Cliquez pour fermer le volet.
 
 Suivez ces étapes:
@@ -215,7 +219,7 @@ Suivez ces étapes:
 1. Sélectionnez le bouton (`Button`) du haut dans le volet **Component Tree**.
 2. Cliquez sur l'onglet **Attributes** sur le côté droit de la fenêtre de l'éditeur de disposition (layout).
 
-<img src="img/66c957be0bc1f379.png" alt="66c957be0bc1f379.png"  width="245.00" />
+<img src="img/9a0a423d617920a3.png" alt="9a0a423d617920a3.png"  width="180.00" />
 
 3. Cliquez deux fois sur le contrôle de largeur - le premier clic le modifie en Fixé (**Fixed**) avec des lignes droites, et le second clic le modifie en **Match Constraints** avec des bobines de ressort, comme illustré dans la figure animée ci-dessous.
 
@@ -246,7 +250,12 @@ Le volet **Attributes** permet d'accéder à tous les attributs que vous pouvez 
 La figure animée suivante montre comment effectuer ces étapes:
 
 1. Après avoir sélectionné le premier bouton (`Button`), modifiez le champ `ID` en haut du volet **Attributes** en **`button_toast`** pour l'attribut `android:id`, utilisé pour identifier l'élément dans la présentation (layout).
-2. Définissez l'attribut `backgroundTint` sur **@color/colorPrimary**. (vous devez définir **colorPrimary** sous `colors.xml` avec la valeur `#410081`)
+2. Définissez l'attribut `backgroundTint` sur **@color/colorPrimary**. (vous devez définir **colorPrimary** sous `colors.xml` avec la valeur `#FF410081`)
+
+```
+<color name="colorPrimary">#FF410081</color>
+```
+
 3. Définissez l'attribut `textColor` sur **@android:color/white**.
 4. Modifiez l'attribut de `text` en **Toast**.
 
@@ -254,10 +263,10 @@ La figure animée suivante montre comment effectuer ces étapes:
 
 5. Effectuez les mêmes modifications d'attribut pour le deuxième bouton (`Button`), en utilisant **button_count** comme ID, **Count** pour l'attribut `text` et les mêmes couleurs pour l'arrière-plan et le texte lors des étapes précédentes.
 
-`colorPrimary` est la couleur principale du thème, l'une des couleurs de base du thème prédéfinies définies dans le fichier de ressources `colors.xml`. Il est utilisé pour la barre d'applications (app bar). L'utilisation des couleurs de base pour d'autres éléments d'interface utilisateur crée une interface utilisateur (UI) uniforme. Vous en apprendrez plus sur les thèmes d'applications et la conception de matériaux dans une autre TP.
+<img src="img/fb2cc6fe85caa96e.png" alt="fb2cc6fe85caa96e.png"  width="207.00" />
 
 
-## Tâche 4: Ajouter un TextView et définir ses attributs
+## Ajouter un TextView et définir ses attributs
 
 
 
@@ -281,10 +290,11 @@ Lorsque TextView est sélectionné, ouvrez le volet **Attributes**, s'il n'est p
 2. Définissez `text` sur **0**.
 3. Réglez le `textSize` à **160sp**.
 4. Définissez `textStyle` sur **Bold** (gras) et `textAlignment` sur **`center`** (utilisez le mode de vue Code pour l'ajouter).
-5. Modifiez les contrôles de taille de vue horizontale et verticale (`layout_width` et `layout_height`) en **match_constraint**.
-6. Définissez `textColor` sur **@color/colorPrimary**.
-7. Faites défiler le volet et cliquez sur Afficher tous les attributs, faites défiler la deuxième page d'attributs vers `background`, puis entrez **#FFFF00** pour obtenir une nuance de jaune.
-8. Faites défiler jusqu'à `gravity`, développez `gravity` et sélectionnez **center**.
+5. Ajoutez de l'espace à l'exterieur de l'élément `TextVew` en mettant les "Margin" sur **8dp**
+6. Modifiez les contrôles de taille de vue horizontale et verticale (`layout_width` et `layout_height`) en **match_constraint**.
+7. Définissez `textColor` sur **@color/colorPrimary**.
+8. Faites défiler le volet et cliquez sur Afficher tous les attributs, faites défiler la deuxième page d'attributs vers `background`, puis entrez **#FFFF00** pour obtenir une nuance de jaune.
+9. Faites défiler jusqu'à `gravity`, développez `gravity` et sélectionnez **center**.
 
 <img src="img/258936eb9c1962e7.gif" alt="Setting the TextEdit attributes"  width="624.00" />
 
@@ -294,8 +304,10 @@ Lorsque TextView est sélectionné, ouvrez le volet **Attributes**, s'il n'est p
 
 Vous remarquerez peut-être que l'attribut d'arrière-plan (`background`) se trouve sur la première page du volet **Attributes** pour un bouton (`Button`), mais sur la deuxième page du volet **Attributes** pour un `TextView`. 
 
+<img src="img/cb1169c64349c1e9.png" alt="cb1169c64349c1e9.png"  width="207.00" />
 
-## Tâche 5: Modifier la mise en page (layout) en XML
+
+## Modifier la mise en page (layout) en XML
 
 
 
@@ -307,7 +319,8 @@ Le moyen le plus simple de résoudre les problèmes de mise en page (layout) con
 
 ### 5.1 Ouvrez le code XML pour la mise en page (layout)
 
-Pour cette tâche, ouvrez le fichier `activity_main.xml` s'il ne l'est pas déjà, puis sélectionnez le mode **Code**  <img src="img/cf5ac3b407529400.png" alt="cf5ac3b407529400.png"  width="97.00" />en haut de l'éditeur de disposition (layout).
+Pour cette tâche, ouvrez le fichier `activity_main.xml` s'il ne l'est pas déjà, puis sélectionnez le mode **Code** en haut à droite  de l'éditeur de disposition (layout).
+<img src="img/72f555f7909661d9.png" alt="72f555f7909661d9.png"  width="166.00" />
 
 L'éditeur XML apparaît, remplaçant les volets de conception et de plan (design and blueprint). Comme vous pouvez le voir dans la figure ci-dessous, qui présente une partie du code XML de la présentation (layout), les avertissements sont mis en surbrillance, à savoir les chaînes codées en dur `"Toast"` et `"Count`". (Le `"0"` codé en dur est également mis en surbrillance mais n'est pas illustré dans la figure.) Passez votre pointeur sur la chaîne codée en dur `"Toast"` pour voir le message d'avertissement.
 
@@ -353,17 +366,17 @@ Au lieu de coder en dur, il est recommandé d'utiliser des ressources de chaîne
 > **Conseil**: Les ressources de chaîne de caractères incluent le nom de l'application, qui apparaît dans la barre d'application en haut de l'écran si vous démarrez votre projet d'application à l'aide du modèle vide. Vous pouvez modifier le nom de l'application en modifiant la ressource `app_name`.
 
 
-## Tâche 6: Ajouter des gestionnaires onClick pour les boutons
+## Ajouter des gestionnaires onClick pour les boutons
 
 
 
 Dans cette tâche, vous ajoutez une méthode Java pour chaque bouton (**Button**) dans `MainActivity` qui s'exécute lorsque l'utilisateur appuie sur le bouton.
 
-### 6.1 Ajouter l'attribut et le gestionnaire onClick à chaque bouton
+### 6.1 Ajouter l'attribut et le gestionnaire *onClick* à chaque bouton
 
 Un gestionnaire de clics (*click handler)* est une méthode appelée lorsque l'utilisateur clique ou appuie sur un élément d'interface utilisateur (UI) cliquable. Dans Android Studio, vous pouvez spécifier le nom de la méthode dans le champ `onClick` du volet **Attributes** de l'onglet **Design**. Vous pouvez également spécifier le nom de la méthode de gestionnaire dans l'éditeur XML en ajoutant la propriété `android:onClick` au bouton. Vous utiliserez cette dernière méthode car vous n'avez pas encore créé les méthodes, et l'éditeur XML fournit un moyen automatique de créer ces méthodes.
 
-1. Avec l'éditeur XML ouvert (onglet Text), recherchez le bouton avec `android:id` défini sur `button_toast`:
+1. Avec l'éditeur XML ouvert (onglet Code), recherchez le bouton avec `android:id` défini sur `button_toast`:
 
 ```
 <Button
