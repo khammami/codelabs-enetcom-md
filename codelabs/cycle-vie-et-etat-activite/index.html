@@ -67,14 +67,14 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 1: Ajouter des rappels (callbacks) de cycle de vie à TwoActivities" duration="0">
+      <google-codelab-step label="Ajouter des rappels (callbacks) de cycle de vie à TwoActivities" duration="0">
         <p>Dans cette tâche, vous allez implémenter toutes les méthodes de rappel du cycle de vie d&#39;Activité pour imprimer des messages dans logcat lorsque ces méthodes sont appelées. Ces messages de journal vous permettent de savoir quand le cycle de vie de l&#39;activité change d&#39;état et comment ces changements affectent votre application lors de son exécution.</p>
 <aside class="warning"><p>Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:</p>
 <ul>
 <li>à partir de la fenêtre &#34;Welcome to Android Studio&#34;:<br><strong>Customize &gt; All settings</strong></li>
 <li>à partir de la fenêtre du projet ouvert:<br><strong>File &gt; Settings</strong></li>
 </ul>
-<p class="image-container"><img style="width: 610.00px" src="img/3918482f0c611fa1.png"></p>
+<p class="image-container"><img style="width: 610.00px" src="img/651ce641509ef009.png"></p>
 <p>Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d&#39;outils séparée, cochez les deux paramètres suivants :</p>
 <ul>
 <li><strong>Enable new UI</strong></li>
@@ -219,7 +219,7 @@ protected void onDestroy() {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 2: Enregistrer et restaurer l&#39;état de l&#39;instance d&#39;activité" duration="0">
+      <google-codelab-step label="Enregistrer et restaurer l&#39;état de l&#39;instance d&#39;activité" duration="0">
         <p>En fonction des ressources système et du comportement des utilisateurs, chaque activité de votre application peut être détruite et reconstruite bien plus souvent que vous ne le pensez.</p>
 <p>Vous avez peut-être remarqué ce comportement dans la dernière section lorsque vous avez fait pivoter le périphérique ou l&#39;émulateur. La rotation du périphérique est un exemple de changement de configuration de périphérique. Bien que la rotation soit la plus courante, toutes les modifications de configuration entraînent la destruction et la recréation de l&#39;activité en cours comme si elle était nouvelle. Si vous ne tenez pas compte de ce problème dans votre code, en cas de modification de la configuration, votre structure Activité peut revenir à son apparence et à ses valeurs initiales par défaut et vos utilisateurs risquent de perdre leur place, leurs données ou l&#39;état de leur progression dans votre application.</p>
 <p>L&#39;état de chaque activité est stocké sous la forme d&#39;un ensemble de paires clé / valeur dans un objet <a href="https://developer.android.com/reference/android/os/Bundle.html" target="_blank"><code>Bundle</code></a> appelé état d&#39;instance d&#39;activité. Le système enregistre les informations d&#39;état par défaut dans Bundle d&#39;état d&#39;instance juste avant l&#39;arrêt de l&#39;activité et le transmet à la nouvelle instance d&#39;activité à restaurer.</p>
