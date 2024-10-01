@@ -76,14 +76,14 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 1: Créer le projet et la mise en page (layout)" duration="0">
+      <google-codelab-step label="Créer le projet et la mise en page (layout)" duration="0">
         <p>Pour cet exercice, vous créez un nouveau projet et une application appelés Intentions implicites, avec une nouvelle présentation (layout).</p>
 <aside class="warning"><p>Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:</p>
 <ul>
 <li>à partir de la fenêtre &#34;Welcome to Android Studio&#34;:<br><strong>Customize &gt; All settings</strong></li>
 <li>à partir de la fenêtre du projet ouvert:<br><strong>File &gt; Settings</strong></li>
 </ul>
-<p class="image-container"><img style="width: 610.00px" src="img/3918482f0c611fa1.png"></p>
+<p class="image-container"><img style="width: 610.00px" src="img/651ce641509ef009.png"></p>
 <p>Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d&#39;outils séparée, cochez les deux paramètres suivants :</p>
 <ul>
 <li><strong>Enable new UI</strong></li>
@@ -277,7 +277,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 2: Implémenter le bouton Open Website" duration="0">
+      <google-codelab-step label="Implémenter le bouton Open Website" duration="0">
         <p>Dans cette tâche, vous implémentez la méthode du gestionnaire sur clic pour le premier bouton de la présentation (layout), Open Website. Cette action utilise une intention (<code>Intent</code>) implicite pour envoyer l&#39;URI donné à une activité pouvant gérer cette intention implicite (telle qu&#39;un navigateur Web).</p>
 <h2 is-upgraded>2.1 Définir openWebsite()</h2>
 <ol type="1" start="1">
@@ -358,7 +358,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 3: Implémenter le bouton Open Location" duration="0">
+      <google-codelab-step label="Implémenter le bouton Open Location" duration="0">
         <p>Dans cette tâche, vous implémentez la méthode du gestionnaire de clic pour le deuxième bouton de l&#39;interface utilisateur, <strong>Open Location</strong>. Cette méthode est presque identique à la méthode <code>openWebsite()</code>. La différence est l&#39;utilisation d&#39;un URI géographique pour indiquer un emplacement sur la carte. Vous pouvez utiliser un URI géographique avec la latitude et la longitude, ou utiliser une chaîne de requête pour un emplacement général. Dans cet exemple, nous avons utilisé ce dernier.</p>
 <h2 is-upgraded>3.1 Définir openLocation()</h2>
 <ol type="1" start="1">
@@ -418,7 +418,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 4: Implémenter le bouton &#34;Share This Text&#34;" duration="0">
+      <google-codelab-step label="Implémenter le bouton &#34;Share This Text&#34;" duration="0">
         <p>Une action de partage est un moyen simple pour les utilisateurs de partager des éléments de votre application avec des réseaux sociaux et d&#39;autres applications. Bien que vous puissiez créer une action de partage dans votre propre application à l&#39;aide d&#39;une intention implicite, Android fournit la classe d&#39;assistance <code>ShareCompat.IntentBuilder</code> pour faciliter la mise en œuvre du partage. Vous pouvez utiliser <code>ShareCompat.IntentBuilder</code> pour créer une intention et lancer un sélecteur pour permettre à l&#39;utilisateur de choisir l&#39;application de destination à partager.</p>
 <p>Dans cette tâche, vous implémentez le partage d&#39;un peu de texte dans une édition de texte, à l&#39;aide de la classe <code>ShareCompat.IntentBuilder</code>.</p>
 <h2 is-upgraded>4.1 Définir shareText()</h2>
@@ -508,7 +508,7 @@ shareIntent.setType(mimeType)
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 5: Recevoir une intention implicite" duration="0">
+      <google-codelab-step label="Recevoir une intention implicite" duration="0">
         <p>Jusqu&#39;à présent, vous avez créé une application qui utilise une intention implicite afin de lancer l&#39;activité d&#39;une autre application. Dans cette tâche, vous examinez le problème sous un autre angle: permettre à une activité de votre application de répondre à une intention implicite envoyée par une autre application.</p>
 <p>Une activité dans votre application peut toujours être activée de l&#39;intérieur ou de l&#39;extérieur de votre application avec une intention explicite. Pour permettre à une activité de recevoir une intention implicite, définissez un filtre d&#39;intention dans le fichier <code>AndroidManifest.xml</code> de votre application pour indiquer les types d&#39;intention implicite que votre activité souhaite gérer.</p>
 <p>Pour correspondre à votre demande avec une application spécifique installée sur l&#39;appareil, le système Android associe votre intention implicite à une activité dont les filtres d&#39;intention indiquent qu&#39;ils peuvent effectuer cette action. Si plusieurs applications installées correspondent, l&#39;utilisateur dispose d&#39;un sélecteur d&#39;applications qui lui permet de sélectionner l&#39;application qu&#39;il souhaite utiliser pour gérer cette intention.</p>
