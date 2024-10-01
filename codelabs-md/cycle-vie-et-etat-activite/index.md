@@ -64,7 +64,7 @@ Vous devriez être familier avec:
 Dans cette pratique, vous ajoutez à l'application  [TwoActivities](https://github.com/khammami/android-fundamentals-apps-v2/tree/master/TwoActivities). L'application ressemble et se comporte approximativement de la même manière que dans le dernier code. Il contient deux implémentations d'activité et donne à l'utilisateur la possibilité d'envoyer des messages entre elles. Les modifications que vous apportez à l'application de cette manière n'affectent pas le comportement visible de l'utilisateur.
 
 
-## Tâche 1: Ajouter des rappels (callbacks) de cycle de vie à TwoActivities
+## Ajouter des rappels (callbacks) de cycle de vie à TwoActivities
 
 
 
@@ -79,7 +79,7 @@ Dans cette tâche, vous allez implémenter toutes les méthodes de rappel du cyc
 > * à partir de la fenêtre du projet ouvert:
 > **File &gt; Settings**
 > 
-> <img src="img/3918482f0c611fa1.png" alt="3918482f0c611fa1.png"  width="610.00" />
+> <img src="img/651ce641509ef009.png" alt="651ce641509ef009.png"  width="610.00" />
 > 
 > Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d'outils séparée, cochez les deux paramètres suivants :
 > 
@@ -269,7 +269,7 @@ Les autres méthodes de cycle de vie:
 Identique à `MainActivity` ci-dessus.
 
 
-## Tâche 2: Enregistrer et restaurer l'état de l'instance d'activité
+## Enregistrer et restaurer l'état de l'instance d'activité
 
 
 
