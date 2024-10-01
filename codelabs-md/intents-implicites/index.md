@@ -75,7 +75,7 @@ Dans cette section, vous créez une nouvelle application avec une activité et t
 <img src="img/f5d42d30cb2daed1.png" alt="f5d42d30cb2daed1.png"  width="269.28" />
 
 
-## Tâche 1: Créer le projet et la mise en page (layout)
+## Créer le projet et la mise en page (layout)
 
 
 
@@ -90,7 +90,7 @@ Pour cet exercice, vous créez un nouveau projet et une application appelés Int
 > * à partir de la fenêtre du projet ouvert:
 > **File &gt; Settings**
 > 
-> <img src="img/3918482f0c611fa1.png" alt="3918482f0c611fa1.png"  width="610.00" />
+> <img src="img/651ce641509ef009.png" alt="651ce641509ef009.png"  width="610.00" />
 > 
 > Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d'outils séparée, cochez les deux paramètres suivants :
 > 
@@ -240,7 +240,7 @@ En fonction de votre version d'Android Studio, votre code `activity_main.xml` de
 ```
 
 
-## Tâche 2: Implémenter le bouton Open Website
+## Implémenter le bouton Open Website
 
 
 
@@ -355,7 +355,7 @@ Pour les scénarios les plus courants, y compris les intents implicites démarr�
 ```
 
 
-## Tâche 3: Implémenter le bouton Open Location
+## Implémenter le bouton Open Location
 
 
 
@@ -437,7 +437,7 @@ public void openLocation(View view) {
 ```
 
 
-## Tâche 4: Implémenter le bouton "Share This Text"
+## Implémenter le bouton "Share This Text"
 
 
 
@@ -538,7 +538,7 @@ public void shareText(View view) {
 <img src="img/7fab2a3a04711c70.png" alt="7fab2a3a04711c70.png"  width="610.57" />
 
 
-## Tâche 5: Recevoir une intention implicite
+## Recevoir une intention implicite
 
 
 
