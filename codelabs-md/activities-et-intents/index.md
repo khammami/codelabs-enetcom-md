@@ -81,7 +81,7 @@ Dans la dernière étape de la création de l'application "Two Activities", vous
 <img src="img/75376bcffe628360.png" alt="75376bcffe628360.png"  width="624.00" />
 
 
-## Tâche 1: Créer le projet TwoActivities
+## Créer le projet TwoActivities
 
 
 
@@ -96,7 +96,7 @@ Dans cette tâche, vous configurez le projet initial en créant une activité (`
 > * à partir de la fenêtre du projet ouvert:
 > **File &gt; Settings**
 > 
-> <img src="img/3918482f0c611fa1.png" alt="3918482f0c611fa1.png"  width="610.00" />
+> <img src="img/651ce641509ef009.png" alt="651ce641509ef009.png"  width="610.00" />
 > 
 > Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d'outils séparée, cochez les deux paramètres suivants :
 > 
@@ -112,7 +112,7 @@ Dans cette tâche, vous configurez le projet initial en créant une activité (`
 Nommez votre application "**Two Activities**" et choisissez les mêmes paramètres de **Phone and Tablet** que ceux que vous avez utilisés dans les travaux pratiques précédents. Le dossier du projet est automatiquement nommé `TwoActivities` et le nom de l'application qui apparaît dans la barre des applications sera "Two Activities".
 
 2. Choisissez "**Empty Views Activity**" pour le modèle d'activité (`Activity`). Cliquez sur "**Next**".
-3. Assurez-vous que la langue du projet est **Java**.
+3. Assurez-vous que la langue du projet est **Java** et le "Build Configuration" sur **Groovy (build.gradle)**.
 4. Cliquez sur "**Finish**".
 5. Changez le parent de du thème de l'application par **Theme.Material3.Light** et supprimez le fichier `themes.xml (night)`
 
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 
-## Tâche 2: Créer et lancer la deuxième activité
+## Créer et lancer la deuxième activité
 
 
 
@@ -234,19 +234,12 @@ Dans cette tâche, vous ajoutez une deuxième activité à notre application, av
 <activity android:name=".SecondActivity"
     android:label = "Second Activity"
     android:parentActivityName=".MainActivity">
-    <!-- "meta-data" de l'Activité parent pour prendre en charge la version 4.0 et les versions antérieures -->
-    <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=
-                  "nom.de.votre.package.MainActivity" />
 </activity>
 ```
 
 L'attribut `label` ajoute le titre de l'activité à la barre des applications.
 
 Avec l'attribut `parentActivityName`, vous indiquez que l'activité principale est le parent de la deuxième activité. Cette relation est utilisée pour la navigation vers le haut dans votre application: la barre d'application de la deuxième activité comporte une flèche orientée vers la gauche pour permettre à l'utilisateur de naviguer "vers le haut" vers l'activité principale.
-
-Avec l'élément `&lt;meta-data&gt;`, vous fournissez des informations arbitraires supplémentaires sur l'activité sous forme de paires clé-valeur. Dans ce cas, les attributs de métadonnées font la même chose que l'attribut android: `parentActivityName`: ils définissent une relation entre deux activités pour une navigation ascendante. Ces attributs de métadonnées sont requis pour les anciennes versions d'Android, car l'attribut `android:parentActivityName` n'est disponible que pour les niveaux 16 et supérieurs de l'API.
 
 4. Extrayez une ressource de chaîne de caractère pour "Second Activity" dans le code ci-dessus et utilisez `activity2_name` comme nom de ressource.
 
@@ -263,7 +256,7 @@ Avec l'élément `&lt;meta-data&gt;`, vous fournissez des informations arbitrair
 | layout_width | wrap_content |
 | layout_height | wrap_content |
 | text | Message Received |
-| textAppearance | AppCompat.Medium |
+| textAppearance | @style/TextAppearance.AppCompat.Medium |
 | textStyle | bold |
 
 La valeur de **textAppearance** est un attribut spécial du thème Android qui définit les styles de police de base.
@@ -325,7 +318,7 @@ startActivity(intent);
 Lorsque vous cliquez sur le bouton **Send**, `MainActivity` envoie l'intention (`Intent`) et le système Android lance `SecondActivity`, qui apparaît à l'écran. Pour revenir à `MainActivity`, cliquez sur le bouton Haut (**Up** la flèche gauche dans la barre d'application) ou sur le bouton Précédent (Back) en bas de l'écran.
 
 
-## Tâche 3: Envoyer les données de l'activité principale à la deuxième activité
+## Envoyer les données de l'activité principale à la deuxième activité
 
 
 
@@ -552,7 +545,7 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 
 
-## Tâche 4: Renvoyer les données à l'activité principale
+## Renvoyer les données à l'activité principale
 
 
 

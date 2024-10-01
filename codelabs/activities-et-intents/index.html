@@ -78,14 +78,14 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 1: Créer le projet TwoActivities" duration="0">
+      <google-codelab-step label="Créer le projet TwoActivities" duration="0">
         <p>Dans cette tâche, vous configurez le projet initial en créant une activité (<code>Activity</code>) principale, en définissant la mise en page et en définissant une méthode pour l&#39;événement <code>onClick</code> du bouton.</p>
 <aside class="warning"><p>Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:</p>
 <ul>
 <li>à partir de la fenêtre &#34;Welcome to Android Studio&#34;:<br><strong>Customize &gt; All settings</strong></li>
 <li>à partir de la fenêtre du projet ouvert:<br><strong>File &gt; Settings</strong></li>
 </ul>
-<p class="image-container"><img style="width: 610.00px" src="img/3918482f0c611fa1.png"></p>
+<p class="image-container"><img style="width: 610.00px" src="img/651ce641509ef009.png"></p>
 <p>Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d&#39;outils séparée, cochez les deux paramètres suivants :</p>
 <ul>
 <li><strong>Enable new UI</strong></li>
@@ -100,7 +100,7 @@
 <p>Nommez votre application &#34;<strong>Two Activities</strong>&#34; et choisissez les mêmes paramètres de <strong>Phone and Tablet</strong> que ceux que vous avez utilisés dans les travaux pratiques précédents. Le dossier du projet est automatiquement nommé <code>TwoActivities</code> et le nom de l&#39;application qui apparaît dans la barre des applications sera &#34;Two Activities&#34;.</p>
 <ol type="1" start="2">
 <li>Choisissez &#34;<strong>Empty Views Activity</strong>&#34; pour le modèle d&#39;activité (<code>Activity</code>). Cliquez sur &#34;<strong>Next</strong>&#34;.</li>
-<li>Assurez-vous que la langue du projet est <strong>Java</strong>.</li>
+<li>Assurez-vous que la langue du projet est <strong>Java </strong>et le &#34;Build Configuration&#34; sur <strong>Groovy (build.gradle)</strong>.</li>
 <li>Cliquez sur &#34;<strong>Finish</strong>&#34;.</li>
 <li>Changez le parent de du thème de l&#39;application par <strong>Theme.Material3.Light</strong> et supprimez le fichier <code>themes.xml (night)</code></li>
 </ol>
@@ -171,7 +171,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 2: Créer et lancer la deuxième activité" duration="0">
+      <google-codelab-step label="Créer et lancer la deuxième activité" duration="0">
         <p>Chaque nouvelle activité que vous ajoutez à votre projet a sa propre structure et ses propres fichiers Java, distincts de ceux de l&#39;activité principale. Ils ont également leurs propres éléments <code><activity></code> dans le fichier <code>AndroidManifest.xml</code>. Comme pour l&#39;activité principale, les nouvelles implémentations d&#39;activité que vous créez dans Android Studio s&#39;étendent également à partir de la classe <code>AppCompatActivity</code>.</p>
 <p>Chaque activité de votre application est uniquement liée vaguement à d&#39;autres activités. Cependant, vous pouvez définir une activité en tant que parent d&#39;une autre activité dans le fichier <code>AndroidManifest.xml</code>. Cette relation parent-enfant permet à Android d&#39;ajouter des astuces de navigation telles que des flèches orientées vers la gauche dans la barre de titre pour chaque activité.</p>
 <p>Une activité communique avec d&#39;autres activités (dans la même application et à travers différentes applications) avec une intention (<code>Intent</code>). Une intention peut être explicite ou implicite:</p>
@@ -198,15 +198,9 @@
 <pre><code>&lt;activity android:name=&#34;.SecondActivity&#34;
     android:label = &#34;Second Activity&#34;
     android:parentActivityName=&#34;.MainActivity&#34;&gt;
-    &lt;!-- &#34;meta-data&#34; de l&#39;Activité parent pour prendre en charge la version 4.0 et les versions antérieures --&gt;
-    &lt;meta-data
-        android:name=&#34;android.support.PARENT_ACTIVITY&#34;
-        android:value=
-                  &#34;nom.de.votre.package.MainActivity&#34; /&gt;
 &lt;/activity&gt;</code></pre>
 <p>L&#39;attribut <code>label</code> ajoute le titre de l&#39;activité à la barre des applications.</p>
 <p>Avec l&#39;attribut <code>parentActivityName</code>, vous indiquez que l&#39;activité principale est le parent de la deuxième activité. Cette relation est utilisée pour la navigation vers le haut dans votre application: la barre d&#39;application de la deuxième activité comporte une flèche orientée vers la gauche pour permettre à l&#39;utilisateur de naviguer &#34;vers le haut&#34; vers l&#39;activité principale.</p>
-<p>Avec l&#39;élément <code><meta-data></code>, vous fournissez des informations arbitraires supplémentaires sur l&#39;activité sous forme de paires clé-valeur. Dans ce cas, les attributs de métadonnées font la même chose que l&#39;attribut android: <code>parentActivityName</code>: ils définissent une relation entre deux activités pour une navigation ascendante. Ces attributs de métadonnées sont requis pour les anciennes versions d&#39;Android, car l&#39;attribut <code>android:parentActivityName</code> n&#39;est disponible que pour les niveaux 16 et supérieurs de l&#39;API.</p>
 <ol type="1" start="4">
 <li>Extrayez une ressource de chaîne de caractère pour &#34;Second Activity&#34; dans le code ci-dessus et utilisez <code>activity2_name</code> comme nom de ressource.</li>
 </ol>
@@ -238,7 +232,7 @@
 </td><td colspan="1" rowspan="1"><p>Message Received</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>textAppearance</p>
-</td><td colspan="1" rowspan="1"><p>AppCompat.Medium</p>
+</td><td colspan="1" rowspan="1"><p>@style/TextAppearance.AppCompat.Medium</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>textStyle</p>
 </td><td colspan="1" rowspan="1"><p>bold</p>
@@ -293,7 +287,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 3: Envoyer les données de l&#39;activité principale à la deuxième activité" duration="0">
+      <google-codelab-step label="Envoyer les données de l&#39;activité principale à la deuxième activité" duration="0">
         <p>Dans la dernière tâche, vous avez ajouté une intention explicite à <code>MainActivity</code> qui a lancé <code>SecondActivity</code>. Vous pouvez également utiliser une intention pour envoyer des données d&#39;une activité à une autre lors de son lancement.</p>
 <p>Votre objet d&#39;intention peut transmettre des données à l&#39;activité cible de deux manières: dans le champ de données ou dans les extras d&#39;intention (intent <em>extras)</em>. Les données d&#39;intention sont un URI indiquant les données spécifiques sur lesquelles il faut agir. Si les informations que vous souhaitez transmettre à une activité par le biais d&#39;une intention ne sont pas un URI ou si vous souhaitez envoyer plus d&#39;une information, vous pouvez insérer ces informations supplémentaires dans les extras.</p>
 <p>Les extras d&#39;intention (<code>Intent</code>) sont des paires clé / valeur dans un <a href="https://developer.android.com/reference/android/os/Bundle.html" target="_blank"><code>Bundle</code></a>. Un <code>Bundle</code> est un ensemble de données stockées sous forme de paires clé / valeur. Pour transmettre des informations d&#39;une activité à une autre, vous devez insérer des clés et des valeurs dans le Bundle supplémentaire d&#39;intention (Intent extras) à partir de l&#39;activité d&#39;envoi, puis les récupérer dans l&#39;activité de réception.</p>
@@ -510,7 +504,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 4: Renvoyer les données à l&#39;activité principale" duration="0">
+      <google-codelab-step label="Renvoyer les données à l&#39;activité principale" duration="0">
         <p>Maintenant que vous avez une application qui lance une nouvelle activité et lui envoie des données, la dernière étape consiste à renvoyer les données de la deuxième activité à l&#39;activité principale. Pour ce faire, vous utilisez également une intention et des extras d&#39;intention.</p>
 <h2 is-upgraded>4.1 Ajouter un EditText et un bouton à la disposition (layout) SecondActivity</h2>
 <ol type="1" start="1">
