@@ -189,11 +189,11 @@
 <h2 is-upgraded>2.2 Modifier le fichier AndroidManifest.xml</h2>
 <ol type="1" start="1">
 <li>Ouvrez <strong>manifests &gt; AndroidManifest.xml</strong>.</li>
-<li>Recherchez l&#39;élément <code><activity></code> créé par Android Studio pour la deuxième activité.</li>
+<li>Recherchez l&#39;élément <code>activity</code> créé par Android Studio pour la deuxième activité.</li>
 </ol>
 <pre><code>&lt;activity android:name=&#34;.SecondActivity&#34;&gt;&lt;/activity&gt;</code></pre>
 <ol type="1" start="3">
-<li>Remplacez l&#39;intégralité de l&#39;élément <code><activity></code> par ce qui suit:</li>
+<li>Remplacez l&#39;intégralité de l&#39;élément <code>activity</code> par ce qui suit:</li>
 </ol>
 <pre><code>&lt;activity android:name=&#34;.SecondActivity&#34;
     android:label = &#34;Second Activity&#34;
@@ -435,7 +435,7 @@ protected void onCreate(Bundle savedInstanceState) {
 </td><td colspan="1" rowspan="1"><p>(Supprimer tout texte dans ce champ)</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>textAppearance</p>
-</td><td colspan="1" rowspan="1"><p>AppCompat.Medium</p>
+</td><td colspan="1" rowspan="1"><p>@style/TextAppearance.AppCompat.Medium</p>
 </td></tr>
 </table>
 <p>La nouvelle présentation (layout) a la même apparence que dans la tâche précédente, car la nouvelle <code>TextView</code> ne contient pas (encore) de texte et n&#39;apparaît donc pas à l&#39;écran.</p>
