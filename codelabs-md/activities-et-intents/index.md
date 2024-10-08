@@ -222,13 +222,13 @@ Dans cette tâche, vous ajoutez une deuxième activité à notre application, av
 ### 2.2 Modifier le fichier AndroidManifest.xml
 
 1. Ouvrez **manifests &gt; AndroidManifest.xml**.
-2. Recherchez l'élément `&lt;activity&gt;` créé par Android Studio pour la deuxième activité.
+2. Recherchez l'élément `activity` créé par Android Studio pour la deuxième activité.
 
 ```
 <activity android:name=".SecondActivity"></activity>
 ```
 
-3. Remplacez l'intégralité de l'élément `&lt;activity&gt;` par ce qui suit:
+3. Remplacez l'intégralité de l'élément `activity` par ce qui suit:
 
 ```
 <activity android:name=".SecondActivity"
@@ -463,7 +463,7 @@ public void launchSecondActivity(View view) {
 | layout_width | wrap_content |
 | layout_height | wrap_content |
 | text | (Supprimer tout texte dans ce champ) |
-| textAppearance | AppCompat.Medium |
+| textAppearance | @style/TextAppearance.AppCompat.Medium |
 
 La nouvelle présentation (layout) a la même apparence que dans la tâche précédente, car la nouvelle `TextView` ne contient pas (encore) de texte et n'apparaît donc pas à l'écran.
 
