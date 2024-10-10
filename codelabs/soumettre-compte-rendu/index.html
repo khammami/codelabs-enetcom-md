@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>Soumission de compte rendu</title>
+  <title>🚀 Soumission de compte rendu</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -24,7 +24,7 @@
   <google-codelab codelab-gaid="UA-3295395-7"
                   codelab-ga4id="G-E0H6JSF2N3"
                   id="soumettre-compte-rendu"
-                  title="Soumission de compte rendu"
+                  title="🚀 Soumission de compte rendu"
                   environment="web"
                   feedback-link="https://github.com/khammami/codelabs-enetcom/issues">
     
@@ -47,7 +47,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Etape 1: Préparation de votre environnement de développement" duration="0">
+      <google-codelab-step label="Préparation de votre environnement de développement" duration="0">
         <p>Dans cette étape, vous allez préparer vos espaces de travail pour utiliser Git dans vos projets et les publier sur GitHub.</p>
 <h2 is-upgraded>1. Installer l&#39;outil Git</h2>
 <h3 is-upgraded>Installer Git sur Windows</h3>
@@ -71,7 +71,7 @@ $ sudo apt-get install git</code></pre>
 <li>Vérifiez que l&#39;installation a réussi en tapant <code>git --version</code> :</li>
 </ol>
 <pre><code>$ git --version</code></pre>
-<pre>git version 2.38.0</pre>
+<pre>git version 2.47.0</pre>
 <ol type="1" start="3">
 <li>Configurez votre nom d&#39;utilisateur et votre adresse e-mail Git à l&#39;aide des commandes suivantes, en remplaçant le nom de Khalil par le vôtre. Ces détails seront associés à tous les commits que vous créez :</li>
 </ol>
@@ -145,7 +145,7 @@ $ git config --global user.email &#34;khalil.hammami@enetcom.usf.tn&#34;</code><
 
       </google-codelab-step>
     
-      <google-codelab-step label="Etape 2: Acceptation la tâche demandé" duration="0">
+      <google-codelab-step label="Acceptation la tâche demandé" duration="0">
         <p>Pour compléter le travail à faire de chaque TP, vous allez recevoir par mail, via la plateforme de l&#39;école, un lien vers la tâche qui vous a été affectée, ressemblant à ceci : </p>
 <p><a href="https://classroom.github.com/a/wVf4TcEf" target="_blank">https://classroom.github.com/a/wVf4TcEf</a></p>
 <aside class="warning"><p>Ce lien est uniquement à titre d&#39;exemple. Vous recevrez un lien pour chaque compte rendu sur la plateforme de votre institut.</p>
@@ -164,18 +164,18 @@ $ git config --global user.email &#34;khalil.hammami@enetcom.usf.tn&#34;</code><
 
       </google-codelab-step>
     
-      <google-codelab-step label="Étape 3: Soumission de votre travail" duration="0">
+      <google-codelab-step label="Soumission de votre travail" duration="0">
         <p>Pour commencer à faire vos comptes rendus, vous devez cloner votre dépôt GitHub sur votre machine locale. Pour ce faire, vous pouvez utiliser la commande <code>git clone</code> en ligne de commande ou un client graphique git.</p>
 <ol type="1" start="1">
-<li>Pour cloner votre dépôt GitHub sur votre machine, utilisez la commande SSH suivante :<br><img style="width: 454.00px" src="img/d39c4b033cd2d9cd.png"><br>** N&#39;oubliez pas de remplacer le lien par le votre.<br></li>
+<li>Pour cloner votre dépôt GitHub sur votre machine, utilisez la commande SSH suivante :<br><img style="width: 454.00px" src="img/d39c4b033cd2d9cd.png"><br></li>
 </ol>
-<pre>$ git clone git@github.com:ENET-Com-22/demo-compte-rendu-tp-11-khammami.git</pre>
+<pre>$ git clone lien-repo-compte-rendu.git
+</pre>
+<pre><code>// N&#39;oubliez pas de remplacer le lien par le votre.</code></pre>
 <ol type="1" start="2">
 <li>Avant de commencer, créez une nouvelle branche git nommée &#34;dev&#34; et basculez vers celle-ci pour travailler sur les modifications de développement.<br></li>
 </ol>
-<pre>$ cd demo-compte-rendu-tp-11-khammami
-
-$ git branch
+<pre>$ git branch
 
 // si la branche &#34;dev&#34; n&#39;existe pas
 $ git checkout -b dev
@@ -184,33 +184,47 @@ ou
 // si la branche &#34;dev&#34; existe
 $ git checkout dev
 
-
 # Pour vérifier la liste des branches et votre branche actuelle
 $ git branch</pre>
 <ol type="1" start="3">
-<li>Créez un dossier nommé &#34;<strong>application</strong>&#34; dans lequel vous allez placer votre application.<br></li>
+<li>Créez un dossier nommé &#34;<strong>application</strong>&#34;, s&#39;il nexiste pas déja, dans lequel vous allez placer votre application.<br></li>
 </ol>
 <pre>$ mkdir application</pre>
 <ol type="1" start="4">
-<li>Pour faire votre compte rendu, vous devez suivre l&#39;énoncé du fichier &#34;<strong>README.md</strong>&#34; (travail à faire). L&#39;application demandée doit être sous le dossier &#34;application&#34; (assurez-vous qu&#39;il n&#39;y a pas de dossier &#34;<strong>.git</strong>&#34; sous le dossier &#34;<strong>application</strong>&#34;). Vous pouvez utiliser Visual Studio Code pour modifier le fichier &#34;<strong>README.md</strong>&#34; et répondre aux questions en mettant &#34;x&#34; entre crochets.</li>
+<li>Pour faire votre compte rendu, vous devez suivre l&#39;énoncé du fichier &#34;<strong>README.md</strong>&#34; (travail à faire). L&#39;application demandée doit être sous le dossier &#34;application&#34;<br><img style="width: 624.00px" src="img/7b3d142440d91b30.png"><br></li>
 </ol>
-<p class="image-container"><img style="width: 624.00px" src="img/7b3d142440d91b30.png"><br></p>
+<aside class="warning"><p><strong>NB:</strong> assurez-vous qu&#39;il n&#39;y a pas de dossier &#34;.git&#34; sous le dossier &#34;application&#34;</p>
+</aside>
 <ol type="1" start="5">
-<li>Une fois que vous avez terminé de travailler sur votre projet, vous devez ajouter et enregistrer vos modifications dans votre dépôt local avec un commit. Répétez ces instructions après chaque modification ou changement dans votre dépôt Git local.<br><br></li>
+<li>. Vous pouvez utiliser un éditeur de texte pour modifier le fichier &#34;<strong>README.md</strong>&#34; et répondre aux questions en mettant &#34;X&#34; entre crochets.</li>
 </ol>
-<aside class="warning"><p>Assurez-vous que les modifications ont été effectuées sur la branche <code>dev</code> avant de valider. Si vous avez apporté des modifications sur GitHub, récupérez ces modifications dans votre dépôt local avant de valider localement. Sinon, vous risquez d&#39;obtenir des conflits et de devoir les résoudre.<br><br><strong>Important</strong>: Ne faites pas de modifications sur la branche <code>main</code> ou <code>master</code>. Les modifications sur ces branches ne seront pas considérées comme travail soumis et peuvent influencer votre note.</p>
+<p class="image-container"><img style="width: 278.00px" src="img/74f2a3808612d537.png"><img style="width: 278.00px" src="img/e3b64e5d7ddc327f.png"></p>
+<ol type="1" start="6">
+<li>Une fois que vous avez terminé de travailler sur votre projet, vous devez ajouter et enregistrer vos modifications dans votre dépôt local avec un commit. Répétez ces instructions après chaque modification ou changement dans votre dépôt Git local.<br></li>
+</ol>
+<aside class="warning"><ul>
+<li><strong>Travailler sur la branche </strong><strong><code>dev</code></strong><strong>:</strong> Toutes les modifications doivent être effectuées sur la branche <code>dev</code> avant d&#39;être validées.</li>
+<li><strong>Synchroniser avec GitHub:</strong> Avant de valider localement, assurez-vous de récupérer les dernières modifications depuis GitHub pour éviter les conflits.</li>
+<li><strong>Éviter les branches principales:</strong> Ne modifiez en aucun cas les branches <code>main</code> ou <code>master</code>. Ces branches sont réservées et les modifications apportées n&#39;influenceront pas votre évaluation.</li>
+</ul>
 </aside>
 <pre>$ git add --all
 ou
 $ git add .
 
-
 $ git commit -m &#39;A message to describe the changes&#39;</pre>
-<ol type="1" start="6">
+<ol type="1" start="7">
 <li>Jusqu&#39;à présent, votre travail est uniquement stocké sur votre ordinateur. Pour le partager, vous devez pousser vos commits locaux vers votre dépôt distant. Pour ce faire, utilisez la commande <code>git push</code>.<br></li>
 </ol>
 <pre>$ git push -u origin dev</pre>
-<aside class="special"><p>Facultatif : vous pouvez créer une demande de fusion (pull request) sur GitHub pour fusionner la branche <code>dev</code> dans la branche principale sans la fusionner. Je répète <strong>sans la fusionner</strong></p>
+<aside class="special"><h3 is-upgraded><strong>Résumé des étapes à suivre :</strong></h3>
+<ol type="1" start="1">
+<li><strong>Vérifier la branche:</strong> Assurez-vous d&#39;être sur la branche <code>dev</code> avant d&#39;apporter des modifications.</li>
+<li><strong>Synchroniser avec GitHub:</strong> Utilisez la commande <code>git pull</code> pour récupérer les dernières modifications depuis le dépôt distant.</li>
+<li><strong>Effectuer les modifications:</strong> Apportez les changements nécessaires à votre code.</li>
+<li><strong>Valider les modifications localement:</strong> Utilisez la commande <code>git commit</code> pour enregistrer les modifications.</li>
+<li><strong>Pousser les modifications sur GitHub:</strong> Utilisez la commande <code>git push</code> pour envoyer les modifications vers le dépôt distant.</li>
+</ol>
 </aside>
 
 

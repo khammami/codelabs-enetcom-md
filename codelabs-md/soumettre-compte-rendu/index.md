@@ -11,7 +11,7 @@ duration: 0
 
 ---
 
-# Soumission de compte rendu
+# 🚀 Soumission de compte rendu
 
 [Codelab Feedback](https://github.com/khammami/codelabs-enetcom/issues)
 
@@ -44,7 +44,7 @@ L'outil de contrôle de version git peut être géré par la ligne de commande (
 * GitHub Desktop ( [https://desktop.github.com/](https://desktop.github.com/))
 
 
-## Etape 1: Préparation de votre environnement de développement
+## Préparation de votre environnement de développement
 
 
 
@@ -84,7 +84,7 @@ $ git --version
 ```
 
 ```console
-git version 2.38.0
+git version 2.47.0
 ```
 
 3. Configurez votre nom d'utilisateur et votre adresse e-mail Git à l'aide des commandes suivantes, en remplaçant le nom de Khalil par le vôtre. Ces détails seront associés à tous les commits que vous créez :
@@ -201,7 +201,7 @@ $ cat ~/.ssh/id_ed25519.pub
 8. Finalement, Cliquez sur **Add SSH key**.
 
 
-## Etape 2: Acceptation la tâche demandé
+## Acceptation la tâche demandé
 
 
 
@@ -242,7 +242,7 @@ Si la page n'affiche pas le lien de votre dépôt GitHub, veuillez la recharger 
 > **Remarque** : les étapes 2 et 3 ne s'afficheront que la première fois que vous utiliserez GitHub Classroom.
 
 
-## Étape 3: Soumission de votre travail
+## Soumission de votre travail
 
 
 
@@ -250,17 +250,19 @@ Pour commencer à faire vos comptes rendus, vous devez cloner votre dépôt GitH
 
 1. Pour cloner votre dépôt GitHub sur votre machine, utilisez la commande SSH suivante :
 <img src="img/d39c4b033cd2d9cd.png" alt="d39c4b033cd2d9cd.png"  width="454.00" />
-** N'oubliez pas de remplacer le lien par le votre.
+
 
 ```console
-$ git clone git@github.com:ENET-Com-22/demo-compte-rendu-tp-11-khammami.git
+$ git clone lien-repo-compte-rendu.git
+```
+
+```
+// N'oubliez pas de remplacer le lien par le votre.
 ```
 
 2. Avant de commencer, créez une nouvelle branche git nommée "dev" et basculez vers celle-ci pour travailler sur les modifications de développement.
 
 ```console
-$ cd demo-compte-rendu-tp-11-khammami
-
 $ git branch
 
 // si la branche "dev" n'existe pas
@@ -270,41 +272,45 @@ ou
 // si la branche "dev" existe
 $ git checkout dev
 
-
 # Pour vérifier la liste des branches et votre branche actuelle
 $ git branch
 ```
 
-3. Créez un dossier nommé "**application**" dans lequel vous allez placer votre application.
+3. Créez un dossier nommé "**application**", s'il nexiste pas déja, dans lequel vous allez placer votre application.
 
 ```console
 $ mkdir application
 ```
 
-4. Pour faire votre compte rendu, vous devez suivre l'énoncé du fichier "**README.md**" (travail à faire). L'application demandée doit être sous le dossier "application" (assurez-vous qu'il n'y a pas de dossier "**.git**" sous le dossier "**application**"). Vous pouvez utiliser Visual Studio Code pour modifier le fichier "**README.md**" et répondre aux questions en mettant "x" entre crochets.
-
+4. Pour faire votre compte rendu, vous devez suivre l'énoncé du fichier "**README.md**" (travail à faire). L'application demandée doit être sous le dossier "application"
 <img src="img/7b3d142440d91b30.png" alt="7b3d142440d91b30.png"  width="624.00" />
-
-
-5. Une fois que vous avez terminé de travailler sur votre projet, vous devez ajouter et enregistrer vos modifications dans votre dépôt local avec un commit. Répétez ces instructions après chaque modification ou changement dans votre dépôt Git local.
 
 
 > aside negative
 > 
-> Assurez-vous que les modifications ont été effectuées sur la branche `dev` avant de valider. Si vous avez apporté des modifications sur GitHub, récupérez ces modifications dans votre dépôt local avant de valider localement. Sinon, vous risquez d'obtenir des conflits et de devoir les résoudre.
+> **NB:** assurez-vous qu'il n'y a pas de dossier ".git" sous le dossier "application"
 
-> **Important**: Ne faites pas de modifications sur la branche `main` ou `master`. Les modifications sur ces branches ne seront pas considérées comme travail soumis et peuvent influencer votre note.
+5. . Vous pouvez utiliser un éditeur de texte pour modifier le fichier "**README.md**" et répondre aux questions en mettant "X" entre crochets.
+
+<img src="img/74f2a3808612d537.png" alt="74f2a3808612d537.png"  width="278.00" /> <img src="img/e3b64e5d7ddc327f.png" alt="e3b64e5d7ddc327f.png"  width="278.00" />
+
+6. Une fois que vous avez terminé de travailler sur votre projet, vous devez ajouter et enregistrer vos modifications dans votre dépôt local avec un commit. Répétez ces instructions après chaque modification ou changement dans votre dépôt Git local.
+
+> aside negative
+> 
+> * **Travailler sur la branche** ﻿**`dev`**﻿**:** Toutes les modifications doivent être effectuées sur la branche `dev` avant d'être validées.
+> * **Synchroniser avec GitHub:** Avant de valider localement, assurez-vous de récupérer les dernières modifications depuis GitHub pour éviter les conflits.
+> * **Éviter les branches principales:** Ne modifiez en aucun cas les branches `main` ou `master`. Ces branches sont réservées et les modifications apportées n'influenceront pas votre évaluation.
 
 ```console
 $ git add --all
 ou
 $ git add .
 
-
 $ git commit -m 'A message to describe the changes'
 ```
 
-6. Jusqu'à présent, votre travail est uniquement stocké sur votre ordinateur. Pour le partager, vous devez pousser vos commits locaux vers votre dépôt distant. Pour ce faire, utilisez la commande `git push`.
+7. Jusqu'à présent, votre travail est uniquement stocké sur votre ordinateur. Pour le partager, vous devez pousser vos commits locaux vers votre dépôt distant. Pour ce faire, utilisez la commande `git push`.
 
 ```console
 $ git push -u origin dev
@@ -312,7 +318,13 @@ $ git push -u origin dev
 
 > aside positive
 > 
-> Facultatif : vous pouvez créer une demande de fusion (pull request) sur GitHub pour fusionner la branche `dev` dans la branche principale sans la fusionner. Je répète **sans la fusionner**
+> #### **Résumé des étapes à suivre :**
+> 
+> 1. **Vérifier la branche:** Assurez-vous d'être sur la branche `dev` avant d'apporter des modifications.
+> 2. **Synchroniser avec GitHub:** Utilisez la commande `git pull` pour récupérer les dernières modifications depuis le dépôt distant.
+> 3. **Effectuer les modifications:** Apportez les changements nécessaires à votre code.
+> 4. **Valider les modifications localement:** Utilisez la commande `git commit` pour enregistrer les modifications.
+> 5. **Pousser les modifications sur GitHub:** Utilisez la commande `git push` pour envoyer les modifications vers le dépôt distant.
 
 
 ## [Vidéo] Résumé des étapes 2 et 3
