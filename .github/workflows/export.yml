@@ -66,7 +66,8 @@ jobs:
           git config --local user.name "github-actions"
           git add ${{ env.HTML_PATH }}/* ${{ env.MD_PATH }}/*
           git commit -m "build(codelabs): Export $(date '+%Y-%m-%d %H:%M')" || echo "No changes to commit"
-          git push -qf origin HEAD:github-actions-auto-export || echo "No changes to commit"
+          git pull --rebase origin github-actions-auto-export
+          git push origin HEAD:github-actions-auto-export || echo "No changes to commit"
 
       - name: Create PR from Updated Branch
         if: steps.git-changes.outputs.is-changed == 'true'
