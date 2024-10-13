@@ -1,5 +1,6 @@
 ---
 id: cycle-vie-et-etat-activite
+summary: Ce tutoriel porte sur le cycle de vie d'une activité Android, expliquant comment gérer les différents états d'une activité et comment préserver les données de l'utilisateur lors des changements de configuration.
 status: [hidden]
 authors: Khalil Hammami
 categories: android

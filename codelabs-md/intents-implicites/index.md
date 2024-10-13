@@ -1,5 +1,6 @@
 ---
 id: intents-implicites
+summary: Ce tutoriel explique comment créer des intentions implicites dans une application Android pour effectuer des tâches telles que l'ouverture d'un site Web, d'un emplacement sur une carte et le partage de texte, ainsi que sur la façon de recevoir une intention implicite.
 status: [hidden]
 authors: Khalil Hammami
 categories: android
