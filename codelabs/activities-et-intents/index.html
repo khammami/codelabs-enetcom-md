@@ -72,7 +72,7 @@
 <p class="image-container"><img style="width: 623.00px" src="img/bfbd6163724d533e.png"></p>
 <p>Dans la deuxième étape, vous ajoutez une vue <code>EditText</code> à l&#39;activité principale. L&#39;utilisateur entre un message et clique sur &#34;<strong>Send</strong>&#34;. L&#39;activité principale utilise l&#39;intention pour démarrer la deuxième activité et d&#39;envoyer le message de l&#39;utilisateur à la deuxième activité. La deuxième activité affiche le message reçu.</p>
 <p class="image-container"><img style="width: 624.00px" src="img/814ccba29efe5a35.png"></p>
-<p>Dans la dernière étape de la création de l&#39;application &#34;Two Activities&#34;, vous ajoutez <code>EditText</code> et un bouton &#34;<strong>Reply</strong>&#34; à la deuxième activité. L&#39;utilisateur peut désormais saisir un message de réponse, puis appuyez sur &#34;<strong>Reply</strong>&#34;, et la réponse est affichée sur l&#39;activité principale. À ce stade, vous utilisez une intention (<code>Intent</code>) pour renvoyer la réponse de la deuxième activité à l&#39;activité principale.</p>
+<p>Dans la dernière étape de la création de l&#39;application &#34;<strong>Two Activities</strong>&#34;, vous ajoutez <code>EditText</code> et un bouton &#34;<strong>Reply</strong>&#34; à la deuxième activité. L&#39;utilisateur peut désormais saisir un message de réponse, puis appuyez sur &#34;<strong>Reply</strong>&#34;, et la réponse est affichée sur l&#39;activité principale. À ce stade, vous utilisez une intention (<code>Intent</code>) pour renvoyer la réponse de la deuxième activité à l&#39;activité principale.</p>
 <p class="image-container"><img style="width: 624.00px" src="img/75376bcffe628360.png"></p>
 
 
@@ -118,7 +118,7 @@
 <pre><code>android:onClick=&#34;launchSecondActivity&#34;</code></pre>
 <p>La valeur de l&#39;attribut est soulignée en rouge car la méthode <code>launchSecondActivity()</code> n&#39;a pas encore été créée. Ignorer cette erreur pour l&#39;instant; vous le corrigez dans la tâche suivante.</p>
 <ol type="1" start="6">
-<li>Extrayez la ressource chaîne, comme décrit dans une pratique précédente, pour &#34;Send&#34; et utilisez le nom <code>button_main</code> pour la ressource.</li>
+<li>Extrayez la ressource chaîne, comme décrit dans une pratique précédente, pour &#34;<strong>Send</strong>&#34; et utilisez le nom <code>button_main</code> pour la ressource.</li>
 </ol>
 <p>Le code XML du bouton (<code>Button</code>) devrait ressembler à ceci:</p>
 <pre><code>&lt;Button
@@ -148,9 +148,9 @@
 </ol>
 <pre><code>private static final String LOG_TAG = 
                             MainActivity.class.getSimpleName();</code></pre>
-<p>Cette constante utilise le nom de la classe elle-même comme balise (tag).</p>
+<p>Cette constante utilise le nom de la classe elle-même comme étiqutte (tag).</p>
 <ol type="1" start="5">
-<li>Exécutez votre application. Lorsque vous cliquez sur le bouton <strong>Send</strong>, vous voyez le  message &#34;Button Clicked!&#34; dans le volet <strong>Logcat</strong>. S&#39;il y a trop de sorties dans le moniteur, tapez <strong>MainActivity</strong> dans le champ de recherche. Le volet &#34;<strong>Logcat&#34;</strong> n&#39;affichera que les lignes correspondant à cette balise (tag).</li>
+<li>Exécutez votre application. Lorsque vous cliquez sur le bouton <strong>Send</strong>, vous voyez le  message &#34;Button Clicked!&#34; dans le volet <strong>Logcat</strong>. S&#39;il y a trop de sorties dans le moniteur, tapez <strong>MainActivity</strong> dans le champ de recherche. Le volet &#34;<strong>Logcat&#34;</strong> n&#39;affichera que les lignes correspondant à cette étiqutte (tag).</li>
 </ol>
 <p>Le code de <code>MainActivity</code> devrait ressembler à ceci:</p>
 <pre><code>public class MainActivity extends AppCompatActivity {
@@ -182,7 +182,7 @@
 <p>Dans cette tâche, vous ajoutez une deuxième activité à notre application, avec sa propre mise en page (layout). Vous modifiez le fichier <code>AndroidManifest.xml</code> pour définir l&#39;activité principale en tant que parent de la deuxième activité. Ensuite, vous modifiez la méthode <code>launchSecondActivity()</code> dans <code>MainActivity</code> pour inclure une intention (<code>Intent</code>) qui lance la deuxième activité lorsque vous cliquez sur le bouton.</p>
 <h2 is-upgraded>2.1 Créer la deuxième activité</h2>
 <ol type="1" start="1">
-<li>Cliquez sur le dossier d&#39;application de votre projet et choisissez <strong>File &gt; New &gt; Activity &gt; Empty Views Activity</strong>.</li>
+<li>Cliquez sur le module d&#39;application de votre projet et choisissez <strong>File &gt; New &gt; Activity &gt; Empty Views Activity</strong>.</li>
 <li>Nommez la nouvelle activité <strong>SecondActivity</strong>. Assurez-vous que l&#39;option  <strong>Generate Layout File</strong> soit cochée. Le nom de la présentation (layout) est nommé sous la forme <code>activity_second</code>. Ne cochez pas l&#39;option <strong>Launcher Activity</strong>.</li>
 <li>Cliquez sur Finish. Android Studio ajoute à la fois un nouveau layout d&#39;activité (<code>activity_second.xml</code>) et un nouveau fichier Java (<code>SecondActivity.java</code>) à votre projet pour la nouvelle activité (<code>Activity</code>). Il met également à jour le fichier <code>AndroidManifest.xml</code> pour inclure la nouvelle activité.</li>
 </ol>
@@ -202,7 +202,7 @@
 <p>L&#39;attribut <code>label</code> ajoute le titre de l&#39;activité à la barre des applications.</p>
 <p>Avec l&#39;attribut <code>parentActivityName</code>, vous indiquez que l&#39;activité principale est le parent de la deuxième activité. Cette relation est utilisée pour la navigation vers le haut dans votre application: la barre d&#39;application de la deuxième activité comporte une flèche orientée vers la gauche pour permettre à l&#39;utilisateur de naviguer &#34;vers le haut&#34; vers l&#39;activité principale.</p>
 <ol type="1" start="4">
-<li>Extrayez une ressource de chaîne de caractère pour &#34;Second Activity&#34; dans le code ci-dessus et utilisez <code>activity2_name</code> comme nom de ressource.</li>
+<li>Extrayez une ressource de chaîne de caractère pour &#34;<strong>Second Activity</strong>&#34; dans le code ci-dessus et utilisez <code>activity2_name</code> comme nom de ressource.</li>
 </ol>
 <h2 is-upgraded>2.3 Définir la mise en page (layout) pour la deuxième activité</h2>
 <ol type="1" start="1">
@@ -210,8 +210,8 @@
 <li>Faites glisser un <strong>TextView</strong> du volet <strong>Palette</strong> vers le coin supérieur gauche de la disposition (layout) et ajoutez des contraintes aux côtés supérieur et gauche de la disposition (layout). Définissez ses attributs dans le volet <strong>Attributes</strong> comme suit:</li>
 </ol>
 <table>
-<tr><td colspan="1" rowspan="1"><p>Attribut</p>
-</td><td colspan="1" rowspan="1"><p>Valeur</p>
+<tr><td colspan="1" rowspan="1"><p><strong>Attribut</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Valeur</strong></p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>id</p>
 </td><td colspan="1" rowspan="1"><p>text_header</p>
@@ -251,7 +251,7 @@
     xmlns:tools=&#34;http://schemas.android.com/tools&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34;
-    tools:context=&#34;com.example.android.twoactivities.SecondActivity&#34;&gt;
+    tools:context=&#34;com.example.twoactivities.SecondActivity&#34;&gt;
 
     &lt;TextView
         android:id=&#34;@+id/text_header&#34;
@@ -326,7 +326,7 @@
 </td><td colspan="1" rowspan="1"><p>Enter Your Message Here</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>text</p>
-</td><td colspan="1" rowspan="1"><p>(Supprimer tout texte dans ce champ)</p>
+</td><td colspan="1" rowspan="1"><p>(Supprimer tout texte dans ce champ 👀)</p>
 </td></tr>
 </table>
 <p>La nouvelle présentation dans <code>activity_main.xml</code> ressemble à ceci:</p>
@@ -340,7 +340,7 @@
     xmlns:tools=&#34;http://schemas.android.com/tools&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34;
-    tools:context=&#34;com.example.android.twoactivities.MainActivity&#34;&gt;
+    tools:context=&#34;com.example.twoactivities.MainActivity&#34;&gt;
 
     &lt;Button
         android:id=&#34;@+id/button_main&#34;
@@ -373,8 +373,7 @@
 <li>Ouvrez <strong>MainActivity</strong>.</li>
 <li>Ajoutez une constante publique (<code>public</code>) en haut de la classe pour définir la clé de l&#39;extra de l&#39;intention:</li>
 </ol>
-<pre><code>public static final String EXTRA_MESSAGE = 
-                   &#34;com.example.android.twoactivities.extra.MESSAGE&#34;;</code></pre>
+<pre><code>public static final String EXTRA_MESSAGE = &#34;key.for.extra.MESSAGE&#34;;</code></pre>
 <ol type="1" start="3">
 <li>Ajoutez une variable privée en haut de la classe pour contenir l&#39; <code>EditText</code>:</li>
 </ol>
@@ -432,7 +431,7 @@ protected void onCreate(Bundle savedInstanceState) {
 </td><td colspan="1" rowspan="1"><p>wrap_content</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>text</p>
-</td><td colspan="1" rowspan="1"><p>(Supprimer tout texte dans ce champ)</p>
+</td><td colspan="1" rowspan="1"><p>(Supprimer tout texte dans ce champ 👀)</p>
 </td></tr>
 <tr><td colspan="1" rowspan="1"><p>textAppearance</p>
 </td><td colspan="1" rowspan="1"><p>@style/TextAppearance.AppCompat.Medium</p>
@@ -445,7 +444,7 @@ protected void onCreate(Bundle savedInstanceState) {
     xmlns:tools=&#34;http://schemas.android.com/tools&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34;
-    tools:context=&#34;com.example.android.twoactivities.SecondActivity&#34;&gt;
+    tools:context=&#34;com.example.twoactivities.SecondActivity&#34;&gt;
 
     &lt;TextView
         android:id=&#34;@+id/text_header&#34;
@@ -469,7 +468,7 @@ protected void onCreate(Bundle savedInstanceState) {
         app:layout_constraintStart_toStartOf=&#34;parent&#34;
         app:layout_constraintTop_toBottomOf=&#34;@+id/text_header&#34; /&gt;
 &lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</code></pre>
-<h2 is-upgraded>3.4 Modifiez SecondActivity pour obtenir les extras et afficher le message</h2>
+<h2 is-upgraded>3.4 Modifier SecondActivity pour obtenir les extras et afficher le message</h2>
 <ol type="1" start="1">
 <li>Ouvrez <strong>SecondActivity</strong> pour ajouter du code à la méthode <code>onCreate()</code>.</li>
 <li>Obtenez l&#39;intention (<code>Intent</code>) qui a activé cette activité (<code>Activity</code>):</li>
@@ -567,7 +566,7 @@ protected void onCreate(Bundle savedInstanceState) {
     xmlns:tools=&#34;http://schemas.android.com/tools&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34;
-    tools:context=&#34;com.example.android.twoactivities.SecondActivity&#34;&gt;
+    tools:context=&#34;com.example.twoactivities.SecondActivity&#34;&gt;
 
     &lt;TextView
         android:id=&#34;@+id/text_header&#34;
@@ -623,8 +622,7 @@ protected void onCreate(Bundle savedInstanceState) {
 <li>Ouvrez <strong>SecondActivity</strong>.</li>
 <li>En haut de la classe, ajoutez une constante publique pour définir la clé de l&#39;objet <code>Intent</code> extra:</li>
 </ol>
-<pre><code>public static final String EXTRA_REPLY = 
-                     &#34;com.example.android.twoactivities.extra.REPLY&#34;;</code></pre>
+<pre><code>public static final String EXTRA_REPLY = &#34;key.for.extra.REPLY&#34;;</code></pre>
 <ol type="1" start="3">
 <li>Ajoutez une variable privée en haut de la classe pour contenir le <code>EditText</code>.</li>
 </ol>
@@ -655,8 +653,7 @@ protected void onCreate(Bundle savedInstanceState) {
 <pre><code>finish();</code></pre>
 <p>Le code de <code>SecondActivity</code> devrait maintenant être le suivant:</p>
 <pre><code>public class SecondActivity extends AppCompatActivity {
-    public static final String EXTRA_REPLY =
-                         &#34;com.example.android.twoactivities.extra.REPLY&#34;;
+    public static final String EXTRA_REPLY = &#34;key.for.extra.REPLY&#34;;
     private EditText mReply;
 
     @Override
@@ -732,7 +729,7 @@ protected void onCreate(Bundle savedInstanceState) {
     xmlns:tools=&#34;http://schemas.android.com/tools&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34;
-    tools:context=&#34;com.example.android.twoactivities.MainActivity&#34;&gt;
+    tools:context=&#34;com.example.twoactivities.MainActivity&#34;&gt;
 
     &lt;TextView
         android:id=&#34;@+id/text_header_reply&#34;
@@ -784,7 +781,7 @@ protected void onCreate(Bundle savedInstanceState) {
         app:layout_constraintEnd_toStartOf=&#34;@+id/button2&#34;
         app:layout_constraintStart_toStartOf=&#34;parent&#34; /&gt;
 &lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</code></pre>
-<h2 is-upgraded>4.4 Obtenez la réponse de l&#39;extra de l&#39;intention (Intent) et affichez-la</h2>
+<h2 is-upgraded>4.4 Obtener la réponse de l&#39;extra de l&#39;intention (Intent) et afficher-la</h2>
 <p>Lorsque vous utilisez une intention (<code>Intent</code>) explicite pour démarrer une autre activité, vous ne pouvez pas vous attendre à récupérer des données. Vous activez simplement cette activité. Dans ce cas, vous utilisez <code>startActivity()</code> pour démarrer la nouvelle activité, comme vous l&#39;avez fait précédemment dans cette pratique. Si vous souhaitez récupérer les données de l&#39;activité activée, vous devez le démarrer avec <code>startActivityForResult()</code>.</p>
 <p>Dans cette tâche, vous modifiez l&#39;application pour que <code>SecondActivity</code> attend un résultat, pour extraire ces données renvoyées de l&#39;intention (Intent) et pour afficher ces données dans les éléments <code>TextView</code> que vous avez créés dans la dernière tâche.</p>
 <ol type="1" start="1">
@@ -821,8 +818,8 @@ protected void onCreate(Bundle savedInstanceState) {
 <li>Remplacez la méthode de rappel (callback) <code>onActivityResult()</code> par cette signature:</li>
 </ol>
 <pre><code>@Override
-public void onActivityResult(int requestCode, 
-                             int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
 }</code></pre>
 <p>Les trois arguments de <code>onActivityResult()</code> contiennent toutes les informations nécessaires pour gérer les données de retour: le <code>requestCode</code> que vous avez défini lorsque vous avez lancé <code>Activity</code> avec <code>startActivityForResult()</code>, le <code>resultCode</code> défini dans l&#39;activité lancée (généralement l&#39;un des <code>RESULT_OK</code> ou <code>RESULT_CANCELED</code>), et les données d&#39;intention (<code>Intent</code>) contenant les données renvoyées par l&#39;activité de lancement.</p>
 <ol type="1" start="7">
@@ -852,9 +849,9 @@ public void onActivityResult(int requestCode,
 mReplyTextView.setVisibility(View.VISIBLE);</code></pre>
 <p>La méthode complète <code>onActivityResult()</code> devrait maintenant ressembler à ceci:</p>
 <pre><code>@Override
-public void onActivityResult(int requestCode, 
-                             int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     if (requestCode == TEXT_REQUEST) {
         if (resultCode == RESULT_OK) {
             String reply = 

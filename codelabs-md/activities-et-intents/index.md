@@ -1,5 +1,6 @@
 ---
 id: activities-et-intents
+summary: Ce tutoriel vous guide dans la création d'une application Android à deux activités, en expliquant comment elles interagissent via des intentions (Intents) pour transmettre des données et naviguer entre les écrans.
 status: [hidden]
 authors: Khalil Hammami
 categories: android
@@ -76,7 +77,7 @@ Dans la deuxième étape, vous ajoutez une vue `EditText` à l'activité princip
 
 <img src="img/814ccba29efe5a35.png" alt="814ccba29efe5a35.png"  width="624.00" />
 
-Dans la dernière étape de la création de l'application "Two Activities", vous ajoutez `EditText` et un bouton "**Reply**" à la deuxième activité. L'utilisateur peut désormais saisir un message de réponse, puis appuyez sur "**Reply**", et la réponse est affichée sur l'activité principale. À ce stade, vous utilisez une intention (`Intent`) pour renvoyer la réponse de la deuxième activité à l'activité principale.
+Dans la dernière étape de la création de l'application "**Two Activities**", vous ajoutez `EditText` et un bouton "**Reply**" à la deuxième activité. L'utilisateur peut désormais saisir un message de réponse, puis appuyez sur "**Reply**", et la réponse est affichée sur l'activité principale. À ce stade, vous utilisez une intention (`Intent`) pour renvoyer la réponse de la deuxième activité à l'activité principale.
 
 <img src="img/75376bcffe628360.png" alt="75376bcffe628360.png"  width="624.00" />
 
@@ -133,7 +134,7 @@ android:onClick="launchSecondActivity"
 
 La valeur de l'attribut est soulignée en rouge car la méthode `launchSecondActivity()` n'a pas encore été créée. Ignorer cette erreur pour l'instant; vous le corrigez dans la tâche suivante.
 
-6. Extrayez la ressource chaîne, comme décrit dans une pratique précédente, pour "Send" et utilisez le nom `button_main` pour la ressource.
+6. Extrayez la ressource chaîne, comme décrit dans une pratique précédente, pour "**Send**" et utilisez le nom `button_main` pour la ressource.
 
 Le code XML du bouton (`Button`) devrait ressembler à ceci:
 
@@ -174,9 +175,9 @@ private static final String LOG_TAG =
                             MainActivity.class.getSimpleName();
 ```
 
-Cette constante utilise le nom de la classe elle-même comme balise (tag).
+Cette constante utilise le nom de la classe elle-même comme étiqutte (tag).
 
-5. Exécutez votre application. Lorsque vous cliquez sur le bouton **Send**, vous voyez le  message "Button Clicked!" dans le volet **Logcat**. S'il y a trop de sorties dans le moniteur, tapez **MainActivity** dans le champ de recherche. Le volet "**Logcat"** n'affichera que les lignes correspondant à cette balise (tag).
+5. Exécutez votre application. Lorsque vous cliquez sur le bouton **Send**, vous voyez le  message "Button Clicked!" dans le volet **Logcat**. S'il y a trop de sorties dans le moniteur, tapez **MainActivity** dans le champ de recherche. Le volet "**Logcat"** n'affichera que les lignes correspondant à cette étiqutte (tag).
 
 Le code de `MainActivity` devrait ressembler à ceci:
 
@@ -215,7 +216,7 @@ Dans cette tâche, vous ajoutez une deuxième activité à notre application, av
 
 ### 2.1 Créer la deuxième activité
 
-1. Cliquez sur le dossier d'application de votre projet et choisissez **File &gt; New &gt; Activity &gt; Empty Views Activity**.
+1. Cliquez sur le module d'application de votre projet et choisissez **File &gt; New &gt; Activity &gt; Empty Views Activity**.
 2. Nommez la nouvelle activité **SecondActivity**. Assurez-vous que l'option  **Generate Layout File** soit cochée. Le nom de la présentation (layout) est nommé sous la forme `activity_second`. Ne cochez pas l'option **Launcher Activity**.
 3. Cliquez sur Finish. Android Studio ajoute à la fois un nouveau layout d'activité (`activity_second.xml`) et un nouveau fichier Java (`SecondActivity.java`) à votre projet pour la nouvelle activité (`Activity`). Il met également à jour le fichier `AndroidManifest.xml` pour inclure la nouvelle activité.
 
@@ -241,14 +242,14 @@ L'attribut `label` ajoute le titre de l'activité à la barre des applications.
 
 Avec l'attribut `parentActivityName`, vous indiquez que l'activité principale est le parent de la deuxième activité. Cette relation est utilisée pour la navigation vers le haut dans votre application: la barre d'application de la deuxième activité comporte une flèche orientée vers la gauche pour permettre à l'utilisateur de naviguer "vers le haut" vers l'activité principale.
 
-4. Extrayez une ressource de chaîne de caractère pour "Second Activity" dans le code ci-dessus et utilisez `activity2_name` comme nom de ressource.
+4. Extrayez une ressource de chaîne de caractère pour "**Second Activity**" dans le code ci-dessus et utilisez `activity2_name` comme nom de ressource.
 
 ### 2.3 Définir la mise en page (layout) pour la deuxième activité
 
 1. Ouvrez **activity_second.xml** et sélectionnez le mode de vue **Design** s'il n'est pas déjà sélectionné.
 2. Faites glisser un **TextView** du volet **Palette** vers le coin supérieur gauche de la disposition (layout) et ajoutez des contraintes aux côtés supérieur et gauche de la disposition (layout). Définissez ses attributs dans le volet **Attributes** comme suit:
 
-| Attribut | Valeur |
+| <strong>Attribut</strong> | <strong>Valeur</strong> |
 | --- | --- |
 | id | text_header |
 | Top margin | 16 |
@@ -276,7 +277,7 @@ Le code XML pour `activity_second.xml` devrait être le suivant:
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.twoactivities.SecondActivity">
+    tools:context="com.example.twoactivities.SecondActivity">
 
     <TextView
         android:id="@+id/text_header"
@@ -345,7 +346,7 @@ Dans cette tâche, vous modifiez l'intention (`Intent`) explicite dans `MainActi
 | layout_height | wrap_content |
 | inputType | textLongMessage |
 | hint | Enter Your Message Here |
-| text | (Supprimer tout texte dans ce champ) |
+| text | (Supprimer tout texte dans ce champ 👀) |
 
 La nouvelle présentation dans `activity_main.xml` ressemble à ceci:
 
@@ -361,7 +362,7 @@ Le code XML de la mise en page (layout) doit ressembler à ce qui suit:
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.twoactivities.MainActivity">
+    tools:context="com.example.twoactivities.MainActivity">
 
     <Button
         android:id="@+id/button_main"
@@ -398,8 +399,7 @@ Les extras d'intention (`Intent`) sont des paires clé / valeur dans un  [`Bundl
 2. Ajoutez une constante publique (`public`) en haut de la classe pour définir la clé de l'extra de l'intention:
 
 ```
-public static final String EXTRA_MESSAGE = 
-                   "com.example.android.twoactivities.extra.MESSAGE";
+public static final String EXTRA_MESSAGE = "key.for.extra.MESSAGE";
 ```
 
 3. Ajoutez une variable privée en haut de la classe pour contenir l' `EditText`:
@@ -462,7 +462,7 @@ public void launchSecondActivity(View view) {
 | Left margin | 8 |
 | layout_width | wrap_content |
 | layout_height | wrap_content |
-| text | (Supprimer tout texte dans ce champ) |
+| text | (Supprimer tout texte dans ce champ 👀) |
 | textAppearance | @style/TextAppearance.AppCompat.Medium |
 
 La nouvelle présentation (layout) a la même apparence que dans la tâche précédente, car la nouvelle `TextView` ne contient pas (encore) de texte et n'apparaît donc pas à l'écran.
@@ -475,7 +475,7 @@ Le code XML de la présentation (layout) `activity_second.xml` devrait ressemble
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.twoactivities.SecondActivity">
+    tools:context="com.example.twoactivities.SecondActivity">
 
     <TextView
         android:id="@+id/text_header"
@@ -501,7 +501,7 @@ Le code XML de la présentation (layout) `activity_second.xml` devrait ressemble
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-### 3.4 Modifiez SecondActivity pour obtenir les extras et afficher le message
+### 3.4 Modifier SecondActivity pour obtenir les extras et afficher le message
 
 1. Ouvrez **SecondActivity** pour ajouter du code à la méthode `onCreate()`.
 2. Obtenez l'intention (`Intent`) qui a activé cette activité (`Activity`):
@@ -594,7 +594,7 @@ Le code XML du fichier de mise en page (layout) `activity_second.xml` est le sui
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.twoactivities.SecondActivity">
+    tools:context="com.example.twoactivities.SecondActivity">
 
     <TextView
         android:id="@+id/text_header"
@@ -654,8 +654,7 @@ Les données de réponse de la deuxième activité à l'activité principale son
 2. En haut de la classe, ajoutez une constante publique pour définir la clé de l'objet `Intent` extra:
 
 ```
-public static final String EXTRA_REPLY = 
-                     "com.example.android.twoactivities.extra.REPLY";
+public static final String EXTRA_REPLY = "key.for.extra.REPLY";
 ```
 
 3. Ajoutez une variable privée en haut de la classe pour contenir le `EditText`.
@@ -704,8 +703,7 @@ Le code de `SecondActivity` devrait maintenant être le suivant:
 
 ```
 public class SecondActivity extends AppCompatActivity {
-    public static final String EXTRA_REPLY =
-                         "com.example.android.twoactivities.extra.REPLY";
+    public static final String EXTRA_REPLY = "key.for.extra.REPLY";
     private EditText mReply;
 
     @Override
@@ -775,7 +773,7 @@ Voici le code XML du fichier `activity_main.xml`:
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.twoactivities.MainActivity">
+    tools:context="com.example.twoactivities.MainActivity">
 
     <TextView
         android:id="@+id/text_header_reply"
@@ -829,7 +827,7 @@ Voici le code XML du fichier `activity_main.xml`:
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-### 4.4 Obtenez la réponse de l'extra de l'intention (Intent) et affichez-la
+### 4.4 Obtener la réponse de l'extra de l'intention (Intent) et afficher-la
 
 Lorsque vous utilisez une intention (`Intent`) explicite pour démarrer une autre activité, vous ne pouvez pas vous attendre à récupérer des données. Vous activez simplement cette activité. Dans ce cas, vous utilisez `startActivity()` pour démarrer la nouvelle activité, comme vous l'avez fait précédemment dans cette pratique. Si vous souhaitez récupérer les données de l'activité activée, vous devez le démarrer avec `startActivityForResult()`.
 
@@ -883,8 +881,8 @@ startActivityForResult(intent, TEXT_REQUEST);
 
 ```
 @Override
-public void onActivityResult(int requestCode, 
-                             int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
 }
 ```
 
@@ -930,9 +928,9 @@ La méthode complète `onActivityResult()` devrait maintenant ressembler à ceci
 
 ```
 @Override
-public void onActivityResult(int requestCode, 
-                             int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     if (requestCode == TEXT_REQUEST) {
         if (resultCode == RESULT_OK) {
             String reply = 
