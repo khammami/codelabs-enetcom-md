@@ -101,8 +101,7 @@
 </ol>
 <pre><code>&lt;style name=&#34;Base.Theme.RecyclerView&#34; parent=&#34;Theme.Material3.Light.NoActionBar&#34;&gt;</code></pre>
 <p>Le modèle Basic Views Activity fournit un bouton d&#39;action flottant (FAB) et une barre d&#39;application dans la mise en page de l&#39;activité (<code>activity_main.xml</code>), ainsi qu&#39;une mise en page pour le contenu de l&#39;activité <code>(content_main.xml</code>).</p>
-<aside class="warning"><p>Dans la dernière version d&#39;Android Studio, le modèle d&#39;activité &#34;Basic Views Activity&#34; utilise <a href="https://developer.android.com/guide/navigation" target="_blank">une bibliothèque de navigation</a> dont nous n&#39;avons pas besoin dans ce cours pratique. Veuillez suivre la vidéo ci-dessous pour la supprimer.</p>
-<iframe class="youtube-video" src="https://www.youtube.com/embed/Svqrc5NLGfU?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<aside class="warning"><p>Dans la dernière version d&#39;Android Studio, le modèle d&#39;activité &#34;Basic Views Activity&#34; utilise <a href="https://developer.android.com/guide/navigation" target="_blank">une bibliothèque de navigation</a> dont nous n&#39;avons pas besoin dans ce cours pratique.</p>
 </aside>
 <ol type="1" start="3">
 <li>Supprimez le répertoire &#34;<strong>navigation</strong>&#34; sous les ressources (<code>res</code>).</li>
@@ -110,10 +109,10 @@
 <li>Supprimez la balise <code>fragment</code> de &#34;<code>content_main.xml</code>&#34; et la remplacez par un <code>TextView</code> qui contient &#34;Hello World&#34;.</li>
 <li>Supprimez les dépendances de la bibliothèque de <strong>navigation</strong> et synchronisez le projet.</li>
 </ol>
-<pre><code>    implementation &#39;androidx.navigation:navigation-fragment:*&#39;
-    implementation &#39;androidx.navigation:navigation-ui:*&#39;</code></pre>
+<pre><code>    implementation libs.navigation.fragment
+    implementation libs.navigation.ui</code></pre>
 <ol type="1" start="7">
-<li>Nettoyez &#34;<code>MainActivity.java</code>&#34; (les imports, methode de navigation et tous les variables en rouge en relation avec la bibliothèque de navigation...)</li>
+<li>Une fois la synchronisation du projet est terminé, nettoyez &#34;<code>MainActivity.java</code>&#34; (les imports, methode de navigation <code>onSupportNavigateUp()</code> et tous les variables en rouge en relation avec la bibliothèque de <strong>navigation</strong>...)</li>
 <li>Exécutez votre application. Vous devriez voir le titre de l&#39;application <code>RecyclerView</code> et &#34;Hello World&#34; à l&#39;écran.</li>
 </ol>
 <h2 is-upgraded>1.2. Créer des données</h2>
@@ -171,12 +170,12 @@ public class Word {
 <li>Dans la fenêtre Projet d&#39;Android Studio, effectuez un clic droit sur <strong>app &gt; java &gt; com.example.recyclerview</strong>, puis sélectionnez <strong>New &gt; Package</strong>.</li>
 <li>Saisissez <strong>data</strong> comme dernière partie du nom du package.</li>
 <li>Effectuez un clic droit sur le package <code>data</code>, puis sélectionnez <strong>New &gt; Java Class</strong>.</li>
-<li>Saisissez <strong>Datasource</strong> comme nom de classe.</li>
+<li>Saisissez <strong>DataSource</strong> comme nom de classe.</li>
 <li>Initializer un constructeur vide pour Datasource.</li>
 </ol>
-<pre><code>public Datasource(){}</code></pre>
+<pre><code>public DataSource(){}</code></pre>
 <ol type="1" start="6">
-<li>Dans la classe <strong><code>Datasource</code></strong>, créez une fonction appelée <code>loadWords()</code>.</li>
+<li>Dans la classe <strong><code>DataSource</code></strong>, créez une fonction appelée <code>loadWords()</code>.</li>
 </ol>
 <p>La fonction <code>loadWords()</code> doit renvoyer une liste de mots. Pour ce faire, créez une liste et insérez-y une instance Word pour chaque mot.</p>
 <ol type="1" start="7">
@@ -190,16 +189,16 @@ for (int i = 0; i &lt; 20; i++) {
 }
 return wordList;</code></pre>
 <p>Le code concatène la chaîne <code>"Word "</code> avec la valeur de <code>i</code> tout en augmentant sa valeur. C&#39;est tout ce dont vous avez besoin comme ensemble de données pour cet exercice.</p>
-<p><code>Datasource.java</code></p>
+<p><code>DataSource.java</code></p>
 <pre><code>package com.example.recyclerview.data;
 
 import com.example.recyclerview.model.Word;
 
 import java.util.LinkedList;
 
-public class Datasource {
+public class DataSource {
 
-    public Datasource(){}
+    public DataSource(){}
 
     public LinkedList&lt;Word&gt; loadWords(){
         // Mettre les données initiales dans la liste de mots.
@@ -269,7 +268,7 @@ public class Datasource {
 <li>Définissez l&#39;<code>ID</code> de ressource de <code>RecyclerView</code> sur <strong><code>recyclerview</code></strong>.</li>
 <li>Revenez à la vue <strong>Code</strong>. Dans l&#39;élément <code>RecyclerView</code> du code XML, ajoutez <strong><code>LinearLayoutManager</code></strong> en tant qu&#39;attribut de gestionnaire de mise en page de la <code>RecyclerView</code>, comme indiqué ci-dessous.</li>
 </ol>
-<pre><code>app:layoutManager=&#34;LinearLayoutManager&#34;</code></pre>
+<pre><code>app:layoutManager=&#34;androidx.recyclerview.widget.LinearLayoutManager&#34;</code></pre>
 <p>Pour qu&#39;il soit possible de faire défiler une liste verticale d&#39;éléments plus longue que l&#39;écran, vous devez ajouter une barre de défilement verticale.</p>
 <ol type="1" start="8">
 <li>Dans <code>RecyclerView</code>, ajoutez un attribut <strong><code>android:scrollbars</code></strong> défini sur vertical.</li>
@@ -518,7 +517,7 @@ public int getItemCount() {
 <li>Dans <code>MainActivity</code>, accédez à la méthode <code>onCreate()</code>. Insérez le nouveau code décrit dans les étapes suivantes après l&#39;appel vers <strong><code>setContentView(binding.getRoot())</code></strong>.</li>
 <li>Créez une instance de <code>Datasource</code> sous le nom  <strong><code>mDataSource</code></strong> </li>
 </ol>
-<pre><code>Datasource mDatasource = new Datasource(); </code></pre>
+<pre><code>Datasource mDataSource = new DataSource(); </code></pre>
 <ol type="1" start="4">
 <li>Appelez la méthode <strong><code>loadWords()</code></strong> sur l&#39;instance <code>mDatasource</code>. Stockez la liste des mots renvoyée dans un variable local nommé <strong><code>mWordList</code></strong>.</li>
 </ol>
