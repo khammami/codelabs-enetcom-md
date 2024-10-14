@@ -116,9 +116,7 @@ Le modèle Basic Views Activity fournit un bouton d'action flottant (FAB) et une
 
 > aside negative
 > 
-> Dans la dernière version d'Android Studio, le modèle d'activité "Basic Views Activity" utilise  [une bibliothèque de navigation](https://developer.android.com/guide/navigation) dont nous n'avons pas besoin dans ce cours pratique. Veuillez suivre la vidéo ci-dessous pour la supprimer.
-> 
-> <video id="Svqrc5NLGfU"></video>
+> Dans la dernière version d'Android Studio, le modèle d'activité "Basic Views Activity" utilise  [une bibliothèque de navigation](https://developer.android.com/guide/navigation) dont nous n'avons pas besoin dans ce cours pratique.
 
 3. Supprimez le répertoire "**navigation**" sous les ressources (`res`).
 4. Supprimez toutes les mises en page et classes Java des **fragments**.
@@ -127,11 +125,11 @@ Le modèle Basic Views Activity fournit un bouton d'action flottant (FAB) et une
 6. Supprimez les dépendances de la bibliothèque de **navigation** et synchronisez le projet.
 
 ```
-    implementation 'androidx.navigation:navigation-fragment:*'
-    implementation 'androidx.navigation:navigation-ui:*'
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
 ```
 
-7. Nettoyez "`MainActivity.java`" (les imports, methode de navigation et tous les variables en rouge en relation avec la bibliothèque de navigation...)
+7. Une fois la synchronisation du projet est terminé, nettoyez "`MainActivity.java`" (les imports, methode de navigation `onSupportNavigateUp()` et tous les variables en rouge en relation avec la bibliothèque de **navigation**...)
 8. Exécutez votre application. Vous devriez voir le titre de l'application `RecyclerView` et "Hello World" à l'écran.
 
 ### 1.2. Créer des données
@@ -204,14 +202,14 @@ La préparation des données étant un problème distinct, placez la classe Data
 1. Dans la fenêtre Projet d'Android Studio, effectuez un clic droit sur **app &gt; java &gt; com.example.recyclerview**, puis sélectionnez **New &gt; Package**.
 2. Saisissez **data** comme dernière partie du nom du package.
 3. Effectuez un clic droit sur le package `data`, puis sélectionnez **New &gt; Java Class**.
-4. Saisissez **Datasource** comme nom de classe.
+4. Saisissez **DataSource** comme nom de classe.
 5. Initializer un constructeur vide pour Datasource.
 
 ```
-public Datasource(){}
+public DataSource(){}
 ```
 
-6. Dans la classe **`Datasource`**, créez une fonction appelée `loadWords()`.
+6. Dans la classe **`DataSource`**, créez une fonction appelée `loadWords()`.
 
 La fonction `loadWords()` doit renvoyer une liste de mots. Pour ce faire, créez une liste et insérez-y une instance Word pour chaque mot.
 
@@ -229,7 +227,7 @@ return wordList;
 
 Le code concatène la chaîne `"Word "` avec la valeur de `i` tout en augmentant sa valeur. C'est tout ce dont vous avez besoin comme ensemble de données pour cet exercice.
 
-`Datasource.java`
+`DataSource.java`
 
 ```
 package com.example.recyclerview.data;
@@ -238,9 +236,9 @@ import com.example.recyclerview.model.Word;
 
 import java.util.LinkedList;
 
-public class Datasource {
+public class DataSource {
 
-    public Datasource(){}
+    public DataSource(){}
 
     public LinkedList<Word> loadWords(){
         // Mettre les données initiales dans la liste de mots.
@@ -325,7 +323,7 @@ To add a `RecyclerView` element to the XML layout, follow these steps:
 7. Revenez à la vue **Code**. Dans l'élément `RecyclerView` du code XML, ajoutez **`LinearLayoutManager`** en tant qu'attribut de gestionnaire de mise en page de la `RecyclerView`, comme indiqué ci-dessous.
 
 ```
-app:layoutManager="LinearLayoutManager"
+app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 ```
 
 Pour qu'il soit possible de faire défiler une liste verticale d'éléments plus longue que l'écran, vous devez ajouter une barre de défilement verticale.
@@ -612,7 +610,7 @@ Maintenant que vous avez un adaptateur avec un `ViewHolder`, vous pouvez enfin c
 3. Créez une instance de `Datasource` sous le nom  **`mDataSource`** 
 
 ```
-Datasource mDatasource = new Datasource(); 
+Datasource mDataSource = new DataSource(); 
 ```
 
 4. Appelez la méthode **`loadWords()`** sur l'instance `mDatasource`. Stockez la liste des mots renvoyée dans un variable local nommé **`mWordList`**.
