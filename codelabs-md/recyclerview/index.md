@@ -1,5 +1,6 @@
 ---
 id: recyclerview
+summary: Ce tutoriel explique comment implémenter une RecyclerView dans une application Android pour afficher une liste interactive d'éléments.
 status: [hidden]
 authors: Khalil Hammami
 categories: android
@@ -76,7 +77,7 @@ L'application  [`RecyclerView`](https://developer.android.com/reference/androidx
 <img src="img/6ead92bf24dfd495.png" alt="6ead92bf24dfd495.png"  width="221.59" />
 
 
-## Tâche 1: Créer un nouveau projet et un nouvel ensemble de données
+## Créer un nouveau projet et un nouvel ensemble de données
 
 
 
@@ -92,7 +93,7 @@ Avant de pouvoir afficher un `RecyclerView`, vous avez besoin de données à aff
 > * à partir de la fenêtre du projet ouvert:
 > **File &gt; Settings**
 > 
-> <img src="img/3918482f0c611fa1.png" alt="3918482f0c611fa1.png"  width="610.00" />
+> <img src="img/651ce641509ef009.png" alt="651ce641509ef009.png"  width="610.00" />
 > 
 > Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d'outils séparée, cochez les deux paramètres suivants :
 > 
@@ -274,7 +275,7 @@ app:srcCompat="@drawable/ic_add_for_fab"
 > **Conseil** : Pour une description complète de l'ajout d'une icône, voir  [Create app icons with Image Asset Studio](http://developer.android.com/tools/help/image-asset-studio.html).
 
 
-## Tâche 2: Ajouter une RecyclerView à votre application
+## Ajouter une RecyclerView à votre application
 
 
 
@@ -677,7 +678,7 @@ Vous devriez voir votre liste de mots affichée, et vous pouvez faire défiler l
 Félicitations ! Vous venez de créer une application qui affiche une liste de données avec `RecyclerView` et un adaptateur personnalisé. Prenez le temps d'examiner le code que vous avez créé et de comprendre l'interaction entre les différents éléments.
 
 
-## Tâche 3: Rendre la liste interactive
+## Rendre la liste interactive
 
 
 

@@ -1,5 +1,6 @@
 ---
 id: interface-utilisateur-interactive
+summary: Ce tutoriel explique comment créer une application Android interactive avec des boutons et un champ de texte en utilisant l'éditeur de mise en page et le XML.
 status: [hidden]
 authors: Khalil Hammami
 categories: android
