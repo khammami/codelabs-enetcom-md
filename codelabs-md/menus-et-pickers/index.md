@@ -1,5 +1,6 @@
 ---
 id: menus-et-pickers
+summary: Ce guide explique comment ajouter des menus, des icônes et des boîtes de dialogue à une application Android.
 status: [hidden]
 authors: Khalil Hammami
 categories: android
@@ -94,7 +95,7 @@ Vous créez également une application qui fournit un bouton pour afficher le s�
 <img src="img/ccb61c2d0b9e4eb1.png" alt="ccb61c2d0b9e4eb1.png"  width="235.64" /> <img src="img/c1de48463bdf867a.png" alt="c1de48463bdf867a.png"  width="235.07" />
 
 
-## Tâche 1: Ajouter des éléments au menu des options
+## Ajouter des éléments au menu des options
 
 
 
@@ -229,7 +230,7 @@ Notez l'ordre des éléments dans le menu des options. Vous avez utilisé l'attr
 | Contact | 100 |
 
 
-## Tâche 2: Ajouter des icônes pour les éléments de menu
+## Ajouter des icônes pour les éléments de menu
 
 
 
@@ -298,7 +299,7 @@ Suivez ces étapes pour afficher certains éléments de menu sous forme d'icône
 Combien de boutons d'action vont tenir dans la barre d'application? Cela dépend de l'orientation et de la taille de l'écran de l'appareil. Moins de boutons apparaissent dans une orientation verticale, comme indiqué à gauche de la figure ci-dessus, par rapport à une orientation horizontale comme indiqué à droite de la figure. Les boutons d'action ne peuvent occuper plus de la moitié de la largeur de la barre d'application principale.
 
 
-## Tâche 3: Gérer l'élément de menu sélectionné
+## Gérer l'élément de menu sélectionné
 
 
 
@@ -385,7 +386,7 @@ switch (item.getItemId()) {
 Lancer l'application. En cliquant sur l'icône du panier dans la barre d'applications (l'élément **Order**), vous accédez directement à l'écran `OrderActivity`.
 
 
-## Tâche 4: Utiliser une boîte de dialogue pour demander le choix d'un utilisateur
+## Utiliser une boîte de dialogue pour demander le choix d'un utilisateur
 
 
 
@@ -398,7 +399,7 @@ Lancer l'application. En cliquant sur l'icône du panier dans la barre d'applica
 > * à partir de la fenêtre du projet ouvert:
 > **File &gt; Settings**
 > 
-> <img src="img/3918482f0c611fa1.png" alt="3918482f0c611fa1.png"  width="610.00" />
+> <img src="img/651ce641509ef009.png" alt="651ce641509ef009.png"  width="610.00" />
 > 
 > Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d'outils séparée, cochez les deux paramètres suivants :
 > 
@@ -509,7 +510,7 @@ Vous devriez pouvoir appuyer sur le bouton **Alert**, illustré à gauche de la 
 <img src="img/e4d7e3947a8a92b8.png" alt="e4d7e3947a8a92b8.png"  width="164.08" /> <img src="img/b38c175921e832b1.png" alt="b38c175921e832b1.png"  width="164.08" /> <img src="img/c13385716abc32cc.png" alt="c13385716abc32cc.png"  width="164.08" />
 
 
-## Tâche 5: Utiliser un sélecteur pour la saisie de l'utilisateur
+## Utiliser un sélecteur pour la saisie de l'utilisateur
 
 
 

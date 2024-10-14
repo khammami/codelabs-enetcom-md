@@ -88,7 +88,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 1: Ajouter des éléments au menu des options" duration="0">
+      <google-codelab-step label="Ajouter des éléments au menu des options" duration="0">
         <p>Dans cette tâche, ouvrez le projet <a href="https://github.com/khammami/android-fundamentals-exycodelabs/tree/master/DroidCafeInput" target="_blank">DroidCafeInput</a> et ajoutez des éléments de menu au menu d&#39;options dans la barre des applications en haut de l&#39;écran.</p>
 <p>Pour cloner la branche <code>droid-cafe-input</code> du projet <a href="https://github.com/khammami/android-fundamentals-exycodelabs/tree/master/DroidCafeInput" target="_blank">DroidCafeInput</a>, vous pouvez utiliser la commande suivante :</p>
 <pre><code>git clone --branch droid-cafe-input [lien-repo.git]</code></pre>
@@ -252,7 +252,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 2: Ajouter des icônes pour les éléments de menu" duration="0">
+      <google-codelab-step label="Ajouter des icônes pour les éléments de menu" duration="0">
         <p>Autant que possible, vous voulez montrer les actions les plus fréquemment utilisées en utilisant des icônes dans la barre d&#39;application afin que l&#39;utilisateur puisse cliquer dessus sans avoir à cliquer sur l&#39;icône de débordement. Dans cette tâche, vous ajoutez des icônes pour certains éléments de menu et affichez certains de ces éléments dans la barre d&#39;applications en haut de l&#39;écran sous forme d&#39;icônes.</p>
 <p>Dans cet exemple, supposons que les actions <strong>Order</strong> et <strong>Status</strong> sont les plus fréquemment utilisées. L&#39;action <strong>Favorites</strong> est parfois utilisée et <strong>Contact</strong> est le moins fréquemment utilisé. Vous pouvez définir des icônes pour ces actions et spécifier les éléments suivants:</p>
 <ul>
@@ -342,7 +342,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 3: Gérer l&#39;élément de menu sélectionné" duration="0">
+      <google-codelab-step label="Gérer l&#39;élément de menu sélectionné" duration="0">
         <p>Dans cette tâche, vous ajoutez une méthode pour afficher un message sur l&#39;élément de menu sélectionné et utilisez la méthode <a href="https://developer.android.com/reference/android/app/Activity.html#onOptionsItemSelected(android.view.MenuItem)" target="_blank"><code>onOptionsItemSelected()</code></a> pour déterminer l&#39;élément de menu sélectionné.</p>
 <h2 is-upgraded>3.1 Créer une méthode pour afficher le choix de menu</h2>
 <ol type="1" start="1">
@@ -413,13 +413,13 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 4: Utiliser une boîte de dialogue pour demander le choix d&#39;un utilisateur" duration="0">
+      <google-codelab-step label="Utiliser une boîte de dialogue pour demander le choix d&#39;un utilisateur" duration="0">
         <aside class="warning"><p>Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:</p>
 <ul>
 <li>à partir de la fenêtre &#34;Welcome to Android Studio&#34;:<br><strong>Customize &gt; All settings</strong></li>
 <li>à partir de la fenêtre du projet ouvert:<br><strong>File &gt; Settings</strong></li>
 </ul>
-<p class="image-container"><img style="width: 610.00px" src="img/3918482f0c611fa1.png"></p>
+<p class="image-container"><img style="width: 610.00px" src="img/651ce641509ef009.png"></p>
 <p>Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d&#39;outils séparée, cochez les deux paramètres suivants :</p>
 <ul>
 <li><strong>Enable new UI</strong></li>
@@ -506,7 +506,7 @@ myAlertBuilder.show();</code></pre>
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 5: Utiliser un sélecteur pour la saisie de l&#39;utilisateur" duration="0">
+      <google-codelab-step label="Utiliser un sélecteur pour la saisie de l&#39;utilisateur" duration="0">
         <p>Android fournit des boîtes de dialogue prêtes à l&#39;emploi, appelées sélecteurs (<em>pickers)</em>, permettant de choisir une heure ou une date. Vous pouvez les utiliser pour vous assurer que vos utilisateurs choisissent une heure ou une date valide, formatée correctement et ajustée à l&#39;heure et à la date locales de l&#39;utilisateur. Chaque sélecteur fournit des commandes permettant de sélectionner chaque partie de l&#39;heure (heure, minute, AM / PM) ou la date (mois, jour, année). Vous pouvez tout lire sur la configuration des sélecteurs dans <a href="http://developer.android.com/guide/topics/ui/controls/pickers.html" target="_blank">Pickers</a>.</p>
 <p>Dans cette tâche, vous allez créer un nouveau projet et ajouter le sélecteur de date. Vous apprendrez également à utiliser un <a href="https://developer.android.com/reference/androidx/fragment/app/Fragment.html" target="_blank"><code>Fragment</code></a>, qui est un comportement ou une partie d&#39;une interface utilisateur dans une activité. C&#39;est comme une mini-activité au sein de l&#39;activité principale, avec son propre cycle de vie, et elle est utilisée pour créer un sélecteur. Tout le travail est fait pour vous. Pour en savoir plus sur la classe <code>Fragment</code>, voir <a href="http://developer.android.com/guide/components/fragments.html" target="_blank">Fragments</a> dans le Guide de l&#39;API.</p>
 <p>L&#39;un des avantages de l&#39;utilisation d&#39;un fragment pour un sélecteur est que vous pouvez isoler les sections de code permettant de gérer la date et l&#39;heure pour divers paramètres régionaux affichant la date et l&#39;heure de différentes manières. La meilleure pratique pour afficher un sélecteur consiste à utiliser une instance de <a href="https://developer.android.com/reference/androidx/fragment/app/DialogFragment.html" target="_blank"><code>DialogFragment</code></a>, qui est une sous-classe de <code>Fragment</code>. Un <code>DialogFragment</code> affiche une fenêtre de dialogue flottante au-dessus de la fenêtre d&#39;activité. Dans cet exercice, vous allez ajouter un fragment pour la boîte de dialogue du sélecteur et utiliser <code>DialogFragment</code> pour gérer le cycle de vie de la boîte de dialogue.</p>

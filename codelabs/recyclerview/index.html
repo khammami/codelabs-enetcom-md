@@ -79,14 +79,14 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 1: Créer un nouveau projet et un nouvel ensemble de données" duration="0">
+      <google-codelab-step label="Créer un nouveau projet et un nouvel ensemble de données" duration="0">
         <p>Avant de pouvoir afficher un <code>RecyclerView</code>, vous avez besoin de données à afficher. Dans cette tâche, vous allez créer un nouveau projet pour l&#39;application et un ensemble de données. Dans une application plus sophistiquée, vos données peuvent provenir du stockage interne (un fichier, une base de données SQLite, des préférences enregistrées), d&#39;une autre application (Contacts, Photos) ou d&#39;Internet (stockage en nuage, Google Sheets ou toute source de données avec une API). Le stockage et la récupération de données sont un sujet à part entière qui est abordé dans le chapitre sur le stockage de données. Pour cet exercice, vous allez simuler des données en les créant dans la méthode <code>onCreate()</code> de <code>MainActivity</code>.<br><br></p>
 <aside class="warning"><p>Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:</p>
 <ul>
 <li>à partir de la fenêtre &#34;Welcome to Android Studio&#34;:<br><strong>Customize &gt; All settings</strong></li>
 <li>à partir de la fenêtre du projet ouvert:<br><strong>File &gt; Settings</strong></li>
 </ul>
-<p class="image-container"><img style="width: 610.00px" src="img/3918482f0c611fa1.png"></p>
+<p class="image-container"><img style="width: 610.00px" src="img/651ce641509ef009.png"></p>
 <p>Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d&#39;outils séparée, cochez les deux paramètres suivants :</p>
 <ul>
 <li><strong>Enable new UI</strong></li>
@@ -229,7 +229,7 @@ public class Datasource {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 2: Ajouter une RecyclerView à votre application" duration="0">
+      <google-codelab-step label="Ajouter une RecyclerView à votre application" duration="0">
         <p>La création et l&#39;utilisation d&#39;une RecyclerView reposent sur un certain nombre d&#39;éléments. On peut les considérer comme une division du travail. Le schéma ci-dessous vous donne une vue d&#39;ensemble. Vous en apprendrez davantage sur chaque élément au fur et à mesure de l&#39;implémentation.</p>
 <ul>
 <li>item (élément) : élément de données de la liste à afficher. Représente un objet Word de votre application.</li>
@@ -564,7 +564,7 @@ binding.contentMain.recyclerview.setAdapter(mAdapter);</code></pre>
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 3: Rendre la liste interactive" duration="0">
+      <google-codelab-step label="Rendre la liste interactive" duration="0">
         <p>Regarder des listes d&#39;éléments est intéressant, mais c&#39;est beaucoup plus amusant et utile si votre utilisateur peut interagir avec elles. Pour voir comment le <code>RecyclerView</code> peut répondre à la saisie de l&#39;utilisateur, vous allez attacher un gestionnaire de clic à chaque élément. Lorsque l&#39;élément est tapé, le gestionnaire de clic est exécuté et le texte de cet élément change.</p>
 <p>La liste d&#39;éléments qu&#39;un <code>RecyclerView</code> affiche peut également être modifiée dynamiquement, elle n&#39;a pas besoin d&#39;être une liste statique. Il existe plusieurs façons d&#39;ajouter des comportements supplémentaires. L&#39;une d&#39;entre elles consiste à utiliser le bouton d&#39;action flottant (FAB). Par exemple, dans Gmail, le FAB est utilisé pour composer un nouvel e-mail. Pour ce pratique, vous allez générer un nouveau mot à insérer dans la liste. Pour une application plus utile, vous obtiendriez des données de vos utilisateurs.</p>
 <h2 is-upgraded>3.1. Faire réagir les éléments aux clics</h2>

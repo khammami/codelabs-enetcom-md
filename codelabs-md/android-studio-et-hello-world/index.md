@@ -1,5 +1,6 @@
 ---
 id: android-studio-et-hello-world
+summary: Ce tutoriel explique comment installer Android Studio, créer un émulateur, et créer et exécuter l'application "Hello World".
 status: [hidden]
 authors: Khalil Hammami
 categories: android
