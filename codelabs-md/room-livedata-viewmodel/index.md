@@ -117,7 +117,7 @@ Le diagramme suivant reprend le diagramme d'ensemble de l'introduction et montre
 > * à partir de la fenêtre du projet ouvert:
 > **File &gt; Settings**
 > 
-> <img src="img/3918482f0c611fa1.png" alt="3918482f0c611fa1.png"  width="610.00" />
+> <img src="img/651ce641509ef009.png" alt="651ce641509ef009.png"  width="610.00" />
 > 
 > Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d'outils séparée, cochez les deux paramètres suivants :
 > 
@@ -130,9 +130,7 @@ Le diagramme suivant reprend le diagramme d'ensemble de l'introduction et montre
 
 1. Ouvrez Android Studio et cliquez sur **New Project**.
 2. Dans la fenêtre **New Project**, choisissez **Basic Views Activity** et cliquez sur **Next**.
-
-<img src="img/6ff4ffc6feaa07fe.png" alt="6ff4ffc6feaa07fe.png"  width="624.00" />
-
+<img src="img/a0f4913f637f12a4.png" alt="a0f4913f637f12a4.png"  width="624.00" />
 3. Sur l'écran suivant, nommez l'application **RoomWordSample** et cliquez sur **Finish**.
 4. Ouvrez **`themes.xml`**, changez le parent de du thème **`Base.Theme.RoomWordSample`** de l'application par **Theme.Material3.Light.NoActionBar** et supprimez le fichier **`themes.xml (night)`**.
 C'est juste pour avoir la même interface utilisateur, parce que le mode sombre peut être activé sur vos émulateurs ou téléphones.
@@ -143,46 +141,58 @@ C'est juste pour avoir la même interface utilisateur, parce que le mode sombre 
 8. Supprimez les dépendances de la bibliothèque de **navigation** et **synchronisez** le projet après la suppression.
 
 ```
-    implementation 'androidx.navigation:navigation-fragment:*'
-    implementation 'androidx.navigation:navigation-ui:*'
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
 ```
 
-9. Nettoyez "**`MainActivity`**`.java`" (les imports, methode de navigation et tous les variables en rouge en relation avec la bibliothèque de navigation...)
-10. Exécutez votre application
+9. Nettoyez "**`MainActivity`**`.java`" (les imports, methode de navigation `onSupportNavigateUp()` et tous les variables en rouge en relation avec la bibliothèque de navigation...)
+10. Exécutez votre application.
 
 ### 1.2 Mettre à jour les fichiers Gradle
 
 Ensuite, vous devez ajouter les bibliothèques de composants à vos fichiers Gradle.
 
 1. Dans Android Studio, cliquez sur l'onglet Projets et développez le dossier Gradle Scripts.
-2. Ouvrir **`build.gradle (Module: app)`**.
-3. Ajoutez le code suivant en bas du bloc des dépendances **`dependencies`** (mais toujours à l'intérieur).
+2. Ouvrir **`libs.versions.toml`**.
+3. À la fin de la section `[versions]`, ajoutez les deux variables suivantes qui définissent les versions des bibliothèques "room" et "lifecycle" :
+
+```
+room = "2.6.1"
+lifecycle = "2.8.6"
+```
+
+4. À la fin de la section `[libraries]`, ajoutez la définition des packages des deux bibliothèques ainsi que leurs versions respectives :
+
+```
+# Composant de base de données Room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+# Composant de base de données Room
+lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
+lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "lifecycle" }
+lifecycle-common-java8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycle" }
+```
+
+5. Ouvrir **`build.gradle (Module: app)`**.
+6. Ajoutez le code suivant en bas du bloc des dépendances **`dependencies`** (mais toujours à l'intérieur du bloc).
 
 ```
 // Dépendances pour travailler avec les composants d'architecture
-// Vous devrez probablement mettre à jour les numéros de version dans build.gradle (Project)
+// Vous devrez probablement mettre à jour les numéros de version dans libs.versions.toml
 
 // Composant de base de données Room
-implementation "androidx.room:room-runtime:$rootProject.roomVersion"
-annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
-androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+implementation libs.room.runtime
+annotationProcessor libs.room.compiler
+testImplementation libs.room.testing
 
 // Composants de cycle de vie
-implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion"
-implementation "androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion"
-implementation "androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion"
+implementation implementation libs.lifecycle.viewmodel
+implementation libs.lifecycle.livedata
+implementation libs.lifecycle.common.java8
 ```
 
-4. Dans votre fichier **`build.gradle (Project: RoomWordsSample)`**, ajoutez les numéros de version à la fin du fichier, comme indiqué dans le code ci-dessous:
-
-```
-ext {
-   roomVersion = '2.6.0'
-   lifecycleVersion = '2.6.2'
-}
-```
-
-5. Synchronisez votre projet
+7. Synchronisez votre projet
 
 
 ## Tâche 2: Créer l'entité Word
@@ -191,7 +201,7 @@ ext {
 
 Les données de cette application sont des mots, et vous aurez besoin d'une table simple pour stocker ces valeurs:
 
-<img src="img/a5028695bbe21c36.png" alt="a5028695bbe21c36.png"  width="334.00" />
+<img src="img/d4ed2eef686eadfa.png" alt="d4ed2eef686eadfa.png"  width="601.00" />
 
 Les composants d'architecture vous permettent d'en créer un via une entité ( [`Entity`](https://developer.android.com/training/data-storage/room/defining-data.html)). Faisons-le maintenant.
 
@@ -216,6 +226,8 @@ public class Word {
 ### 2.2 Annoter la classe Word
 
 Pour que la classe **`Word`** ait un sens pour une base de données Room, vous devez l'annoter. Les annotations identifient la manière dont chaque partie de cette classe se rapporte à une entrée dans la base de données. `Room` utilise ces informations pour générer du code.
+
+<img src="img/e2723a10e2d58727.png" alt="e2723a10e2d58727.png"  width="624.00" />
 
 Mettez à jour votre classe **`Word`** avec des annotations comme indiqué dans ce code :
 
@@ -261,6 +273,8 @@ Vous pouvez trouver une liste complète des annotations dans  [la référence du
 > See  [Defining data using Room entities](https://developer.android.com/training/data-storage/room/defining-data.html).
 
 **Conseil** : Vous pouvez générer automatiquement ( [autogenerate](https://developer.android.com/reference/androidx/room/PrimaryKey.html)) des clés uniques en annotant la clé primaire de la manière suivante :
+
+<img src="img/9ef0a50df0d0841e.png" alt="9ef0a50df0d0841e.png"  width="324.00" />
 
 ```
 @Entity(tableName = "word_table")
@@ -442,7 +456,7 @@ Parcourons le code ensemble:
 
 Une classe **`Repository`** est une abstraction qui permet d'accéder à plusieurs sources de données. La classe Repository ne fait pas partie des bibliothèques Architecture Components, mais elle est suggérée comme bonne pratique pour la séparation du code et l'architecture. Une classe **`Repository`** fournit une API propre pour l'accès aux données au reste de l'application.
 
-<img src="img/2b9726b57b0d07f0.png" alt="2b9726b57b0d07f0.png"  width="525.00" />
+<img src="img/cd4b089b1fce9fb7.png" alt="cd4b089b1fce9fb7.png"  width="475.00" />
 
 ### 6.2 Pourquoi utiliser une classe Repository ?
 
@@ -497,7 +511,7 @@ public class WordRepository {
 
 Le rôle de la **`ViewModel`** est de fournir des données à l'interface utilisateur et de survivre aux changements de configuration. Une **`ViewModel`** agit comme un centre de communication entre le Repository et l'interface utilisateur. Vous pouvez également utiliser une **`ViewModel`** pour partager des données entre des fragments. La **`ViewModel`** est une partie de la bibliothèque  [Lifecycle](https://developer.android.com/topic/libraries/architecture/lifecycle.html).
 
-<img src="img/adc613dd05fd7ab.png" alt="adc613dd05fd7ab.png"  width="513.00" />
+<img src="img/cd734a28acc5a88f.png" alt="cd734a28acc5a88f.png"  width="624.00" />
 
 Pour une introduction à ce sujet, consultez  [ViewModel Overview](https://developer.android.com/topic/libraries/architecture/viewmodel.html) ou le billet de blog  [ViewModels: A Simple Example](https://medium.com/androiddevelopers/viewmodels-a-simple-example-ed5ac416317e).
 

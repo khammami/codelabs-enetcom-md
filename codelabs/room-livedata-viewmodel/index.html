@@ -96,7 +96,7 @@
 <li>à partir de la fenêtre &#34;Welcome to Android Studio&#34;:<br><strong>Customize &gt; All settings</strong></li>
 <li>à partir de la fenêtre du projet ouvert:<br><strong>File &gt; Settings</strong></li>
 </ul>
-<p class="image-container"><img style="width: 610.00px" src="img/3918482f0c611fa1.png"></p>
+<p class="image-container"><img style="width: 610.00px" src="img/651ce641509ef009.png"></p>
 <p>Pour activer la nouvelle interface utilisateur et afficher le menu principal dans une barre d&#39;outils séparée, cochez les deux paramètres suivants :</p>
 <ul>
 <li><strong>Enable new UI</strong></li>
@@ -107,10 +107,7 @@
 <h2 is-upgraded>1.1 Créer une application avec une seule activité</h2>
 <ol type="1" start="1">
 <li>Ouvrez Android Studio et cliquez sur <strong>New Project</strong>.</li>
-<li>Dans la fenêtre <strong>New Project</strong>, choisissez <strong>Basic Views Activity</strong> et cliquez sur <strong>Next</strong>.<br></li>
-</ol>
-<p class="image-container"><img style="width: 624.00px" src="img/6ff4ffc6feaa07fe.png"></p>
-<ol type="1" start="3">
+<li>Dans la fenêtre <strong>New Project</strong>, choisissez <strong>Basic Views Activity</strong> et cliquez sur <strong>Next</strong>.<br><img style="width: 624.00px" src="img/a0f4913f637f12a4.png"></li>
 <li>Sur l&#39;écran suivant, nommez l&#39;application <strong>RoomWordSample</strong> et cliquez sur <strong>Finish</strong>.</li>
 <li>Ouvrez <strong><code>themes.xml</code></strong>, changez le parent de du thème <strong><code>Base.Theme.RoomWordSample</code></strong> de l&#39;application par <strong>Theme.Material3.Light.NoActionBar</strong> et supprimez le fichier <strong><code>themes.xml (night)</code></strong>.<br>C&#39;est juste pour avoir la même interface utilisateur, parce que le mode sombre peut être activé sur vos émulateurs ou téléphones.</li>
 <li>Supprimez le répertoire &#34;<strong>navigation</strong>&#34; sous les ressources (<code>res</code>).</li>
@@ -118,40 +115,49 @@
 <li>Supprimez la balise <code>fragment</code> de &#34;<strong><code>content_main</code></strong><code>.xml</code>&#34; .</li>
 <li>Supprimez les dépendances de la bibliothèque de <strong>navigation</strong> et <strong>synchronisez</strong> le projet après la suppression.</li>
 </ol>
-<pre><code>    implementation &#39;androidx.navigation:navigation-fragment:*&#39;
-    implementation &#39;androidx.navigation:navigation-ui:*&#39;</code></pre>
+<pre><code>    implementation libs.navigation.fragment
+    implementation libs.navigation.ui</code></pre>
 <ol type="1" start="9">
-<li>Nettoyez &#34;<strong><code>MainActivity</code></strong><code>.java</code>&#34; (les imports, methode de navigation et tous les variables en rouge en relation avec la bibliothèque de navigation...)</li>
-<li>Exécutez votre application</li>
+<li>Nettoyez &#34;<strong><code>MainActivity</code></strong><code>.java</code>&#34; (les imports, methode de navigation <code>onSupportNavigateUp()</code> et tous les variables en rouge en relation avec la bibliothèque de navigation...)</li>
+<li>Exécutez votre application.</li>
 </ol>
 <h2 is-upgraded>1.2 Mettre à jour les fichiers Gradle</h2>
 <p>Ensuite, vous devez ajouter les bibliothèques de composants à vos fichiers Gradle.</p>
 <ol type="1" start="1">
 <li>Dans Android Studio, cliquez sur l&#39;onglet Projets et développez le dossier Gradle Scripts.</li>
+<li>Ouvrir <strong><code>libs.versions.toml</code></strong>.</li>
+<li>À la fin de la section <code>[versions]</code>, ajoutez les deux variables suivantes qui définissent les versions des bibliothèques &#34;room&#34; et &#34;lifecycle&#34; :</li>
+</ol>
+<pre><code>room = &#34;2.6.1&#34;
+lifecycle = &#34;2.8.6&#34;</code></pre>
+<ol type="1" start="4">
+<li>À la fin de la section <code>[libraries]</code>, ajoutez la définition des packages des deux bibliothèques ainsi que leurs versions respectives :</li>
+</ol>
+<pre><code># Composant de base de données Room
+room-runtime = { group = &#34;androidx.room&#34;, name = &#34;room-runtime&#34;, version.ref = &#34;room&#34; }
+room-compiler = { group = &#34;androidx.room&#34;, name = &#34;room-compiler&#34;, version.ref = &#34;room&#34; }
+room-testing = { group = &#34;androidx.room&#34;, name = &#34;room-testing&#34;, version.ref = &#34;room&#34; }
+# Composant de base de données Room
+lifecycle-viewmodel = { group = &#34;androidx.lifecycle&#34;, name = &#34;lifecycle-viewmodel&#34;, version.ref = &#34;lifecycle&#34; }
+lifecycle-livedata = { group = &#34;androidx.lifecycle&#34;, name = &#34;lifecycle-livedata&#34;, version.ref = &#34;lifecycle&#34; }
+lifecycle-common-java8 = { group = &#34;androidx.lifecycle&#34;, name = &#34;lifecycle-common-java8&#34;, version.ref = &#34;lifecycle&#34; }</code></pre>
+<ol type="1" start="5">
 <li>Ouvrir <strong><code>build.gradle (Module: app)</code></strong>.</li>
-<li>Ajoutez le code suivant en bas du bloc des dépendances <strong><code>dependencies</code></strong> (mais toujours à l&#39;intérieur).</li>
+<li>Ajoutez le code suivant en bas du bloc des dépendances <strong><code>dependencies</code></strong> (mais toujours à l&#39;intérieur du bloc).</li>
 </ol>
 <pre><code>// Dépendances pour travailler avec les composants d&#39;architecture
-// Vous devrez probablement mettre à jour les numéros de version dans build.gradle (Project)
+// Vous devrez probablement mettre à jour les numéros de version dans libs.versions.toml
 
 // Composant de base de données Room
-implementation &#34;androidx.room:room-runtime:$rootProject.roomVersion&#34;
-annotationProcessor &#34;androidx.room:room-compiler:$rootProject.roomVersion&#34;
-androidTestImplementation &#34;androidx.room:room-testing:$rootProject.roomVersion&#34;
+implementation libs.room.runtime
+annotationProcessor libs.room.compiler
+testImplementation libs.room.testing
 
 // Composants de cycle de vie
-implementation &#34;androidx.lifecycle:lifecycle-viewmodel:$rootProject.lifecycleVersion&#34;
-implementation &#34;androidx.lifecycle:lifecycle-livedata:$rootProject.lifecycleVersion&#34;
-implementation &#34;androidx.lifecycle:lifecycle-common-java8:$rootProject.lifecycleVersion&#34;
-</code></pre>
-<ol type="1" start="4">
-<li>Dans votre fichier <strong><code>build.gradle (Project: RoomWordsSample)</code></strong>, ajoutez les numéros de version à la fin du fichier, comme indiqué dans le code ci-dessous:</li>
-</ol>
-<pre><code>ext {
-   roomVersion = &#39;2.6.0&#39;
-   lifecycleVersion = &#39;2.6.2&#39;
-}</code></pre>
-<ol type="1" start="5">
+implementation implementation libs.lifecycle.viewmodel
+implementation libs.lifecycle.livedata
+implementation libs.lifecycle.common.java8</code></pre>
+<ol type="1" start="7">
 <li>Synchronisez votre projet</li>
 </ol>
 
@@ -160,7 +166,7 @@ implementation &#34;androidx.lifecycle:lifecycle-common-java8:$rootProject.lifec
     
       <google-codelab-step label="Tâche 2: Créer l&#39;entité Word" duration="0">
         <p>Les données de cette application sont des mots, et vous aurez besoin d&#39;une table simple pour stocker ces valeurs:</p>
-<p class="image-container"><img style="width: 334.00px" src="img/a5028695bbe21c36.png"></p>
+<p class="image-container"><img style="width: 601.00px" src="img/d4ed2eef686eadfa.png"></p>
 <p>Les composants d&#39;architecture vous permettent d&#39;en créer un via une entité (<a href="https://developer.android.com/training/data-storage/room/defining-data.html" target="_blank"><code>Entity</code></a>). Faisons-le maintenant.</p>
 <h2 is-upgraded>2.1 Créer la classe Word</h2>
 <ol type="1" start="1">
@@ -179,6 +185,7 @@ implementation &#34;androidx.lifecycle:lifecycle-common-java8:$rootProject.lifec
 }</code></pre>
 <h2 is-upgraded>2.2 Annoter la classe Word</h2>
 <p>Pour que la classe <strong><code>Word</code></strong> ait un sens pour une base de données Room, vous devez l&#39;annoter. Les annotations identifient la manière dont chaque partie de cette classe se rapporte à une entrée dans la base de données. <code>Room</code> utilise ces informations pour générer du code.</p>
+<p class="image-container"><img style="width: 624.00px" src="img/e2723a10e2d58727.png"></p>
 <p>Mettez à jour votre classe <strong><code>Word</code></strong> avec des annotations comme indiqué dans ce code :</p>
 <pre><code>@Entity(tableName = &#34;word_table&#34;)
 public class Word {
@@ -210,6 +217,7 @@ public class Word {
 <aside class="special"><p>See <a href="https://developer.android.com/training/data-storage/room/defining-data.html" target="_blank">Defining data using Room entities</a>.</p>
 </aside>
 <p><strong>Conseil</strong> : Vous pouvez générer automatiquement (<a href="https://developer.android.com/reference/androidx/room/PrimaryKey.html" target="_blank">autogenerate</a>) des clés uniques en annotant la clé primaire de la manière suivante :</p>
+<p class="image-container"><img style="width: 324.00px" src="img/9ef0a50df0d0841e.png"></p>
 <pre><code>@Entity(tableName = &#34;word_table&#34;)
 public class Word {
 
@@ -353,7 +361,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
       <google-codelab-step label="Tâche 6: Créer la classe Repository" duration="0">
         <h2 is-upgraded>6.1 Qu&#39;est-ce qu&#39;une classe Repository ?</h2>
 <p>Une classe <strong><code>Repository</code></strong> est une abstraction qui permet d&#39;accéder à plusieurs sources de données. La classe Repository ne fait pas partie des bibliothèques Architecture Components, mais elle est suggérée comme bonne pratique pour la séparation du code et l&#39;architecture. Une classe <strong><code>Repository</code></strong> fournit une API propre pour l&#39;accès aux données au reste de l&#39;application.</p>
-<p class="image-container"><img style="width: 525.00px" src="img/2b9726b57b0d07f0.png"></p>
+<p class="image-container"><img style="width: 475.00px" src="img/cd4b089b1fce9fb7.png"></p>
 <h2 is-upgraded>6.2 Pourquoi utiliser une classe Repository ?</h2>
 <p>Un référentiel (Repository) gère les requêtes et vous permet d&#39;utiliser plusieurs bases de données. Dans l&#39;exemple le plus courant, le référentiel implémente la logique permettant de décider s&#39;il faut récupérer les données d&#39;un réseau ou utiliser les résultats mis en cache dans une base de données locale.</p>
 <h2 is-upgraded>6.3 Implémenter la classe Repository</h2>
@@ -399,7 +407,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
       <google-codelab-step label="Tâche 7: Créer le ViewModel" duration="0">
         <h2 is-upgraded>7.1 Qu&#39;est-ce qu&#39;un ViewModel ?</h2>
 <p>Le rôle de la <strong><code>ViewModel</code></strong> est de fournir des données à l&#39;interface utilisateur et de survivre aux changements de configuration. Une <strong><code>ViewModel</code></strong> agit comme un centre de communication entre le Repository et l&#39;interface utilisateur. Vous pouvez également utiliser une <strong><code>ViewModel</code></strong> pour partager des données entre des fragments. La <strong><code>ViewModel</code></strong> est une partie de la bibliothèque <a href="https://developer.android.com/topic/libraries/architecture/lifecycle.html" target="_blank">Lifecycle</a>.</p>
-<p class="image-container"><img style="width: 513.00px" src="img/adc613dd05fd7ab.png"></p>
+<p class="image-container"><img style="width: 624.00px" src="img/cd734a28acc5a88f.png"></p>
 <p>Pour une introduction à ce sujet, consultez <a href="https://developer.android.com/topic/libraries/architecture/viewmodel.html" target="_blank">ViewModel Overview</a> ou le billet de blog <a href="https://medium.com/androiddevelopers/viewmodels-a-simple-example-ed5ac416317e" target="_blank">ViewModels: A Simple Example</a>.</p>
 <h2 is-upgraded>7.2 Pourquoi utiliser un ViewModel ?</h2>
 <p>Un <strong><code>ViewModel</code></strong> conserve les données de l&#39;interface utilisateur de votre application de manière consciente du cycle de vie, ce qui leur permet de survivre aux changements de configuration. Séparer les données de l&#39;interface utilisateur de votre application de vos classes <strong><code>Activity</code></strong> et <strong><code>Fragment</code></strong> vous permet de mieux suivre le principe de responsabilité unique : vos activités et fragments sont responsables de l&#39;affichage des données à l&#39;écran, tandis que votre <strong><code>ViewModel</code></strong> peut s&#39;occuper de conserver et de traiter toutes les données nécessaires à l&#39;interface utilisateur.</p>
