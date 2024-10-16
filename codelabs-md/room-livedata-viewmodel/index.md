@@ -228,7 +228,7 @@ public class Word {
 
 Pour que la classe **`Word`** ait un sens pour une base de données Room, vous devez l'annoter. Les annotations identifient la manière dont chaque partie de cette classe se rapporte à une entrée dans la base de données. `Room` utilise ces informations pour générer du code.
 
-<img src="img/e2723a10e2d58727.png" alt="e2723a10e2d58727.png"  width="624.00" />
+<img src="img/318d6b0b11c5600f.png" alt="318d6b0b11c5600f.png"  width="624.00" />
 
 Mettez à jour votre classe **`Word`** avec des annotations comme indiqué dans ce code :
 
@@ -271,26 +271,11 @@ Vous pouvez trouver une liste complète des annotations dans  [la référence du
 
 > aside positive
 > 
-> See  [Defining data using Room entities](https://developer.android.com/training/data-storage/room/defining-data.html).
-
-**Conseil** : Vous pouvez générer automatiquement ( [autogenerate](https://developer.android.com/reference/androidx/room/PrimaryKey.html)) des clés uniques en annotant la clé primaire de la manière suivante :
-
-<img src="img/9ef0a50df0d0841e.png" alt="9ef0a50df0d0841e.png"  width="324.00" />
-
-```
-@Entity(tableName = "word_table")
-public class Word {
-
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-
-    @NonNull
-    private String word;
-    //..other fields, getters, setters
-}
-```
-
-Vous utiliserez la génération automatique dans la deuxième partie du codelab.
+> **Conseil** : Vous pouvez générer automatiquement ( [autogenerate](https://developer.android.com/reference/androidx/room/PrimaryKey.html)) des clés uniques en annotant la clé primaire de la manière suivante :
+> 
+> <img src="img/83cd4b21e68334ad.png" alt="83cd4b21e68334ad.png"  width="610.00" />
+> 
+> Vous utiliserez la génération automatique dans la deuxième partie du codelab
 
 
 ## Créer la DAO
