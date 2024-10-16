@@ -188,7 +188,7 @@ annotationProcessor libs.room.compiler
 testImplementation libs.room.testing
 
 // Composants de cycle de vie
-implementation implementation libs.lifecycle.viewmodel
+implementation libs.lifecycle.viewmodel
 implementation libs.lifecycle.livedata
 implementation libs.lifecycle.common.java8
 ```
@@ -668,8 +668,7 @@ Tout d'abord, nous devons ajouter un nouvel asset vectoriel.First, we need to ad
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        app:srcCompat="@drawable/baseline_add_24"
-        android:layout_marginRight="@dimen/fab_margin" />
+        app:srcCompat="@drawable/baseline_add_24" />
 ```
 
 
@@ -921,33 +920,32 @@ Vous allez maintenant ajouter une activité qui permet à l'utilisateur d'utilis
 
 ```
 public class NewWordActivity extends AppCompatActivity {
-    public static final String EXTRA_REPLY =
-            "com.example.android.roomwordssample.REPLY";
+   public static final String EXTRA_REPLY = "unique.key.for.REPLY";
 
-    private EditText mEditWordView;
+   private EditText mEditWordView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_word);
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+       setContentView(R.layout.activity_new_word);
 
-        mEditWordView = findViewById(R.id.edit_word);
+       mEditWordView = findViewById(R.id.edit_word);
 
-        final Button button = findViewById(R.id.button_save);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent replyIntent = new Intent();
-                if (TextUtils.isEmpty(mEditWordView.getText())) {
-                    setResult(RESULT_CANCELED, replyIntent);
-                } else {
-                    String word = mEditWordView.getText().toString();
-                    replyIntent.putExtra(EXTRA_REPLY, word);
-                    setResult(RESULT_OK, replyIntent);
-                }
-                finish();
-            }
-        });
-    }
+       final Button button = findViewById(R.id.button_save);
+       button.setOnClickListener(new View.OnClickListener() {
+           public void onClick(View view) {
+               Intent replyIntent = new Intent();
+               if (TextUtils.isEmpty(mEditWordView.getText())) {
+                   setResult(RESULT_CANCELED, replyIntent);
+               } else {
+                   String word = mEditWordView.getText().toString();
+                   replyIntent.putExtra(EXTRA_REPLY, word);
+                   setResult(RESULT_OK, replyIntent);
+               }
+               finish();
+           }
+       });
+   }
 }
 ```
 
