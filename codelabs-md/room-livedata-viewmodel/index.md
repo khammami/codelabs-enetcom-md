@@ -267,11 +267,11 @@ Voyons ce que font ces annotations:
 * **`@ColumnInfo(name = "word")`** Spécifiez le nom de la colonne dans la table si vous souhaitez qu'il soit différent du nom de la variable membre.
 * Chaque champ stocké dans la base de données doit être public ou avoir une méthode "getter". Cet exemple fournit une méthode `getWord()`.
 
-Vous pouvez trouver une liste complète des annotations dans  [la référence du package Room](https://developer.android.com/reference/androidx/room/package-summary.html).
+Vous trouver une liste complète des annotations dans  [la référence du package Room](https://developer.android.com/reference/androidx/room/package-summary.html).
 
 > aside positive
 > 
-> **Conseil** : Vous pouvez générer automatiquement ( [autogenerate](https://developer.android.com/reference/androidx/room/PrimaryKey.html)) des clés uniques en annotant la clé primaire de la manière suivante :
+> Vous pouvez générer automatiquement ( [autogenerate](https://developer.android.com/reference/androidx/room/PrimaryKey.html)) des clés uniques en annotant la clé primaire de la manière suivante :
 > 
 > <img src="img/83cd4b21e68334ad.png" alt="83cd4b21e68334ad.png"  width="610.00" />
 > 
