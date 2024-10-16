@@ -154,7 +154,7 @@ annotationProcessor libs.room.compiler
 testImplementation libs.room.testing
 
 // Composants de cycle de vie
-implementation implementation libs.lifecycle.viewmodel
+implementation libs.lifecycle.viewmodel
 implementation libs.lifecycle.livedata
 implementation libs.lifecycle.common.java8</code></pre>
 <ol type="1" start="7">
@@ -527,8 +527,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
         android:layout_gravity=&#34;bottom|end&#34;
         android:layout_marginEnd=&#34;@dimen/fab_margin&#34;
         android:layout_marginBottom=&#34;16dp&#34;
-        app:srcCompat=&#34;@drawable/baseline_add_24&#34;
-        android:layout_marginRight=&#34;@dimen/fab_margin&#34; /&gt;</code></pre>
+        app:srcCompat=&#34;@drawable/baseline_add_24&#34; /&gt;</code></pre>
 
 
       </google-codelab-step>
@@ -731,33 +730,32 @@ binding.contentMain.recyclerview.setHasFixedSize(true);</code></pre>
 <li>Implémentez la classe <strong><code>NewWordActivity</code></strong> sous le même package que <code>MainActivity</code>. L&#39;objectif est que lorsque l&#39;utilisateur appuie sur le bouton <code>Save</code>, le nouveau mot soit placé dans un <code>Intent</code> pour être renvoyé à l&#39;activité principale. Voici le code de l&#39;activité <strong><code>NewWordActivity</code></strong> :</li>
 </ol>
 <pre><code>public class NewWordActivity extends AppCompatActivity {
-    public static final String EXTRA_REPLY =
-            &#34;com.example.android.roomwordssample.REPLY&#34;;
+   public static final String EXTRA_REPLY = &#34;unique.key.for.REPLY&#34;;
 
-    private EditText mEditWordView;
+   private EditText mEditWordView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_word);
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+       setContentView(R.layout.activity_new_word);
 
-        mEditWordView = findViewById(R.id.edit_word);
+       mEditWordView = findViewById(R.id.edit_word);
 
-        final Button button = findViewById(R.id.button_save);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent replyIntent = new Intent();
-                if (TextUtils.isEmpty(mEditWordView.getText())) {
-                    setResult(RESULT_CANCELED, replyIntent);
-                } else {
-                    String word = mEditWordView.getText().toString();
-                    replyIntent.putExtra(EXTRA_REPLY, word);
-                    setResult(RESULT_OK, replyIntent);
-                }
-                finish();
-            }
-        });
-    }
+       final Button button = findViewById(R.id.button_save);
+       button.setOnClickListener(new View.OnClickListener() {
+           public void onClick(View view) {
+               Intent replyIntent = new Intent();
+               if (TextUtils.isEmpty(mEditWordView.getText())) {
+                   setResult(RESULT_CANCELED, replyIntent);
+               } else {
+                   String word = mEditWordView.getText().toString();
+                   replyIntent.putExtra(EXTRA_REPLY, word);
+                   setResult(RESULT_OK, replyIntent);
+               }
+               finish();
+           }
+       });
+   }
 }</code></pre>
 <h2 is-upgraded>12.2 Ajouter du code pour insérer un mot dans la base de données</h2>
 <ol type="1" start="1">
