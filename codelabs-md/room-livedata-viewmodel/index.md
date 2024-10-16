@@ -153,6 +153,8 @@ C'est juste pour avoir la même interface utilisateur, parce que le mode sombre 
 
 Ensuite, vous devez ajouter les bibliothèques de composants à vos fichiers Gradle.
 
+<img src="img/8205a9d71b832b5d.png" alt="8205a9d71b832b5d.png"  width="624.00" />
+
 1. Dans Android Studio, cliquez sur l'onglet Projets et développez le dossier Gradle Scripts.
 2. Ouvrir **`libs.versions.toml`**.
 3. À la fin de la section `[versions]`, ajoutez les deux variables suivantes qui définissent les versions des bibliothèques "room" et "lifecycle" :
@@ -169,7 +171,7 @@ lifecycle = "2.8.6"
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
-# Composant de base de données Room
+# Composants de cycle de vie
 lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata", version.ref = "lifecycle" }
 lifecycle-common-java8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycle" }
