@@ -88,7 +88,7 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 1: Créer l&#39;application RoomWordsSample" duration="0">
+      <google-codelab-step label="Créer l&#39;application RoomWordsSample" duration="0">
         <aside class="special"><p><strong>Remarque : </strong>Dans ce TP, vous êtes censé créer des variables membres, importer des classes et extraire des valeurs selon les besoins. Le code que vous êtes censé connaître est fourni mais pas expliqué.</p>
 </aside>
 <aside class="warning"><p>Pour suivre ce codelab, vous devez activer la nouvelle interface utilisateur dans Android Studio Giraffe:</p>
@@ -164,7 +164,7 @@ implementation libs.lifecycle.common.java8</code></pre>
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 2: Créer l&#39;entité Word" duration="0">
+      <google-codelab-step label="Créer l&#39;entité Word" duration="0">
         <p>Les données de cette application sont des mots, et vous aurez besoin d&#39;une table simple pour stocker ces valeurs:</p>
 <p class="image-container"><img style="width: 601.00px" src="img/d4ed2eef686eadfa.png"></p>
 <p>Les composants d&#39;architecture vous permettent d&#39;en créer un via une entité (<a href="https://developer.android.com/training/data-storage/room/defining-data.html" target="_blank"><code>Entity</code></a>). Faisons-le maintenant.</p>
@@ -233,7 +233,7 @@ public class Word {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 3: Créer la DAO" duration="0">
+      <google-codelab-step label="Créer la DAO" duration="0">
         <h2 is-upgraded>3.1 Qu&#39;est-ce qu&#39;une DAO ?</h2>
 <p>Un <a href="https://developer.android.com/training/data-storage/room/accessing-data.html" target="_blank">DAO</a> (data access object) valide votre SQL à la compilation et l&#39;associe à une méthode. Dans votre DAO Room, vous utilisez des annotations pratiques, comme <strong><code>@Insert</code></strong>, pour représenter les opérations de base de données les plus courantes ! Room utilise le DAO pour créer une API propre pour votre code.</p>
 <p>Le DAO doit être une interface ou une classe abstraite. Par défaut, toutes les requêtes doivent être exécutées sur un thread distinct.</p>
@@ -284,7 +284,7 @@ public interface WordDao {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 4: Utiliser la classe LiveData" duration="0">
+      <google-codelab-step label="Utiliser la classe LiveData" duration="0">
         <p>Lorsque les données changent, vous souhaitez généralement effectuer une action, telle que l&#39;affichage des données mises à jour dans l&#39;interface utilisateur. Cela signifie que vous devez observer les données afin de pouvoir réagir lorsqu&#39;elles changent.</p>
 <p>Selon la façon dont les données sont stockées, cela peut être délicat. L&#39;observation des modifications apportées aux données dans plusieurs composants de votre application peut créer des chemins de dépendance explicites et rigides entre les composants. Cela rend les tests et le débogage difficiles, entre autres.</p>
 <p><a href="https://developer.android.com/topic/libraries/architecture/livedata.html" target="_blank"><strong><code>LiveData</code></strong></a>, une classe de <a href="https://developer.android.com/topic/libraries/architecture/lifecycle.html" target="_blank">bibliothèque de cycle de vie</a> pour l&#39;observation des données, résout ce problème. Utilisez une valeur de retour de type <strong><code>LiveData</code></strong> dans la description de votre méthode, et Room générera tout le code nécessaire pour mettre à jour <strong><code>LiveData</code></strong> lorsque la base de données est mise à jour.</p>
@@ -304,7 +304,7 @@ public interface WordDao {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 5: Add a Room database" duration="0">
+      <google-codelab-step label="Add a Room database" duration="0">
         <h2 is-upgraded>5.1 Qu&#39;est-ce qu&#39;une base de données Room ?</h2>
 <ul>
 <li>Room est une couche de base de données au-dessus d&#39;une base de données SQLite.</li>
@@ -358,7 +358,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 6: Créer la classe Repository" duration="0">
+      <google-codelab-step label="Créer la classe Repository" duration="0">
         <h2 is-upgraded>6.1 Qu&#39;est-ce qu&#39;une classe Repository ?</h2>
 <p>Une classe <strong><code>Repository</code></strong> est une abstraction qui permet d&#39;accéder à plusieurs sources de données. La classe Repository ne fait pas partie des bibliothèques Architecture Components, mais elle est suggérée comme bonne pratique pour la séparation du code et l&#39;architecture. Une classe <strong><code>Repository</code></strong> fournit une API propre pour l&#39;accès aux données au reste de l&#39;application.</p>
 <p class="image-container"><img style="width: 475.00px" src="img/cd4b089b1fce9fb7.png"></p>
@@ -404,7 +404,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 7: Créer le ViewModel" duration="0">
+      <google-codelab-step label="Créer le ViewModel" duration="0">
         <h2 is-upgraded>7.1 Qu&#39;est-ce qu&#39;un ViewModel ?</h2>
 <p>Le rôle de la <strong><code>ViewModel</code></strong> est de fournir des données à l&#39;interface utilisateur et de survivre aux changements de configuration. Une <strong><code>ViewModel</code></strong> agit comme un centre de communication entre le Repository et l&#39;interface utilisateur. Vous pouvez également utiliser une <strong><code>ViewModel</code></strong> pour partager des données entre des fragments. La <strong><code>ViewModel</code></strong> est une partie de la bibliothèque <a href="https://developer.android.com/topic/libraries/architecture/lifecycle.html" target="_blank">Lifecycle</a>.</p>
 <p class="image-container"><img style="width: 624.00px" src="img/cd734a28acc5a88f.png"></p>
@@ -460,7 +460,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 8: Ajouter des layouts XML pour l&#39;interface utilisateur" duration="0">
+      <google-codelab-step label="Ajouter des layouts XML pour l&#39;interface utilisateur" duration="0">
         <p>Ensuite, vous devez ajouter la mise en page XML pour la liste et les éléments.</p>
 <p>Ce codelab suppose que vous êtes familier avec la création de mises en page en XML, nous vous fournissons donc simplement le code.</p>
 <h2 is-upgraded>8.1 Ajouter des styles</h2>
@@ -533,7 +533,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 9 Créer un adaptateur et ajouter le RecyclerView" duration="0">
+      <google-codelab-step label="Créer un adaptateur et ajouter le RecyclerView" duration="0">
         <p>Vous allez afficher les données dans un <code>RecyclerView</code>, ce qui est un peu plus agréable que de simplement les jeter dans un <code>TextView</code>. Ce codelab suppose que vous savez comment fonctionnent <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView" target="_blank"><code>RecyclerView</code></a>, <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.ViewHolder" target="_blank"><code>RecyclerView.ViewHolder</code></a> et <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter" target="_blank"><code>RecyclerView.Adapter</code></a>.</p>
 <h2 is-upgraded>9.1 Create the WordListAdapter class</h2>
 <p>Créez une classe <strong><code>WordListAdapter</code></strong> qui étend <strong><code>RecyclerView.Adapter</code></strong> sous le package &#34;<strong><code>adapter</code></strong>&#34; (<code>com.example.enetcom.roomwordsample.adapter</code>). Voici le code :</p>
@@ -603,7 +603,7 @@ binding.contentMain.recyclerview.setHasFixedSize(true);</code></pre>
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 10: Remplir la base de données" duration="0">
+      <google-codelab-step label="Remplir la base de données" duration="0">
         <p>Il n&#39;y a pas de données dans la base de données. Vous pouvez ajouter des données de deux manières : en ajoutant des données lors de l&#39;ouverture de la base de données ou en ajoutant une activité pour ajouter des mots.</p>
 <p>Pour supprimer tout le contenu et remplir la base de données lors de l&#39;installation de l&#39;application, vous créez un <a href="https://developer.android.com/reference/androidx/room/RoomDatabase.Callback.html" target="_blank"><code>RoomDatabase.Callback</code></a> et remplacez la méthode <code>onCreate()</code>.</p>
 <p>Voici le code pour créer le rappel dans la classe <strong><code>WordRoomDatabase</code></strong>. Comme vous ne pouvez pas effectuer d&#39;opérations sur la base de données Room sur le thread de l&#39;interface utilisateur, <strong><code>onCreate()</code></strong> utilise l&#39;executor <strong><code>databaseWriteExecutor</code></strong> défini précédemment pour exécuter un lambda sur un thread d&#39;arrière-plan. Le lambda supprime le contenu de la base de données, puis la remplit avec les deux mots &#34;Hello&#34; et &#34;World&#34;. N&#39;hésitez pas à ajouter d&#39;autres mots !</p>
@@ -633,7 +633,7 @@ binding.contentMain.recyclerview.setHasFixedSize(true);</code></pre>
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 11: Connecter l&#39;interface utilisateur aux données" duration="0">
+      <google-codelab-step label="Connecter l&#39;interface utilisateur aux données" duration="0">
         <p>Maintenant que vous avez créé la méthode pour remplir la base de données avec l&#39;ensemble initial de mots, l&#39;étape suivante consiste à ajouter le code pour afficher ces mots dans le <code>RecyclerView</code>.</p>
 <p>Pour afficher le contenu actuel de la base de données, ajoutez un observateur qui observe les <code>LiveData</code> dans le <code>ViewModel</code>.</p>
 <p>Chaque fois que les données changent, la méthode de rappel <strong><code>onChanged()</code></strong> est invoquée. Cette méthode appelle la méthode <strong><code>setWords()</code></strong> de l&#39;adaptateur pour mettre à jour les données mises en cache de l&#39;adaptateur et rafraîchir la liste affichée.</p>
@@ -663,7 +663,7 @@ binding.contentMain.recyclerview.setHasFixedSize(true);</code></pre>
 
       </google-codelab-step>
     
-      <google-codelab-step label="Tâche 12: Créer une activité pour ajouter des mots" duration="0">
+      <google-codelab-step label="Créer une activité pour ajouter des mots" duration="0">
         <p>Vous allez maintenant ajouter une activité qui permet à l&#39;utilisateur d&#39;utiliser le FAB pour saisir de nouveaux mots.</p>
 <h2 is-upgraded>12.1 Créer l&#39;activité NewWordActivity</h2>
 <ol type="1" start="1">

@@ -1,5 +1,6 @@
 ---
 id: room-livedata-viewmodel
+summary: Ce tutoriel explique comment utiliser la bibliothèque Room pour créer une base de données locale dans une application Android.
 status: [hidden]
 authors: Khalil Hammami
 categories: android
@@ -100,7 +101,7 @@ Le diagramme suivant reprend le diagramme d'ensemble de l'introduction et montre
 <img src="img/cc45ecfbf5889f07.png" alt="cc45ecfbf5889f07.png"  width="558.00" />
 
 
-## Tâche 1: Créer l'application RoomWordsSample
+## Créer l'application RoomWordsSample
 
 
 
@@ -195,7 +196,7 @@ implementation libs.lifecycle.common.java8
 7. Synchronisez votre projet
 
 
-## Tâche 2: Créer l'entité Word
+## Créer l'entité Word
 
 
 
@@ -292,7 +293,7 @@ public class Word {
 Vous utiliserez la génération automatique dans la deuxième partie du codelab.
 
 
-## Tâche 3: Créer la DAO
+## Créer la DAO
 
 
 
@@ -351,7 +352,7 @@ Expliquons-le point par point:
 > En savoir plus sur  [les DAO Room](https://developer.android.com/training/data-storage/room/accessing-data.html)
 
 
-## Tâche 4: Utiliser la classe LiveData
+## Utiliser la classe LiveData
 
 
 
@@ -383,7 +384,7 @@ Plus tard dans ce codelab, vous suivez les changements de données via un observ
 > Consultez la documentation de  [**`LiveData`**](https://developer.android.com/reference/androidx/lifecycle/LiveData.html) pour en savoir plus sur d'autres façons d'utiliser **`LiveData`**, ou regardez cette vidéo  [Architecture Components: LiveData and Lifecycle](https://www.youtube.com/watch?v=OMcDk2_4LSk&index=8&list=PLWz5rJ2EKKc9mxIBd0DRw9gwXuQshgmn2) .
 
 
-## Tâche 5: Add a Room database
+## Add a Room database
 
 
 
@@ -448,7 +449,7 @@ Parcourons le code ensemble:
 > **Important**: In Android Studio, if you get errors when you paste code or during the build process, make sure you are using the full package name for imports. See  [Adding Components to your Project](https://developer.android.com/topic/libraries/architecture/adding-components.html). Then select **Build &gt; Clean Project**. Then select **Build &gt; Rebuild Project**, and build again.
 
 
-## Tâche 6: Créer la classe Repository
+## Créer la classe Repository
 
 
 
@@ -503,7 +504,7 @@ public class WordRepository {
 > **Remarque**: Les référentiels sont destinés à servir d'intermédiaire entre différentes sources de données. Dans cet exemple simple, vous n'avez qu'une seule source de données, donc le référentiel ne fait pas grand-chose. Voir  [l'exemple de base](https://github.com/android/architecture-components-samples/tree/master/BasicSample) pour une implémentation plus complexe.
 
 
-## Tâche 7: Créer le ViewModel
+## Créer le ViewModel
 
 
 
@@ -577,7 +578,7 @@ Si vous avez besoin du contexte de l'application (qui a un cycle de vie aussi lo
 > Pour en savoir plus sur les classes ViewModel, regardez la vidéo  [Architecture Components: ViewModel](https://www.youtube.com/watch?v=c9-057jC1ZA).
 
 
-## Tâche 8: Ajouter des layouts XML pour l'interface utilisateur
+## Ajouter des layouts XML pour l'interface utilisateur
 
 
 
@@ -672,7 +673,7 @@ Tout d'abord, nous devons ajouter un nouvel asset vectoriel.First, we need to ad
 ```
 
 
-## Tâche 9 Créer un adaptateur et ajouter le RecyclerView
+## Créer un adaptateur et ajouter le RecyclerView
 
 
 
@@ -754,7 +755,7 @@ binding.contentMain.recyclerview.setHasFixedSize(true);
 
 
 
-## Tâche 10: Remplir la base de données
+## Remplir la base de données
 
 
 
@@ -794,7 +795,7 @@ Ensuite, ajoutez le `callback` à la séquence de construction de la base de don
 ```
 
 
-## Tâche 11: Connecter l'interface utilisateur aux données
+## Connecter l'interface utilisateur aux données
 
 
 
@@ -835,7 +836,7 @@ mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
 <img src="img/8eb29cb1afc22a3b.png" alt="8eb29cb1afc22a3b.png"  width="221.59" />
 
 
-## Tâche 12: Créer une activité pour ajouter des mots
+## Créer une activité pour ajouter des mots
 
 
 
