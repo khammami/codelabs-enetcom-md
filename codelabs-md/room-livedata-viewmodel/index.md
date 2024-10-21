@@ -371,7 +371,7 @@ Plus tard dans ce codelab, vous suivez les changements de données via un observ
 > Consultez la documentation de  [**`LiveData`**](https://developer.android.com/reference/androidx/lifecycle/LiveData.html) pour en savoir plus sur d'autres façons d'utiliser **`LiveData`**, ou regardez cette vidéo  [Architecture Components: LiveData and Lifecycle](https://www.youtube.com/watch?v=OMcDk2_4LSk&index=8&list=PLWz5rJ2EKKc9mxIBd0DRw9gwXuQshgmn2) .
 
 
-## Add a Room database
+## Ajouter une base de données "Room"
 
 
 
