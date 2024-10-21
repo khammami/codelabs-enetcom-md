@@ -610,14 +610,14 @@ Maintenant que vous avez un adaptateur avec un `ViewHolder`, vous pouvez enfin c
 3. Créez une instance de `Datasource` sous le nom  **`mDataSource`** 
 
 ```
-Datasource mDataSource = new DataSource(); 
+DataSource mDataSource = new DataSource(); 
 ```
 
 4. Appelez la méthode **`loadWords()`** sur l'instance `mDatasource`. Stockez la liste des mots renvoyée dans un variable local nommé **`mWordList`**.
 
 ```
 // Charger la liste des mots
-LinkedList<Word> mWordList = mDatasource.loadWords();
+LinkedList<Word> mWordList = mDataSource.loadWords();
 ```
 
 5. Ajouter une variable membre de la classe `MainActivity` pour l'adaptateur. Par contre pour le `RecyclerView`, nous utiliserons la bibliothèque de liaison de vues ( [View Binding](https://developer.android.com/topic/libraries/view-binding#java)), utilisée par le nouveau modèle d'activité de vue de base, au lieu de la méthode `findViewById()`:

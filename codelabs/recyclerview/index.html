@@ -517,12 +517,12 @@ public int getItemCount() {
 <li>Dans <code>MainActivity</code>, accédez à la méthode <code>onCreate()</code>. Insérez le nouveau code décrit dans les étapes suivantes après l&#39;appel vers <strong><code>setContentView(binding.getRoot())</code></strong>.</li>
 <li>Créez une instance de <code>Datasource</code> sous le nom  <strong><code>mDataSource</code></strong> </li>
 </ol>
-<pre><code>Datasource mDataSource = new DataSource(); </code></pre>
+<pre><code>DataSource mDataSource = new DataSource(); </code></pre>
 <ol type="1" start="4">
 <li>Appelez la méthode <strong><code>loadWords()</code></strong> sur l&#39;instance <code>mDatasource</code>. Stockez la liste des mots renvoyée dans un variable local nommé <strong><code>mWordList</code></strong>.</li>
 </ol>
 <pre><code>// Charger la liste des mots
-LinkedList&lt;Word&gt; mWordList = mDatasource.loadWords();</code></pre>
+LinkedList&lt;Word&gt; mWordList = mDataSource.loadWords();</code></pre>
 <ol type="1" start="5">
 <li>Ajouter une variable membre de la classe <code>MainActivity</code> pour l&#39;adaptateur. Par contre pour le <code>RecyclerView</code>, nous utiliserons la bibliothèque de liaison de vues (<a href="https://developer.android.com/topic/libraries/view-binding#java" target="_blank">View Binding</a>), utilisée par le nouveau modèle d&#39;activité de vue de base, au lieu de la méthode <code>findViewById()</code>:</li>
 </ol>
