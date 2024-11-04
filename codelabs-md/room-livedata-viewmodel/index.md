@@ -754,8 +754,8 @@ Voici le code pour créer le rappel dans la classe **`WordRoomDatabase`**. Comme
 ```
 private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
 
             // Si vous souhaitez conserver les données au redémarrage de l'application
             // commentez le bloc suivant
