@@ -598,8 +598,8 @@ binding.contentMain.recyclerview.setHasFixedSize(true);</code></pre>
 <p>Voici le code pour créer le rappel dans la classe <strong><code>WordRoomDatabase</code></strong>. Comme vous ne pouvez pas effectuer d&#39;opérations sur la base de données Room sur le thread de l&#39;interface utilisateur, <strong><code>onCreate()</code></strong> utilise l&#39;executor <strong><code>databaseWriteExecutor</code></strong> défini précédemment pour exécuter un lambda sur un thread d&#39;arrière-plan. Le lambda supprime le contenu de la base de données, puis la remplit avec les deux mots &#34;Hello&#34; et &#34;World&#34;. N&#39;hésitez pas à ajouter d&#39;autres mots !</p>
 <pre><code>private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase db) {
-            super.onCreate(db);
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
 
             // Si vous souhaitez conserver les données au redémarrage de l&#39;application
             // commentez le bloc suivant
