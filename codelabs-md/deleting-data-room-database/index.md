@@ -28,7 +28,7 @@ Ce codelab pratique fait suite au **`4.2A : Room, LiveData et ViewModel`**. Ce c
 
 ### What you should already know
 
-Vous devriez être capable de créer et d'exécuter des applications dans  [Android Studio Giraffe (2022.3.1) ou une version supérieure](https://developer.android.com/studio/index.html). En particulier, vous devez être familiarisé avec les éléments suivants :
+Vous devriez être capable de créer et d'exécuter des applications dans  [Android Studio Ladybug (2024.2.1) ou une version supérieure](https://developer.android.com/studio/index.html). En particulier, vous devez être familiarisé avec les éléments suivants :
 
 * Utilisation de `RecyclerView` et des adaptateurs
 * Utilisation de classes d'entités, d'objets d'accès aux données (DAO) et de `RoomDatabase` pour stocker et récupérer des données dans la base de données SQLite intégrée d'Android. Vous avez appris ces sujets dans `4.2A : Room, LiveData et ViewModel`.
@@ -64,7 +64,7 @@ Vous permettez également à l'utilisateur de balayer un mot pour le supprimer d
 <img src="img/6639edd4da022795.png" alt="6639edd4da022795.png"  width="221.59" />
 
 
-## Tâche 1: Initialize data only if the database is empty
+## Initialiser les données uniquement si la base de données est vide
 
 
 
@@ -117,7 +117,7 @@ databaseWriteExecutor.execute(() -> {
 2. Exécutez votre application et ajoutez plusieurs nouveaux mots. Fermez l'application et redémarrez-la. Vous devriez voir les nouveaux mots que vous avez ajoutés, car les mots doivent maintenant persister lorsque l'application est fermée et rouverte.
 
 
-## Tâche 2: Effacer tous les mots
+## Effacer tous les mots
 
 
 
@@ -138,7 +138,7 @@ Dans **`WordDao`**, vérifiez que la méthode **`deleteAll()`** est définie et 
 void deleteAll();
 ```
 
-### 2.2 Ajouter la méthode `deleteAll()` à la classe `WordRepository`
+### 2.2 Ajouter la méthode `deleteAll``()` à la classe `WordRepository`
 
 Add the `deleteAll()` method to the `WordRepository` and use ExecutorService to delete all words in the background.
 
@@ -148,7 +148,7 @@ public void deleteAll(){
 }
 ```
 
-### 2.3 Ajouter la méthode `deleteAll()` à la classe `WordViewModel`
+### 2.3 Ajouter la méthode `deleteAll``()` à la classe `WordViewModel`
 
 Rendez la méthode **`deleteAll()`** disponible pour l'activité principale en l'ajoutant au **`WordViewModel`**.
 
@@ -159,11 +159,11 @@ public void deleteAll() {mRepository.deleteAll();}
 ```
 
 
-## Tâche 3: Ajouter un élément de menu Options pour supprimer toutes les données.
+## Ajouter un élément de menu Options pour supprimer toutes les données
 
 
 
-Ensuite, vous ajoutez une option au menu pour permettre aux utilisateurs de supprimer tous les données.
+Ensuite, vous ajoutez une option au menu pour permettre aux utilisateurs de supprimer toutes les données.
 
 > aside positive
 > 
@@ -171,7 +171,7 @@ Ensuite, vous ajoutez une option au menu pour permettre aux utilisateurs de supp
 
 ### 3.1 Ajouter l'option de menu "Clear all data"
 
-1. Dans **`menu_main.xml`**, modifiez le titre et l'identifiant de l'option de menu, comme suit :
+1. Dans **`menu_main.xml`**, modifiez le titre "**`Clear all data`**" et l'identifiant de l'option de menu, comme suit :
 
 ```
 <item
@@ -192,7 +192,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 
     //noinspection SimplifiableIfStatement
     if (id == R.id.clear_data) {
-        // Add a toast just for confirmation
+        // Ajouter un toast de confirmation
         Toast.makeText(this, "Clearing the data...",
                 Toast.LENGTH_SHORT).show();
 
@@ -205,11 +205,11 @@ public boolean onOptionsItemSelected(MenuItem item) {
 }
 ```
 
-3. Exécutez votre application. Dans le menu Options, sélectionnez **`Clear all data`**. Tous les mots devraient disparaître.
+3. Exécutez votre application. Dans le menu Options, sélectionnez "**`Clear all data"`**. Tous les mots devraient disparaître.
 4. Redémarrez l'application. (Redémarrez-la depuis votre appareil ou l'émulateur ; ne la relancez pas depuis Android Studio). Vous devriez voir l'ensemble initial de mots.
 
 
-## Tâche 4: Supprimer un seul mot
+## Supprimer un seul mot
 
 
 
@@ -221,7 +221,7 @@ Encore une fois, voici les étapes générales pour implémenter une méthode d'
 * Ajoutez la méthode à la classe `WordRepository`. Écrivez le code pour exécuter la méthode en arrière-plan.
 * Pour appeler la méthode dans la classe `WordRepository`, ajoutez la méthode à `WordViewModel`. Le reste de l'application peut alors accéder à la méthode via `WordViewModel`.
 
-### 4.1 Ajouter `deleteWord()` à la DAO et l'annoter.
+### 4.1 Ajouter `deleteWord``()` à la DAO et l'annoter.
 
 Dans **`WordDao`**, ajoutez la méthode **`deleteWord()`**.
 
@@ -232,7 +232,7 @@ void deleteWord(Word word);
 
 Comme cette opération supprime une seule ligne, l'annotation `@Delete` est tout ce qui est nécessaire pour supprimer le mot de la base de données.
 
-### 4.2 Ajouter `deleteWord()` à la classe `WordRepository`
+### 4.2 Ajouter `deleteWord``()` à la classe `WordRepository`
 
 1. Dans **`WordRepository`**, ajoutez la méthode **`deleteWord()`** pour supprimer un mot en appelant **`deleteWord()`** à partir du DAO en utilisant `ExecutorService`.
 
@@ -242,7 +242,7 @@ public void deleteWord(Word word)  {
 }
 ```
 
-### 4.3 Ajouter `deleteWord()` à la classe `WordViewModel`
+### 4.3 Ajouter `deleteWord``()` à la classe `WordViewModel`
 
 Pour rendre la méthode **`deleteWord()`** disponible aux autres classes de l'application, en particulier `MainActivity`, ajoutez-la à **`WordViewModel`**.
 
@@ -253,7 +253,7 @@ public void deleteWord(Word word) {mRepository.deleteWord(word);}
 Vous avez maintenant implémenté la logique pour supprimer un mot. Cependant, il n'existe pas encore de moyen d'appeler l'opération de suppression de mots depuis l'interface utilisateur de l'application. Vous allez résoudre ce problème ensuite.
 
 
-## Tâche 5: Permettre aux utilisateurs de balayer les mots pour les supprimer
+## Permettre aux utilisateurs de balayer les mots pour les supprimer
 
 
 
@@ -423,18 +423,17 @@ void deleteAll();
 
 
 
-Entities, data access objects (DAOs), and `ViewModel`:
+Entities, data access objects (DAOs), et `ViewModel`:
 
 *  [Defining data using Room entities](https://developer.android.com/training/data-storage/room/defining-data.html)
 *  [Accessing data using Room DAOs](https://developer.android.com/training/data-storage/room/accessing-data.html)
 *  [`ViewModel` guide](https://developer.android.com/topic/libraries/architecture/viewmodel.html)
-*  [`Dao` reference](https://developer.android.com/reference/android/arch/persistence/room/Dao.html)
-*  [`ViewModel` reference](https://developer.android.com/reference/android/arch/lifecycle/ViewModel.html)
-* To see all the possible annotations for an entity, go to  [`android.arch.persistence.room`](https://developer.android.com/reference/android/arch/persistence/room/package-summary.html) in the Android reference and expand the Annotations menu item in the left nav.
-<img src="img/7b93930648bd96c0.png" alt="7b93930648bd96c0.png"  width="242.00" />
+*  [`Dao` référence](https://developer.android.com/reference/android/arch/persistence/room/Dao.html)
+*  [`ViewModel` référence](https://developer.android.com/reference/android/arch/lifecycle/ViewModel.html)
+* Pour voir toutes les annotations possibles pour une entité, rendez-vous sur  [androidx.room](https://developer.android.com/reference/androidx/room/package-summary) dans la documentation Android et développez l'élément de menu Annotations dans le panneau de navigation de gauche.
 
 `ItemTouchHelper`:
 
-*  [`ItemTouchHelper`](https://developer.android.com/reference/android/support/v7/widget/helper/ItemTouchHelper.html) reference
+*  [`ItemTouchHelper`](https://developer.android.com/reference/androidx/recyclerview/widget/ItemTouchHelper) reference
 
 
