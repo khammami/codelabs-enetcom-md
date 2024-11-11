@@ -501,6 +501,8 @@ Le rôle de la **`ViewModel`** est de fournir des données à l'interface utilis
 
 <img src="img/cd734a28acc5a88f.png" alt="cd734a28acc5a88f.png"  width="624.00" />
 
+<img src="img/20186a3d36c9e999.png" alt="20186a3d36c9e999.png"  width="522.00" />
+
 Pour une introduction à ce sujet, consultez  [ViewModel Overview](https://developer.android.com/topic/libraries/architecture/viewmodel.html) ou le billet de blog  [ViewModels: A Simple Example](https://medium.com/androiddevelopers/viewmodels-a-simple-example-ed5ac416317e).
 
 ### 7.2 Pourquoi utiliser un ViewModel ?
