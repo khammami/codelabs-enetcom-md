@@ -74,7 +74,7 @@ Dans cette tâche, vous devez mettre à jour l'application afin que, lorsqu'elle
 
 Pour détecter si la base de données contient déjà des données, vous pouvez exécuter une requête pour obtenir un élément de données. Si la requête ne renvoie rien, alors la base de données est vide.
 
-<button>[Télécharger .zip](https://github.com/khammami/android-fundamentals-exycodelabs/archive/refs/heads/room-words-sample-2023.zip)</button>  <button>[Dépot GitHub du Projet](https://github.com/khammami/android-fundamentals-exycodelabs/tree/room-words-sample-2023)</button>
+<button>[Télécharger .zip](https://github.com/khammami/android-fundamentals-exycodelabs/archive/refs/heads/room-words-sample-2024.zip)</button>  <button>[Dépot GitHub du Projet](https://github.com/khammami/android-fundamentals-exycodelabs/tree/room-words-sample-2024)</button>
 
 > aside positive
 > 
@@ -316,7 +316,7 @@ Points à noter dans le code:
 
 ### Code de solution
 
-<button>[Télécharger .zip](https://github.com/khammami/android-fundamentals-exycodelabs/archive/refs/heads/room-words-with-delete-2023.zip)</button>  <button>[Dépot GitHub du Projet](https://github.com/khammami/android-fundamentals-exycodelabs/tree/room-words-with-delete-2023)</button>  <button>[Voir la différence](https://github.com/khammami/android-fundamentals-exycodelabs/compare/room-words-sample-2023...khammami:android-fundamentals-exycodelabs:room-words-with-delete-2023)</button>
+<button>[Télécharger .zip](https://github.com/khammami/android-fundamentals-exycodelabs/archive/refs/heads/room-words-with-delete-2024.zip)</button>  <button>[Dépot GitHub du Projet](https://github.com/khammami/android-fundamentals-exycodelabs/tree/room-words-with-delete-2024)</button>  <button>[Voir la différence](https://github.com/khammami/android-fundamentals-exycodelabs/compare/room-words-sample-2024...khammami:android-fundamentals-exycodelabs:room-words-with-delete-2024)</button>
 
 
 ## Défi de codage
@@ -377,7 +377,7 @@ Dans `WordRoomDatabase`, augmentez le numéro de version de la base de données,
 
 ### Code de solution de défi 👀
 
-<button>[Télécharger .zip](https://github.com/khammami/android-fundamentals-exycodelabs/archive/refs/heads/room-words-with-update-2023.zip)</button>  <button>[Dépot GitHub du Projet](https://github.com/khammami/android-fundamentals-exycodelabs/tree/room-words-with-update-2023)</button>  <button>[Voir la différence](https://github.com/khammami/android-fundamentals-exycodelabs/compare/room-words-with-delete-2023...khammami:android-fundamentals-exycodelabs:room-words-with-update-2023)</button>
+<button>[Télécharger .zip](https://github.com/khammami/android-fundamentals-exycodelabs/archive/refs/heads/room-words-with-update-2024.zip)</button>  <button>[Dépot GitHub du Projet](https://github.com/khammami/android-fundamentals-exycodelabs/tree/room-words-with-update-2024)</button>  <button>[Voir la différence](https://github.com/khammami/android-fundamentals-exycodelabs/compare/room-words-with-delete-2024...khammami:android-fundamentals-exycodelabs:room-words-with-update-2024)</button>
 
 
 ## Résumé
